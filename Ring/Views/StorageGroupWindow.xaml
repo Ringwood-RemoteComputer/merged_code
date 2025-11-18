@@ -1,0 +1,279 @@
+<Window x:Class="Ring.StorageGroupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Storage Group" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen" 
+        Background="#F0F0F0"
+        FontFamily="Segoe UI" FontSize="14"
+        Icon="pack://application:,,,/Images/RW-Blue.ico">
+
+    <Window.Resources>
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20,15">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Storage Group" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+                <TextBlock Text=" - Tank Monitoring System" 
+                           FontSize="16" 
+                           Foreground="#BDC3C7" 
+                           Margin="10,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <!-- 3D Cylindrical Tank Visualization -->
+                <Canvas x:Name="StorageTankCanvas" Height="400" Width="800" Margin="10">
+                    <!-- Industrial Background -->
+                    <Rectangle Canvas.Left="0" Canvas.Top="0" Width="800" Height="400" 
+                               Fill="#F5F5F5" Stroke="#D0D0D0" StrokeThickness="1"/>
+                    
+                    <!-- Storage Tank 1 - Bigger Cylindrical -->
+                    <Ellipse x:Name="Tank1" Canvas.Left="50" Canvas.Top="80" Width="120" Height="200">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF6666" Offset="0"/>
+                                <GradientStop Color="#CC3333" Offset="0.3"/>
+                                <GradientStop Color="#AA1111" Offset="0.7"/>
+                                <GradientStop Color="#880000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                        <Ellipse.Stroke>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF8888" Offset="0"/>
+                                <GradientStop Color="#CC4444" Offset="0.5"/>
+                                <GradientStop Color="#990000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Stroke>
+                    </Ellipse>
+                    
+                    <!-- Tank 1 Level Indicator -->
+                    <Rectangle x:Name="Tank1Level" Canvas.Left="80" Canvas.Top="100" Width="60" Height="160" 
+                               Fill="#4CAF50" Stroke="#2E7D32" StrokeThickness="2"/>
+                    <TextBlock x:Name="Tank1LevelText" Canvas.Left="95" Canvas.Top="170" 
+                               Text="0%" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    
+                    <!-- Tank 1 Label -->
+                    <Button x:Name="Tank1Button" Canvas.Left="40" Canvas.Top="290" Width="140" Height="35" 
+                            Content="Show Storage Tank 1" Click="ShowTank1_Click" 
+                            Background="#3498DB" FontWeight="Bold"/>
+                    
+                    <!-- Storage Tank 2 - Bigger Cylindrical -->
+                    <Ellipse x:Name="Tank2" Canvas.Left="220" Canvas.Top="80" Width="120" Height="200">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF6666" Offset="0"/>
+                                <GradientStop Color="#CC3333" Offset="0.3"/>
+                                <GradientStop Color="#AA1111" Offset="0.7"/>
+                                <GradientStop Color="#880000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                        <Ellipse.Stroke>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF8888" Offset="0"/>
+                                <GradientStop Color="#CC4444" Offset="0.5"/>
+                                <GradientStop Color="#990000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Stroke>
+                    </Ellipse>
+                    
+                    <!-- Tank 2 Level Indicator -->
+                    <Rectangle x:Name="Tank2Level" Canvas.Left="250" Canvas.Top="100" Width="60" Height="160" 
+                               Fill="#4CAF50" Stroke="#2E7D32" StrokeThickness="2"/>
+                    <TextBlock x:Name="Tank2LevelText" Canvas.Left="265" Canvas.Top="170" 
+                               Text="0%" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    
+                    <!-- Tank 2 Label -->
+                    <Button x:Name="Tank2Button" Canvas.Left="210" Canvas.Top="290" Width="140" Height="35" 
+                            Content="Show Storage Tank 2" Click="ShowTank2_Click" 
+                            Background="#3498DB" FontWeight="Bold"/>
+                    
+                    <!-- Storage Tank 3 (LOW/MID D/B TANK) - Bigger Cylindrical -->
+                    <Ellipse x:Name="Tank3" Canvas.Left="390" Canvas.Top="80" Width="120" Height="200">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF6666" Offset="0"/>
+                                <GradientStop Color="#CC3333" Offset="0.3"/>
+                                <GradientStop Color="#AA1111" Offset="0.7"/>
+                                <GradientStop Color="#880000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                        <Ellipse.Stroke>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF8888" Offset="0"/>
+                                <GradientStop Color="#CC4444" Offset="0.5"/>
+                                <GradientStop Color="#990000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Stroke>
+                    </Ellipse>
+                    
+                    <!-- Tank 3 Level Indicator -->
+                    <Rectangle x:Name="Tank3Level" Canvas.Left="420" Canvas.Top="100" Width="60" Height="160" 
+                               Fill="#4CAF50" Stroke="#2E7D32" StrokeThickness="2"/>
+                    <TextBlock x:Name="Tank3LevelText" Canvas.Left="435" Canvas.Top="170" 
+                               Text="0%" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    
+                    <!-- Tank 3 Label -->
+                    <Button x:Name="Tank3Button" Canvas.Left="380" Canvas.Top="290" Width="140" Height="35" 
+                            Content="Show LOW/MID D/B TANK" Click="ShowTank3_Click" 
+                            Background="#3498DB" FontWeight="Bold"/>
+                    
+                    <!-- Storage Tank 4 - Bigger Cylindrical -->
+                    <Ellipse x:Name="Tank4" Canvas.Left="560" Canvas.Top="80" Width="120" Height="200">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF6666" Offset="0"/>
+                                <GradientStop Color="#CC3333" Offset="0.3"/>
+                                <GradientStop Color="#AA1111" Offset="0.7"/>
+                                <GradientStop Color="#880000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                        <Ellipse.Stroke>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FF8888" Offset="0"/>
+                                <GradientStop Color="#CC4444" Offset="0.5"/>
+                                <GradientStop Color="#990000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Stroke>
+                    </Ellipse>
+                    
+                    <!-- Tank 4 Level Indicator -->
+                    <Rectangle x:Name="Tank4Level" Canvas.Left="590" Canvas.Top="100" Width="60" Height="160" 
+                               Fill="#4CAF50" Stroke="#2E7D32" StrokeThickness="2"/>
+                    <TextBlock x:Name="Tank4LevelText" Canvas.Left="605" Canvas.Top="170" 
+                               Text="0%" FontWeight="Bold" Foreground="White" FontSize="14"/>
+                    
+                    <!-- Tank 4 Label -->
+                    <Button x:Name="Tank4Button" Canvas.Left="550" Canvas.Top="290" Width="140" Height="35" 
+                            Content="Show Storage Tank 4" Click="ShowTank4_Click" 
+                            Background="#3498DB" FontWeight="Bold"/>
+                </Canvas>
+                
+                <!-- Tank Detail Panel (Hidden by default) -->
+                <Grid x:Name="TankDetailPanel" Width="400" Margin="10,0,0,0" 
+                      Visibility="Collapsed" HorizontalAlignment="Center">
+                    <Border Background="White" CornerRadius="8" BorderBrush="#BDC3C7" BorderThickness="2">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Panel Header -->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                                <TextBlock x:Name="TankDetailTitle" Text="Storage Tank 1" 
+                                           FontSize="18" FontWeight="Bold" Foreground="#2C3E50"/>
+                                <Button x:Name="HideTankButton" Content="Hide" Margin="10,0,0,0" 
+                                        Click="HideTank_Click" 
+                                        Background="#E74C3C" Width="60"/>
+                            </StackPanel>
+                            
+                            <!-- Tank Details -->
+                            <StackPanel Grid.Row="1">
+                                <!-- Temperature Section -->
+                                <GroupBox Header="Temperature" Margin="0,0,0,10">
+                                    <StackPanel Margin="10">
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Actual Temperature:" Width="120" FontWeight="SemiBold"/>
+                                            <TextBox x:Name="ActualTemperature" Text="0.0" Width="80" Margin="5,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Preset Temperature:" Width="120" FontWeight="SemiBold"/>
+                                            <TextBox x:Name="PresetTemperature" Text="0" Width="80" Margin="5,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                                
+                                <!-- Level Section -->
+                                <GroupBox Header="Level" Margin="0,0,0,10">
+                                    <StackPanel Margin="10">
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Actual Level:" Width="120" FontWeight="SemiBold"/>
+                                            <TextBox x:Name="ActualLevel" Text="0.0" Width="80" Margin="5,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                                            <TextBlock Text="Request Level:" Width="120" FontWeight="SemiBold"/>
+                                            <TextBox x:Name="RequestLevel" Text="1200" Width="80" Margin="5,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                                
+                                <!-- Formula Section -->
+                                <GroupBox Header="Formula" Margin="0,0,0,10">
+                                    <StackPanel Margin="10">
+                                        <TextBlock Text="Formula: Formula 2" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                
+                                <!-- Status Indicators -->
+                                <GroupBox Header="Status" Margin="0,0,0,10">
+                                    <StackPanel Margin="10">
+                                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                                            <Ellipse Width="12" Height="12" Fill="#4CAF50" Margin="0,0,8,0"/>
+                                            <TextBlock Text="PLC Connected" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                                            <Ellipse Width="12" Height="12" Fill="#4CAF50" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Sensors Active" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                                            <Ellipse Width="12" Height="12" Fill="#FF9800" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Valves Ready" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+                            </StackPanel>
+                            
+                            <!-- Close Button -->
+                            <Button Grid.Row="2" Content="Close" HorizontalAlignment="Right" 
+                                    Click="CloseTankDetail_Click" 
+                                    Background="#95A5A6" Margin="0,10,0,0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
+
+
+
+

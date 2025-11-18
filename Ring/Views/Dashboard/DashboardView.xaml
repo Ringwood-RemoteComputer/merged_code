@@ -1,0 +1,787 @@
+<UserControl x:Class="Ring.Views.Dashboard.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Ring.Converters"
+             xmlns:controls="clr-namespace:Ring.Controls"
+             Background="{StaticResource BackgroundBrush}"
+             Unloaded="UserControl_Unloaded">
+    
+    <UserControl.Resources>
+        <!-- Dashboard Card Style - Enhanced with existing color palette -->
+        <Style x:Key="DashboardCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource IndustrialDataPanelBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
+            <Setter Property="Margin" Value="8"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="12" ShadowDepth="4" Opacity="0.25"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Card Header Style - Using existing color palette -->
+        <Style x:Key="CardHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <!-- Status Indicator Style -->
+        <Style x:Key="StatusIndicatorStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <!-- Connection Status Indicator Style -->
+        <Style x:Key="ConnectionStatusIndicatorStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+
+        <!-- PLC Status Indicator Style -->
+        <Style x:Key="PlcStatusIndicatorStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+
+        <!-- Data Label Style - Using existing LabelStyle -->
+        <Style x:Key="DataLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource LabelStyle}">
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <!-- Data Value Style - Using existing ValueStyle -->
+        <Style x:Key="DataValueStyle" TargetType="TextBlock" BasedOn="{StaticResource ValueStyle}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <!-- Critical Data Value Style - For most important values -->
+        <Style x:Key="CriticalDataValueStyle" TargetType="TextBlock" BasedOn="{StaticResource ValueStyle}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <!-- Tank Level Bar Style -->
+        <Style x:Key="TankLevelBarStyle" TargetType="Border">
+            <Setter Property="Background" Value="#00FF00"/>
+            <Setter Property="CornerRadius" Value="1"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
+        <!-- Tank Container Style -->
+        <Style x:Key="TankContainerStyle" TargetType="Border">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource IndustrialDarkBackgroundBrush}"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{StaticResource IndustrialDarkBackgroundBrush}"/>
+        </Style>
+
+        <!-- Progress Bar Style -->
+        <Style x:Key="ProgressBarStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0,4,0,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="6"/>
+                            <Border Background="{TemplateBinding Foreground}" 
+                                    CornerRadius="6" 
+                                    HorizontalAlignment="Left"
+                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Converter={StaticResource PercentageToHeightConverter}, ConverterParameter=100}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Tank Level Progress Bar Style -->
+        <Style x:Key="TankLevelProgressBarStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Background" Value="#2C2C2C"/>
+            <Setter Property="Foreground" Value="#00FF00"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#666666"/>
+            <Setter Property="Margin" Value="0,4,0,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="2"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <Border Background="{TemplateBinding Foreground}" 
+                                    CornerRadius="1" 
+                                    HorizontalAlignment="Left"
+                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Converter={StaticResource PercentageToHeightConverter}, ConverterParameter=100}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Alert Indicator Style -->
+        <Style x:Key="AlertIndicatorStyle" TargetType="Ellipse">
+            <Setter Property="Width" Value="8"/>
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="Fill" Value="#FF6B6B"/>
+        </Style>
+
+        <!-- Status Text Style -->
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- Main Dashboard Content -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Dashboard Header -->
+                <Border Grid.Row="0" 
+                        Background="{StaticResource IndustrialDataPanelBrush}" 
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource TextSecondaryBrush}" 
+                        CornerRadius="8" 
+                        Effect="{StaticResource DropShadowEffect}"
+                        Margin="0,0,0,16"
+                        Padding="24">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="System Dashboard" 
+                                       FontSize="24" 
+                                       FontWeight="Bold" 
+                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Margin="0,0,0,8"/>
+                        </StackPanel>
+                        
+                        <!-- Connection Status -->
+                        <StackPanel Grid.Column="1" 
+                                    Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <Ellipse Style="{StaticResource ConnectionStatusIndicatorStyle}" 
+                                     Fill="{Binding ConnectionStatusBrush}">
+                                <Ellipse.ToolTip>
+                                    <ToolTip Content="System Connection Status"/>
+                                </Ellipse.ToolTip>
+                            </Ellipse>
+                            <TextBlock Text="{Binding ConnectionStatus}" 
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Alarm/Alert Panel -->
+                <Border Grid.Row="1" 
+                        Background="{StaticResource IndustrialDataPanelBrush}" 
+                        BorderThickness="1" 
+                        BorderBrush="#DC3545" 
+                        CornerRadius="8" 
+                        Effect="{StaticResource DropShadowEffect}"
+                        Margin="0,0,0,12"
+                        Padding="16">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Alarm Header -->
+                        <Grid Grid.Row="0" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <Ellipse Width="20" Height="20" Fill="#DC3545" 
+                                         VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                <TextBlock Text="ACTIVE ALARMS" 
+                                           FontSize="16" 
+                                           FontWeight="Bold" 
+                                           Foreground="#DC3545"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <Border Background="#DC3545" 
+                                        CornerRadius="12" 
+                                        Padding="8,4"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="3" 
+                                               FontSize="14" 
+                                               FontWeight="Bold" 
+                                               Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Content="View All" 
+                                        Style="{StaticResource ActionButtonStyle}"
+                                        Width="100"
+                                        Height="32"
+                                        FontSize="12"
+                                        Margin="0,0,8,0"
+                                        Click="ViewAllAlarms_Click"/>
+                                <Button Content="Acknowledge All" 
+                                        Style="{StaticResource ActionButtonStyle}"
+                                        Width="140"
+                                        Height="32"
+                                        FontSize="12"/>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Alarm List -->
+                        <ListBox Grid.Row="1" 
+                                 Name="AlarmListBox"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 MaxHeight="100">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White" 
+                                            BorderThickness="1" 
+                                            BorderBrush="#E0E0E0" 
+                                            CornerRadius="4" 
+                                            Padding="12,8"
+                                            Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <!-- Severity Indicator -->
+                                            <Ellipse Grid.Column="0" 
+                                                     Width="16" 
+                                                     Height="16" 
+                                                     Fill="{Binding SeverityColor}"
+                                                     VerticalAlignment="Center"
+                                                     Margin="0,0,12,0"/>
+                                            
+                                            <!-- Severity Text -->
+                                            <TextBlock Grid.Column="1" 
+                                                       Text="{Binding Severity}" 
+                                                       FontSize="13" 
+                                                       FontWeight="Bold"
+                                                       Foreground="{Binding SeverityColor}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,12,0"
+                                                       MinWidth="65"/>
+                                            
+                                            <!-- Alarm Description -->
+                                            <TextBlock Grid.Column="2" 
+                                                       VerticalAlignment="Center"
+                                                       FontSize="13">
+                                                <Run Text="{Binding Source}" FontWeight="SemiBold" Foreground="#1E1E1E"/>
+                                                <Run Text=" " Foreground="#666666"/>
+                                                <Run Text="{Binding Description}" Foreground="#1E1E1E"/>
+                                            </TextBlock>
+                                            
+                                            <!-- Time -->
+                                            <TextBlock Grid.Column="3" 
+                                                       Text="{Binding TimeAgo}" 
+                                                       FontSize="12" 
+                                                       Foreground="#666666"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <ContentPresenter/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </Border>
+
+                <!-- Dashboard Cards Grid -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Make Ready Tank Card -->
+                    <Border Grid.Column="0" 
+                            Style="{StaticResource DashboardCardStyle}"
+                            Cursor="Hand"
+                            MouseLeftButtonDown="MakeReadyTankCard_Click">
+                        <StackPanel Margin="10">
+                            <!-- Header -->
+                            <TextBlock Text="Make Ready Tank" 
+                                       FontWeight="Bold" 
+                                       FontSize="16" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="0,0,0,8" 
+                                       Foreground="#1E1E1E"/>
+                            
+                            <!-- Current Batch Section -->
+                            <StackPanel Margin="0,0,0,8">
+                                <TextBlock Text="Current Batch" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="13" 
+                                           Foreground="#0078D4" 
+                                           Margin="0,0,0,6"/>
+                                    
+                                    <!-- Formula -->
+                                <StackPanel Margin="0,0,0,4">
+                                        <TextBlock Text="Formula:" 
+                                                   Foreground="#666666" 
+                                               FontSize="12" 
+                                                   Margin="0,0,0,2"/>
+                                            <TextBlock Text="{Binding MakeReadyTankViewModel.FormulaName}" 
+                                                       Foreground="#1E1E1E" 
+                                               FontSize="15"
+                                               FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Storage Tank -->
+                                <StackPanel Margin="0,0,0,4">
+                                        <TextBlock Text="Storage Tank:" 
+                                                   Foreground="#666666" 
+                                               FontSize="12" 
+                                                   Margin="0,0,0,2"/>
+                                            <TextBlock Text="{Binding MakeReadyTankViewModel.StorageTank}" 
+                                                       Foreground="#1E1E1E" 
+                                               FontSize="14"
+                                               FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                
+                                <!-- Current Step -->
+                                <StackPanel>
+                                    <TextBlock Text="Current Step:" 
+                                           Foreground="#666666" 
+                                               FontSize="12" 
+                                               Margin="0,0,0,2"/>
+                                    <TextBlock Text="{Binding MakeReadyTankViewModel.CurrentStep}" 
+                                               Foreground="#1E1E1E" 
+                                               FontSize="14"
+                                               FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+                            
+                            <!-- Tank Measurements -->
+                            <StackPanel Margin="0,0,0,0">
+                                <TextBlock Text="Tank Measurements" 
+                                           FontWeight="SemiBold" 
+                                           FontSize="13" 
+                                           Foreground="#0078D4" 
+                                           Margin="0,0,0,6"/>
+                                
+                                <!-- Tank Graphic and Measurements Side-by-Side -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Level Control on Left -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="50"
+                                        Width="75"
+                                        Height="120"
+                                        Margin="0,0,12,0"/>
+                                    
+                                    <!-- Weight and Temperature on Right -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <!-- Weight -->
+                                        <StackPanel Margin="0,0,0,12">
+                                            <TextBlock Text="Weight:" 
+                                                       Foreground="#666666" 
+                                                       FontSize="12" 
+                                                       Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MakeReadyTankViewModel.Weight, StringFormat={}{0} lbs}" 
+                                                       Foreground="#1E1E1E" 
+                                                       FontSize="16"
+                                                       FontWeight="Bold"/>
+                                        </StackPanel>
+                                        
+                                        <!-- Temperature -->
+                                        <StackPanel Margin="0,0,0,0">
+                                            <TextBlock Text="Temperature:" 
+                                                       Foreground="#666666" 
+                                                       FontSize="12" 
+                                                       Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding MakeReadyTankViewModel.Temperature, StringFormat={}{0}°F}" 
+                                                       Foreground="#1E1E1E" 
+                                                       FontSize="16"
+                                                       FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- System Graphs Card -->
+                    <Border Grid.Column="1" 
+                            Style="{StaticResource DashboardCardStyle}">
+                        <StackPanel Margin="10">
+                            <!-- Header with Toggle -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" 
+                                        Name="BatchesGraphButton"
+                                        FontSize="13"
+                                        Height="32"
+                                        Margin="0,0,4,0"
+                                        Click="BatchesGraphButton_Click"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        BorderBrush="Transparent"
+                                        Cursor="Hand">
+                                    <TextBlock Name="BatchesGraphText" 
+                                               Text="Batches/Shift" 
+                                               FontWeight="Bold" 
+                                               Foreground="#1E1E1E"
+                                               TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </Button>
+                                
+                                <Button Grid.Column="1" 
+                                        Name="StarchGraphButton"
+                                        FontSize="13"
+                                        Height="32"
+                                        Margin="4,0,0,0"
+                                        Click="StarchGraphButton_Click"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        BorderBrush="Transparent"
+                                        Cursor="Hand">
+                                    <TextBlock Name="StarchGraphText" 
+                                               Text="Starch/Day" 
+                                               FontWeight="SemiBold" 
+                                               Foreground="#999999"
+                                               TextWrapping="Wrap"
+                                               TextAlignment="Center"/>
+                                </Button>
+                            </Grid>
+
+                            <!-- Batches Per Shift Graph -->
+                            <Border Name="BatchesGraphPanel" 
+                                    Visibility="Visible"
+                                    Height="250">
+                            </Border>
+                            
+                            <!-- Starch Usage Per Day Graph -->
+                            <Border Name="StarchGraphPanel" 
+                                    Visibility="Collapsed"
+                                    Height="250">
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Storage/Use Tanks Card -->
+                    <Border Grid.Column="2" 
+                            Style="{StaticResource DashboardCardStyle}">
+                        <StackPanel Margin="10">
+                            <!-- Header with Toggle -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Grid.Column="0" 
+                                        Name="StorageTanksButton"
+                                        FontSize="15"
+                                        Height="32"
+                                        Margin="0,0,4,0"
+                                        Click="StorageTanksButton_Click"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        BorderBrush="Transparent"
+                                        Cursor="Hand">
+                                    <TextBlock Name="StorageTanksText" 
+                                               Text="Storage Tanks" 
+                                               FontWeight="Bold" 
+                                               Foreground="#1E1E1E"/>
+                                </Button>
+                                
+                                <Button Grid.Column="1" 
+                                        Name="UseTanksButton"
+                                        FontSize="15"
+                                        Height="32"
+                                        Margin="4,0,0,0"
+                                        Click="UseTanksButton_Click"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        BorderBrush="Transparent"
+                                        Cursor="Hand">
+                                    <TextBlock Name="UseTanksText" 
+                                               Text="Use Tanks" 
+                                               FontWeight="SemiBold" 
+                                               Foreground="#999999"/>
+                                </Button>
+                            </Grid>
+
+                            <!-- Storage Tanks Section -->
+                            <StackPanel Name="StorageTanksPanel" Visibility="Visible">
+                                <!-- Storage Tank 1 -->
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding StorageTankGroupViewModel.FillPercentage1}"
+                                        Width="55"
+                                        Height="75"
+                                        Margin="0,0,10,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock FontSize="13" 
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#0078D4"
+                                                   Margin="0,0,0,3">
+                                            <Run Text="Storage Tank 1 - "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.Formula1}"/>
+                                        </TextBlock>
+                                        
+                                        <TextBlock Foreground="#666666" 
+                                                   FontSize="11"
+                                                   Margin="0,0,0,2"
+                                                   Text="Temperature:"/>
+                                        <TextBlock Foreground="#1E1E1E" 
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0">
+                                            <Run Text="{Binding StorageTankGroupViewModel.ActualTemperature1, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F / "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.PresetTemperature1, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            
+                                <!-- Storage Tank 2 -->
+                                <Grid Margin="0,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding StorageTankGroupViewModel.FillPercentage2}"
+                                        Width="55"
+                                        Height="75"
+                                        Margin="0,0,10,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock FontSize="13" 
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#0078D4"
+                                                   Margin="0,0,0,3">
+                                            <Run Text="Storage Tank 2 - "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.Formula2}"/>
+                                        </TextBlock>
+                                        
+                                        <TextBlock Foreground="#666666" 
+                                                   FontSize="11"
+                                                   Margin="0,0,0,2"
+                                                   Text="Temperature:"/>
+                                        <TextBlock Foreground="#1E1E1E" 
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0">
+                                            <Run Text="{Binding StorageTankGroupViewModel.ActualTemperature2, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F / "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.PresetTemperature2, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                            
+                            <!-- Use Tanks Section -->
+                            <StackPanel Name="UseTanksPanel" Visibility="Collapsed">
+                                <!-- Module Facer 1 -->
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding UseTankGroupViewModel.Level1}"
+                                        Width="45"
+                                        Height="60"
+                                        Margin="0,0,8,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Module Facer 1" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="12" 
+                                                   Foreground="#0078D4" 
+                                                   Margin="0,0,0,3"/>
+                                        
+                                        <TextBlock Text="Formula:" 
+                                                   Foreground="#666666" 
+                                                   FontSize="10" 
+                                                   Margin="0,0,0,1"/>
+                                        <TextBlock Text="{Binding UseTankGroupViewModel.Formula1}" 
+                                                   Foreground="#1E1E1E" 
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Module Facer 2 -->
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding UseTankGroupViewModel.Level2}"
+                                        Width="45"
+                                        Height="60"
+                                        Margin="0,0,8,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Module Facer 2" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="12" 
+                                                   Foreground="#0078D4" 
+                                                   Margin="0,0,0,3"/>
+                                        
+                                        <TextBlock Text="Formula:" 
+                                                   Foreground="#666666" 
+                                                   FontSize="10" 
+                                                   Margin="0,0,0,1"/>
+                                        <TextBlock Text="{Binding UseTankGroupViewModel.Formula2}" 
+                                                   Foreground="#1E1E1E" 
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Double Backer -->
+                                <Grid Margin="0,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding UseTankGroupViewModel.Level3}"
+                                        Width="45"
+                                        Height="60"
+                                        Margin="0,0,8,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Double Backer" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="12" 
+                                                   Foreground="#0078D4" 
+                                                   Margin="0,0,0,3"/>
+                                        
+                                        <TextBlock Text="Formula:" 
+                                                   Foreground="#666666" 
+                                                   FontSize="10" 
+                                                   Margin="0,0,0,1"/>
+                                        <TextBlock Text="{Binding UseTankGroupViewModel.Formula3}" 
+                                                   Foreground="#1E1E1E" 
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
+

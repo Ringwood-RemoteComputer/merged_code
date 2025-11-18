@@ -1,0 +1,408 @@
+﻿<Window x:Class="Ring.Views.BatchStart.StorageTank1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Storage Tank 1 - Advanced Control and Monitoring" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen" Background="#F5F5F5"
+        FontFamily="Segoe UI" FontSize="12">
+
+    <Window.Resources>
+        <!-- Modern Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Status Indicator Style -->
+        <Style x:Key="StatusIndicator" TargetType="Ellipse">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="Fill" Value="Gray"/>
+        </Style>
+
+        <!-- Tank Level Progress Bar Style -->
+        <Style x:Key="TankLevelBar" TargetType="ProgressBar">
+            <Setter Property="Height" Value="200"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="Foreground" Value="#4CAF50"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <Grid Grid.Row="0" Background="#2C3E50" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Tank Icon and Title -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="15,10">
+                <Image Source="pack://application:,,,/Images/BannerRingwood.png" Width="40" Height="40" Margin="0,0,10,0" Stretch="Uniform"/>
+                <TextBlock Text="Storage Tank 1" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Foreground="White" 
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Real-time Status -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Status: " Foreground="White" FontWeight="SemiBold"/>
+                <TextBlock Text="ONLINE" Foreground="#2ECC71" FontWeight="Bold" Margin="5,0"/>
+                <TextBlock Text="| Last Update: " Foreground="White" Margin="10,0,0,0"/>
+                <TextBlock Text="{Binding LastUpdateTime}" Foreground="#BDC3C7"/>
+            </StackPanel>
+
+            <!-- Close Button -->
+            <Button Grid.Column="2" Content="✕" 
+                    Width="30" Height="30" 
+                    Background="Transparent" 
+                    Foreground="White" 
+                    BorderThickness="0"
+                    FontSize="16" 
+                    Click="CloseButton_Click"
+                    Margin="15,10"/>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Panel - Tank Visualization & Controls -->
+            <Grid Grid.Column="0" Background="White" Margin="0,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Tank Level Display -->
+                <GroupBox Grid.Row="0" Header="Tank Level" Margin="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <ProgressBar Style="{StaticResource TankLevelBar}" 
+                                     Value="{Binding TankLevel}" 
+                                     Maximum="100"/>
+                        <TextBlock Text="{Binding TankLevel, StringFormat='{}{0:F1}%'}" 
+                                   HorizontalAlignment="Center" 
+                                   FontSize="18" 
+                                   FontWeight="Bold" 
+                                   Margin="0,10,0,5"/>
+                        <TextBlock Text="{Binding TankVolume, StringFormat='{}{0:F0} Gallons'}" 
+                                   HorizontalAlignment="Center" 
+                                   Foreground="Gray"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Tank Controls -->
+                <GroupBox Grid.Row="1" Header="Tank Controls" Margin="5">
+                    <StackPanel Margin="10">
+                        <!-- Agitator Control -->
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Agitator:" Width="80" VerticalAlignment="Center"/>
+                            <Button x:Name="AgitatorToggle" 
+                                    Content="OFF" 
+                                    Width="60" 
+                                    Height="25"
+                                    Click="AgitatorToggle_Click"/>
+                        </StackPanel>
+
+                        <!-- Heating Control -->
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Heating:" Width="80" VerticalAlignment="Center"/>
+                            <Button x:Name="HeatingToggle" 
+                                    Content="OFF" 
+                                    Width="60" 
+                                    Height="25"
+                                    Click="HeatingToggle_Click"/>
+                        </StackPanel>
+
+                        <!-- Fill Valve -->
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Fill Valve:" Width="80" VerticalAlignment="Center"/>
+                            <Button x:Name="FillValveToggle" 
+                                    Content="CLOSED" 
+                                    Width="60" 
+                                    Height="25"
+                                    Click="FillValveToggle_Click"/>
+                        </StackPanel>
+
+                        <!-- Discharge Valve -->
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Discharge:" Width="80" VerticalAlignment="Center"/>
+                            <Button x:Name="DischargeValveToggle" 
+                                    Content="CLOSED" 
+                                    Width="60" 
+                                    Height="25"
+                                    Click="DischargeValveToggle_Click"/>
+                        </StackPanel>
+
+                        <!-- Emergency Stop -->
+                        <Button Content="EMERGENCY STOP" 
+                                Background="#E74C3C" 
+                                Foreground="White" 
+                                Height="35" 
+                                Margin="0,15,0,0"
+                                Click="EmergencyStop_Click"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Quick Actions -->
+                <GroupBox Grid.Row="2" Header="Quick Actions" Margin="5">
+                    <StackPanel Margin="10">
+                        <Button Content="Start Batch" 
+                                Style="{StaticResource ModernButton}" 
+                                Margin="0,5"
+                                Click="StartBatch_Click"/>
+                        <Button Content="Stop Batch" 
+                                Style="{StaticResource ModernButton}" 
+                                Background="#FF9800"
+                                Margin="0,5"
+                                Click="StopBatch_Click"/>
+                        <Button Content="Reset Alarms" 
+                                Style="{StaticResource ModernButton}" 
+                                Background="#9C27B0"
+                                Margin="0,5"
+                                Click="ResetAlarms_Click"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+            <!-- Center Panel - Real-time Monitoring -->
+            <Grid Grid.Column="1" Background="White" Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Real-time Values -->
+                <GroupBox Grid.Row="0" Header="Real-time Monitoring" Margin="5">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Temperature -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="Temperature" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Temperature, StringFormat='{}{0:F1}°C'}" 
+                                       FontSize="24" 
+                                       Foreground="#E67E22" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Setpoint: 65°C" Foreground="Gray" FontSize="10" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Viscosity -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="Viscosity" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Viscosity, StringFormat='{}{0:F0} cP'}" 
+                                       FontSize="24" 
+                                       Foreground="#8E44AD" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Range: 100-500 cP" Foreground="Gray" FontSize="10" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Pressure -->
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <TextBlock Text="Pressure" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Pressure, StringFormat='{}{0:F1} PSI'}" 
+                                       FontSize="24" 
+                                       Foreground="#2980B9" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Max: 50 PSI" Foreground="Gray" FontSize="10" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Alarm Status -->
+                <GroupBox Grid.Row="1" Header="Alarm Status" Margin="5">
+                    <DataGrid ItemsSource="{Binding ActiveAlarms}" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Time" Binding="{Binding Timestamp}" Width="120"/>
+                            <DataGridTextColumn Header="Alarm" Binding="{Binding Description}" Width="*"/>
+                            <DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="80"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+                <!-- Batch Information -->
+                <GroupBox Grid.Row="2" Header="Current Batch" Margin="5">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Batch ID:" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding CurrentBatchId}" Foreground="#2C3E50"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Formula:" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding CurrentFormula}" Foreground="#2C3E50"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Progress:" FontWeight="Bold"/>
+                            <ProgressBar Value="{Binding BatchProgress}" 
+                                         Maximum="100" 
+                                         Height="20" 
+                                         Margin="0,5"/>
+                            <TextBlock Text="{Binding BatchProgress, StringFormat='{}{0:F1}%'}" 
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+
+            <!-- Right Panel - Configuration & History -->
+            <Grid Grid.Column="2" Background="White" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Formula Selection -->
+                <GroupBox Grid.Row="0" Header="Formula Configuration" Margin="5">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Select Formula:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="FormulaComboBox" 
+                                  SelectedIndex="0"
+                                  SelectionChanged="FormulaComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Formula 1 - Standard Mix"/>
+                            <ComboBoxItem Content="Formula 2 - High Viscosity"/>
+                            <ComboBoxItem Content="Formula 3 - Low Temperature"/>
+                            <ComboBoxItem Content="Formula 4 - Custom Blend"/>
+                            <ComboBoxItem Content="Formula 5 - Emergency Mix"/>
+                        </ComboBox>
+
+                        <TextBlock Text="Batch Volume (Gallons):" FontWeight="Bold" Margin="0,15,0,5"/>
+                        <TextBox x:Name="BatchVolumeTextBox" 
+                                 Text="900" 
+                                 TextAlignment="Center"
+                                 PreviewTextInput="NumberValidationTextBox"/>
+                        <TextBlock Text="Range: 900 - 1350" Foreground="Gray" FontSize="10" HorizontalAlignment="Center"/>
+
+                        <TextBlock Text="Start Level (Gallons):" FontWeight="Bold" Margin="0,15,0,5"/>
+                        <TextBox x:Name="StartLevelTextBox" 
+                                 Text="800" 
+                                 TextAlignment="Center"
+                                 PreviewTextInput="NumberValidationTextBox"/>
+                        <TextBlock Text="Range: 0 - 2500" Foreground="Gray" FontSize="10" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Splitting Configuration -->
+                <GroupBox Grid.Row="1" Header="Splitting Configuration" Margin="5">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Splitting Type A:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <RadioButton Content="No Splitting" IsChecked="True" GroupName="SplitA"/>
+                        <RadioButton Content="Split with Storage Tank 2" GroupName="SplitA"/>
+                        <RadioButton Content="Split with LOW/MID D/B TANK" GroupName="SplitA"/>
+                        <RadioButton Content="Split with Storage Tank 4" GroupName="SplitA"/>
+
+                        <TextBlock Text="Splitting Type B:" FontWeight="Bold" Margin="0,15,0,5"/>
+                        <RadioButton Content="No Splitting" IsChecked="True" GroupName="SplitB"/>
+                        <RadioButton Content="Split with Storage Tank 2" GroupName="SplitB"/>
+                        <RadioButton Content="Split with LOW/MID D/B TANK" GroupName="SplitB"/>
+                        <RadioButton Content="Split with Storage Tank 4" GroupName="SplitB"/>
+
+                        <TextBlock Text="Batch Type:" FontWeight="Bold" Margin="0,15,0,5"/>
+                        <RadioButton Content="No Batching" IsChecked="True" GroupName="BatchType"/>
+                        <RadioButton Content="Single Batch" GroupName="BatchType"/>
+                        <RadioButton Content="Continuous Batching" GroupName="BatchType"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- System Status -->
+                <GroupBox Grid.Row="2" Header="System Status" Margin="5">
+                    <StackPanel Margin="10">
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <Ellipse Style="{StaticResource StatusIndicator}" Fill="#2ECC71" Margin="0,0,8,0"/>
+                            <TextBlock Text="PLC Communication: ONLINE" Foreground="#2ECC71"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <Ellipse Style="{StaticResource StatusIndicator}" Fill="#2ECC71" Margin="0,0,8,0"/>
+                            <TextBlock Text="Database: CONNECTED" Foreground="#2ECC71"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <Ellipse Style="{StaticResource StatusIndicator}" Fill="#2ECC71" Margin="0,0,8,0"/>
+                            <TextBlock Text="Network: STABLE" Foreground="#2ECC71"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <Ellipse Style="{StaticResource StatusIndicator}" Fill="#2ECC71" Margin="0,0,8,0"/>
+                            <TextBlock Text="Security: ACTIVE" Foreground="#2ECC71"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
+
+        <!-- Footer - Action Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="Save Configuration" 
+                    Style="{StaticResource ModernButton}" 
+                    Background="#27AE60"
+                    Margin="0,0,10,0"
+                    Click="SaveConfiguration_Click"/>
+            <Button Content="Load Configuration" 
+                    Style="{StaticResource ModernButton}" 
+                    Background="#8E44AD"
+                    Margin="0,0,10,0"
+                    Click="LoadConfiguration_Click"/>
+            <Button Content="Export Report" 
+                    Style="{StaticResource ModernButton}" 
+                    Background="#E67E22"
+                    Margin="0,0,10,0"
+                    Click="ExportReport_Click"/>
+            <Button Content="Close" 
+                    Style="{StaticResource ModernButton}" 
+                    Background="#95A5A6"
+                    Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

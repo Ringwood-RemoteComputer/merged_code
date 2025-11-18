@@ -1,0 +1,663 @@
+<UserControl x:Class="Ring.Views.MainScreen.StorageTankGroup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ring.Controls">
+    
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Main content area -->
+        <Grid Grid.Row="0" Margin="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            
+            <!-- Left Column - Storage Tank 1 -->
+            <Border Grid.Column="0" 
+                    BorderThickness="1" 
+                    BorderBrush="#E0E0E0" 
+                    CornerRadius="8" 
+                    Margin="0,0,12,0"
+                    Background="White"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel Margin="16">
+                    <!-- Tank 1 Header -->
+                    <TextBlock Text="Storage Tank 1" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                            HorizontalAlignment="Center" 
+                               Margin="0,0,0,16" 
+                               Foreground="#0078D4" 
+                               LineHeight="20" />
+                    
+                    <!-- Tank 1 Visualization -->
+                    <Border Height="300" 
+                            BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6"
+                            Background="#F8F9FA"
+                            Margin="0,0,0,12">
+                        <!-- Storage Tank Visualization Control -->
+                        <controls:TankLevelControl 
+                            FillPercentage="{Binding FillPercentage1}"
+                            Width="150"
+                            Height="250"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Border>
+                    
+                    <!-- Tank 1 Data - Consolidated -->
+                    <TextBlock Text="Tank Data" 
+                               FontWeight="SemiBold" 
+                               FontSize="12" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,8" 
+                               Foreground="#1E1E1E" 
+                               LineHeight="16" />
+                    
+                    <!-- Data and Tank Level Grid -->
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Left Column - Data Items -->
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                        <!-- Fill Level -->
+                            <Border BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                Background="White"
+                                CornerRadius="3">
+                            <StackPanel>
+                                <TextBlock Text="Fill Level" 
+                                           FontSize="9" 
+                                           Foreground="#666666" 
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding FillPercentage1, StringFormat={}{0:F0}%}" 
+                                           FontSize="11" 
+                                           FontWeight="SemiBold"
+                                           Foreground="#1E1E1E" 
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Formula -->
+                            <Border BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                Background="White"
+                                CornerRadius="3">
+                            <StackPanel>
+                                <TextBlock Text="Formula" 
+                                           FontSize="9" 
+                                           Foreground="#666666" 
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding Formula1}" 
+                                           FontSize="11" 
+                                           FontWeight="SemiBold"
+                                           Foreground="#1E1E1E" 
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- Temperature -->
+                            <Border BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                Background="White"
+                                CornerRadius="3">
+                            <StackPanel>
+                                <TextBlock Text="Temp (°F)" 
+                                           FontSize="9" 
+                                           Foreground="#666666" 
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="{Binding TemperatureDisplay1}" 
+                                           FontSize="11" 
+                                           FontWeight="SemiBold"
+                                           Foreground="#1E1E1E" 
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        
+                            <!-- Tank Volume -->
+                            <Border BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                Padding="6,4" 
+                                    Margin="0,0,0,0"
+                                Background="White"
+                                CornerRadius="3">
+                            <StackPanel>
+                                    <TextBlock Text="Tank Volume (gal)" 
+                                           FontSize="9" 
+                                           Foreground="#666666" 
+                                           HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding VolumeDisplay1}" 
+                                           FontSize="11" 
+                                           FontWeight="SemiBold"
+                                           Foreground="#1E1E1E" 
+                                           HorizontalAlignment="Center" />
+                            </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- Right Column - Tank Level Visualization -->
+                        <Border Grid.Column="1" 
+                                BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                CornerRadius="6"
+                                Background="#F8F9FA"
+                                Margin="8,0,0,0"
+                                Padding="4">
+                            <controls:TankLevelControl 
+                                FillPercentage="{Binding FillPercentage1}"
+                                Width="80"
+                                Height="120"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Component Details Button -->
+                    <Button x:Name="ShowComponentsButton1"
+                            Content="Sensors, Valves, and Pumps Table" 
+                            Width="240"
+                            Height="40"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Background="#0078D4"
+                            Foreground="White"
+                            BorderBrush="#005A9E"
+                            BorderThickness="1"
+                            Click="ShowComponentsButton1_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="4"
+                                                    Padding="8">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#005A9E"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#004578"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                </StackPanel>
+            </Border>
+
+            <!-- Middle Column - Storage Tank 2 -->
+            <Border Grid.Column="1" 
+                    BorderThickness="1" 
+                    BorderBrush="#E0E0E0" 
+                    CornerRadius="8" 
+                    Margin="6,0"
+                    Background="White"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel Margin="16">
+                    <!-- Tank 2 Header -->
+                    <TextBlock Text="Storage Tank 2" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                            HorizontalAlignment="Center" 
+                               Margin="0,0,0,16" 
+                               Foreground="#0078D4" 
+                               LineHeight="20" />
+                    
+                    <!-- Tank 2 Visualization -->
+                    <Border Height="300" 
+                            BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6"
+                            Background="#F8F9FA"
+                            Margin="0,0,0,12">
+                        <!-- Storage Tank Visualization Control -->
+                        <controls:TankLevelControl 
+                            FillPercentage="{Binding FillPercentage2}"
+                            Width="150"
+                            Height="250"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Border>
+                    
+                    <!-- Tank 2 Data - Consolidated -->
+                    <TextBlock Text="Tank Data" 
+                               FontWeight="SemiBold" 
+                               FontSize="12" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,8" 
+                               Foreground="#1E1E1E" 
+                               LineHeight="16" />
+                    
+                    <!-- Data and Tank Level Grid -->
+                    <Grid Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Left Column - Data Items -->
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <!-- Fill Level -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                    Background="White"
+                                    CornerRadius="3">
+                                <StackPanel>
+                                    <TextBlock Text="Fill Level" 
+                                               FontSize="9" 
+                                               Foreground="#666666" 
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding FillPercentage2, StringFormat={}{0:F0}%}" 
+                                               FontSize="11" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#1E1E1E" 
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Formula -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                    Background="White"
+                                    CornerRadius="3">
+                                <StackPanel>
+                                    <TextBlock Text="Formula" 
+                                               FontSize="9" 
+                                               Foreground="#666666" 
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding Formula2}" 
+                                               FontSize="11" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#1E1E1E" 
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Temperature -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="6,4" 
+                                    Margin="0,0,0,4"
+                                    Background="White"
+                                    CornerRadius="3">
+                                <StackPanel>
+                                    <TextBlock Text="Temp (°F)" 
+                                               FontSize="9" 
+                                               Foreground="#666666" 
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding TemperatureDisplay2}" 
+                                               FontSize="11" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#1E1E1E" 
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Tank Volume -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="6,4" 
+                                    Margin="0,0,0,0"
+                                    Background="White"
+                                    CornerRadius="3">
+                                <StackPanel>
+                                    <TextBlock Text="Tank Volume (gal)" 
+                                               FontSize="9" 
+                                               Foreground="#666666" 
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="{Binding VolumeDisplay2}" 
+                                               FontSize="11" 
+                                               FontWeight="SemiBold"
+                                               Foreground="#1E1E1E" 
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- Right Column - Tank Level Visualization -->
+                        <Border Grid.Column="1" 
+                                BorderThickness="1" 
+                                BorderBrush="#E0E0E0" 
+                                CornerRadius="6"
+                                Background="#F8F9FA"
+                                Margin="8,0,0,0"
+                                Padding="4">
+                            <controls:TankLevelControl 
+                                FillPercentage="{Binding FillPercentage2}"
+                                Width="80"
+                                Height="120"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                    
+                    <!-- Component Details Button -->
+                    <Button x:Name="ShowComponentsButton2"
+                            Content="Sensors, Valves, and Pumps Table" 
+                            Width="240"
+                            Height="40"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Background="#0078D4"
+                            Foreground="White"
+                            BorderBrush="#005A9E"
+                            BorderThickness="1"
+                            Click="ShowComponentsButton2_Click"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                    CornerRadius="4"
+                                                    Padding="8">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#005A9E"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#004578"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    
+                </StackPanel>
+            </Border>
+
+            <!-- Right Column - System Status & TVC -->
+            <Border Grid.Column="2" 
+                    BorderThickness="1" 
+                    BorderBrush="#E0E0E0" 
+                    CornerRadius="8" 
+                    Margin="12,0,0,0"
+                    Background="White"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel Margin="16">
+                    <!-- System Status Header -->
+                    <TextBlock Text="TVC Status" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,16" 
+                               Foreground="#0078D4" 
+                               LineHeight="20" />
+                    
+                    <!-- TVC Status Section -->
+                    <Border BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6" 
+                            Margin="0,0,0,16"
+                            Background="White">
+            <StackPanel Margin="12">
+
+                            <!-- Temperature Status -->
+                            <StackPanel Margin="0,0,0,8">
+                                <TextBlock Text="Temperature:" 
+                                           Margin="0,0,0,8"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" 
+                            BorderThickness="1" 
+                                            BorderBrush="#E0E0E0" 
+                                            Padding="8,6" 
+                                            Margin="0,0,4,0"
+                                            Background="White"
+                                            CornerRadius="4">
+                        <StackPanel>
+                                            <TextBlock Text="Actual" 
+                                                       FontSize="10" 
+                                                       Foreground="#666666" 
+                                                       HorizontalAlignment="Center" />
+                                            <TextBlock Text="{Binding OverallActualTemperature, StringFormat={}{0:F1}°F}" 
+                                       FontSize="12" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#1E1E1E" 
+                                                       HorizontalAlignment="Center" />
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="1" 
+                                            BorderThickness="1" 
+                                            BorderBrush="#E0E0E0" 
+                                            Padding="8,6" 
+                                            Margin="4,0,0,0"
+                                            Background="White"
+                                            CornerRadius="4">
+                                        <StackPanel>
+                                            <TextBlock Text="Preset" 
+                                       FontSize="10" 
+                                                       Foreground="#666666" 
+                                                       HorizontalAlignment="Center" />
+                                            <TextBlock Text="{Binding OverallPresetTemperature, StringFormat={}{0:F1}°F}" 
+                                                       FontSize="12" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#1E1E1E" 
+                                       HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                                </Grid>
+                            </StackPanel>
+                    
+                    <!-- Heater Status -->
+                            <StackPanel Margin="0,0,0,8">
+                                <TextBlock Text="Heaters:" 
+                                           Margin="0,0,0,8"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                                <Border BorderThickness="1" 
+                                        BorderBrush="#E0E0E0" 
+                                        Padding="12,8" 
+                                        Background="White"
+                                        CornerRadius="4">
+                            <TextBlock Text="{Binding HeatersStatus}" 
+                                               HorizontalAlignment="Left"
+                                               Foreground="#1E1E1E" 
+                                               FontSize="14"
+                                               LineHeight="18" />
+                                </Border>
+                            </StackPanel>
+                            
+                            <!-- Level Status -->
+                            <StackPanel Margin="0,0,0,0">
+                                <TextBlock Text="Level Status:" 
+                                           Margin="0,0,0,8"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                                <Border BorderThickness="1" 
+                                        BorderBrush="#E0E0E0" 
+                                        Padding="12,8" 
+                                        Background="White"
+                                        CornerRadius="4">
+                                    <TextBlock Text="{Binding OverallLevelStatus}" 
+                                               HorizontalAlignment="Left"
+                                               Foreground="#1E1E1E" 
+                                       FontSize="14" 
+                                               LineHeight="18" />
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Additional system status will go here -->
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+        <!-- Footer Control Bar -->
+        <Border Grid.Row="1" 
+                BorderThickness="0,1,0,0" 
+                BorderBrush="#E0E0E0" 
+                Background="White"
+                Padding="24,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Left side - System Status -->
+                <StackPanel Grid.Column="0" 
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Center">
+                    <Ellipse Width="12" 
+                             Height="12" 
+                             Fill="{Binding PlcStatusBrush}"
+                             VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding PlcStatusText}" 
+                               Margin="8,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="#1E1E1E"
+                               FontSize="14"
+                               LineHeight="18" />
+                </StackPanel>
+                
+                <!-- Middle - Empty space for storage tanks -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center">
+                    <!-- No process buttons needed for storage tanks -->
+            </StackPanel>
+                
+                <!-- Right side - Close button -->
+                <Button Grid.Column="2" 
+                        Content="CLOSE" 
+                        Width="120"
+                        Height="40"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Click="Close_Click" />
+            </Grid>
+        </Border>
+        
+        <!-- WPF Popup for Storage Tank 1 Components -->
+        <Popup x:Name="ComponentPopup1"
+               PlacementTarget="{Binding ElementName=ShowComponentsButton1}"
+               Placement="Right"
+               StaysOpen="False"
+               AllowsTransparency="True">
+            <Border Background="White"
+                    BorderBrush="#0078D4"
+                    BorderThickness="2"
+                    CornerRadius="8"
+                    Padding="20"
+                    Width="480"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel>
+                    <!-- Header -->
+                    <TextBlock Text="Storage Tank 1 - Sensors, Valves, and Pumps" 
+                               FontSize="15" 
+                               FontWeight="SemiBold"
+                               Foreground="#0078D4"
+                               Margin="0,0,0,16" />
+                    
+                    <!-- Component Grid (2 columns x 3 rows) -->
+                    <Grid x:Name="ComponentGrid1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Components will be dynamically added in code-behind -->
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+        
+        <!-- WPF Popup for Storage Tank 2 Components -->
+        <Popup x:Name="ComponentPopup2"
+               PlacementTarget="{Binding ElementName=ShowComponentsButton2}"
+               Placement="Right"
+               StaysOpen="False"
+               AllowsTransparency="True">
+            <Border Background="White"
+                    BorderBrush="#0078D4"
+                    BorderThickness="2"
+                    CornerRadius="8"
+                    Padding="20"
+                    Width="480"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel>
+                    <!-- Header -->
+                    <TextBlock Text="Storage Tank 2 - Sensors, Valves, and Pumps" 
+                               FontSize="15" 
+                               FontWeight="SemiBold"
+                               Foreground="#0078D4"
+                               Margin="0,0,0,16" />
+                    
+                    <!-- Component Grid (2 columns x 3 rows) -->
+                    <Grid x:Name="ComponentGrid2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Components will be dynamically added in code-behind -->
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

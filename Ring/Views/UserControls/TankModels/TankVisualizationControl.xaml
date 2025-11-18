@@ -1,0 +1,52 @@
+<UserControl x:Class="Ring.Views.UserControls.TankModels.TankVisualizationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Ring.Controls">
+   
+   <Canvas Width="220" Height="300" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+       <!-- Tank (center) - Base layer -->
+       <Image x:Name="TankImage" 
+              Source="{Binding TankImage}" 
+              Width="160" 
+              Height="240"
+              Canvas.Left="30" 
+              Canvas.Top="50"
+              Stretch="Uniform"
+              RenderOptions.BitmapScalingMode="HighQuality" />
+       
+       <!-- Motor (overlaid on top of tank) - Top layer -->
+       <Image x:Name="MotorImage" 
+              Source="{Binding MotorImage}" 
+              Width="50" 
+              Height="50" 
+              Canvas.Left="85" 
+              Canvas.Top="58" 
+              Stretch="Uniform"
+              RenderOptions.BitmapScalingMode="HighQuality"
+              Panel.ZIndex="10"
+              ToolTip="{Binding MotorTooltip}" />
+       
+       <!-- Tank Level Wireframe Control - Bottom left overlay -->
+       <controls:TankLevelControl
+              FillPercentage="{Binding FormulaProgress}"
+              Width="80"
+              Height="100"
+              Canvas.Left="-16"
+              Canvas.Top="200"
+              Panel.ZIndex="5" />
+       
+       <!-- Borax/Caustic Tank Button - Overlay on canvas -->
+       <Button x:Name="BoraxCausticTankButton"
+               Content="Borax/Caustic Tank" 
+               Width="100"
+               Height="24"
+               Canvas.Left="60"
+               Canvas.Top="10"
+               FontSize="10"
+               Padding="4,2"
+               Panel.ZIndex="15"
+               Click="BoraxCausticTankButton_Click"
+               Style="{StaticResource NavButtonStyle}" />
+   </Canvas>
+</UserControl>
+

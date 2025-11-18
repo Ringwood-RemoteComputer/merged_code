@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26152AAE-947A-476F-A850-A519303D1289}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Ring</RootNamespace>
+    <AssemblyName>Ring</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>8.0</LangVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Dynamitey, Version=2.0.10.189, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dynamitey.2.0.10.189\lib\net40\Dynamitey.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=8.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.8.1.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=8.1.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.8.1.0\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedWPFConverters, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExtendedWPFConverters.2.0.4\lib\net471\ExtendedWPFConverters.dll</HintPath>
+    </Reference>
+    <Reference Include="ExtendedWPFVisualTreeHelper, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExtendedWPFVisualTreeHelper.2.0.3\lib\net451\ExtendedWPFVisualTreeHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentUI.NET, Version=1.0.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentUI.NET.1.0.51\lib\net472\FluentUI.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="libplctag, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libplctag.1.5.2\lib\netstandard2.0\libplctag.dll</HintPath>
+    </Reference>
+    <Reference Include="libplctag.NativeImport, Version=1.0.41.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\libplctag.NativeImport.1.0.41\lib\netstandard2.0\libplctag.NativeImport.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Core.0.9.8\lib\net40\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.2.4.11\lib\net47\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.0.6.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.6\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.5.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.5.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf.AddOns, Version=0.0.63.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignInXamlToolkitAddOns.0.0.63\lib\net471\MaterialDesignThemes.Wpf.AddOns.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=2.0.2.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.2.0.2\lib\net471\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.9.0.0\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive, Version=6.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.6.0.2\lib\net472\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Xml, Version=8.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Xml.8.0.2\lib\net462\System.Security.Cryptography.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPF.UI, Version=3.4.2.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPF.UI.3.4.2.7\lib\net451\WPF.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.5.0.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="Views\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Database\AlarmRecord.cs" />
+    <Compile Include="Database\AlarmDatabaseHelper.cs" />
+    <Compile Include="Database\PlcDatabaseHelper.cs" />
+    <Compile Include="Images\ImageLoader.cs" />
+    <Compile Include="Images\ImageStateManager.cs" />
+    <Compile Include="Models\Alarm.cs" />
+    <Compile Include="Models\Batch.cs" />
+    <Compile Include="Models\BatchQuery.cs" />
+    <Compile Include="Models\BatchQueryFilter.cs" />
+    <Compile Include="Models\Tank.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Services\Alarms\AlarmMappingService.cs" />
+    <Compile Include="Services\Alarms\AlarmMonitorService.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\BatchQueryService.cs" />
+    <Compile Include="Services\BatchQueryExtensions.cs" />
+    <Compile Include="Services\ExportService.cs" />
+    <Compile Include="Services\ILogger.cs" />
+    <Compile Include="Services\Logger.cs" />
+    <Compile Include="Services\ValidationService.cs" />
+    <Compile Include="Services\DashboardService.cs" />
+    <Compile Include="Converters\PercentageToHeightConverter.cs" />
+    <Compile Include="Converters\ProgressBarValueConverter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Validation\DateRangeValidationAttribute.cs" />
+    <Compile Include="Validation\FormulaNumberValidationAttribute.cs" />
+    <Compile Include="Validation\PositiveNumberValidationAttribute.cs" />
+    <Compile Include="Validation\StatusValidationAttribute.cs" />
+    <Compile Include="Validation\TankNumberValidationAttribute.cs" />
+    <Compile Include="Validation\TemperatureValidationAttribute.cs" />
+    <Compile Include="Services\PLC\MakeReadyTankPlcService.cs" />
+    <Compile Include="Services\PLC\PlcAlarmService.cs" />
+    <Compile Include="Services\PLC\PlcDataType.cs" />
+    <Compile Include="Services\PLC\PlcTag.cs" />
+    <Compile Include="Services\PLC\PlcTagReader.cs" />
+    <Compile Include="Services\PLC\PlcRealBlockReader.cs" />
+    <Compile Include="Services\PLC\MakeReadyTankPlcData.cs" />
+    <Compile Include="Services\PLC\PlcTagWriter.cs" />
+    <Compile Include="ViewModels\AlarmViewModel.cs" />
+    <Compile Include="ViewModels\BatchMonitoringViewModel.cs" />
+    <Compile Include="ViewModels\BatchQueryViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\StorageScreenViewModel.cs" />
+    <Compile Include="ViewModels\DashboardGraphViewModel.cs" />
+    <Compile Include="ViewModels\MainScreen\MakeReadyTankViewModel.cs" />
+    <Compile Include="ViewModels\MainScreen\StorageTankGroupViewModel.cs" />
+    <Compile Include="ViewModels\MainScreen\UseTankGroupViewModel.cs" />
+    <Compile Include="Views\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\BatchStart\Lowmidtank.xaml.cs">
+      <DependentUpon>Lowmidtank.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BatchStart\StorageTank1.xaml.cs">
+      <DependentUpon>StorageTank1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BatchStart\StorageTank2.xaml.cs">
+      <DependentUpon>StorageTank2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BatchStart\StorageTank4.xaml.cs">
+      <DependentUpon>StorageTank4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\BatchQueryView.xaml.cs">
+      <DependentUpon>BatchQueryView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\MakeReadyTank.xaml.cs">
+      <DependentUpon>MakeReadyTank.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PasswordDialog.xaml.cs">
+      <DependentUpon>PasswordDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StorageGroupWindow.xaml.cs">
+      <DependentUpon>StorageGroupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AlarmPopup.xaml.cs">
+      <DependentUpon>AlarmPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Process\Alarm.xaml.cs">
+      <DependentUpon>Alarm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\AlarmHistory.xaml.cs">
+      <DependentUpon>AlarmHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\BatchHistoryUsageReport.xaml.cs">
+      <DependentUpon>BatchHistoryUsageReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\BatchHistoryReport.xaml.cs">
+      <DependentUpon>BatchHistoryReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\BatchReportWindow.xaml.cs">
+      <DependentUpon>BatchReportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\FormulaReport.xaml.cs">
+      <DependentUpon>FormulaReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\InventoryReport.xaml.cs">
+      <DependentUpon>InventoryReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ShiftConsumption.xaml.cs">
+      <DependentUpon>ShiftConsumption.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\UsageReport.xaml.cs">
+      <DependentUpon>UsageReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shifts\Shift1.xaml.cs">
+      <DependentUpon>Shift1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shifts\Shift2.xaml.cs">
+      <DependentUpon>Shift2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shifts\Shift3.xaml.cs">
+      <DependentUpon>Shift3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shifts\ShiftControl.xaml.cs">
+      <DependentUpon>ShiftControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TVCcontrol\TVClowmidtank.xaml.cs">
+      <DependentUpon>TVClowmidtank.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TVCcontrol\TVCStorageTank1Window.cs">
+      <DependentUpon>TVCStorageTank1Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TVCcontrol\TVCStorageTank2Window.xaml.cs">
+      <DependentUpon>TVCStorageTank2Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TVCcontrol\TVCStorageTank4Window.xaml.cs">
+      <DependentUpon>TVCStorageTank4Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TankLevelControl.xaml.cs">
+      <DependentUpon>TankLevelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dashboard\DashboardView.xaml.cs">
+      <DependentUpon>DashboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainScreen\StorageTankGroup.xaml.cs">
+      <DependentUpon>StorageTankGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainScreen\UseTankGroup.xaml.cs">
+      <DependentUpon>UseTankGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\BatchesPerShiftChart.xaml.cs">
+      <DependentUpon>BatchesPerShiftChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\StarchUsageChart.xaml.cs">
+      <DependentUpon>StarchUsageChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserControls\TankModels\TankVisualizationControl.xaml.cs">
+      <DependentUpon>TankVisualizationControl.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\BatchStart\Lowmidtank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BatchStart\StorageTank1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BatchStart\StorageTank2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BatchStart\StorageTank4.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MakeReadyTank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PasswordDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StorageGroupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlarmPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Process\Alarm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\AlarmHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\BatchHistoryUsageReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\BatchHistoryReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\BatchReportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\FormulaReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\InventoryReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ShiftConsumption.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shifts\Shift1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shifts\Shift2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shifts\Shift3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shifts\ShiftControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TVCcontrol\TVClowmidtank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TVCcontrol\TVCStorageTank1Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TVCcontrol\TVCStorageTank2Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TVCcontrol\TVCStorageTank4Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\UsageReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BatchQueryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TankLevelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Dashboard\DashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainScreen\StorageTankGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainScreen\UseTankGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\BatchesPerShiftChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\StarchUsageChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserControls\TankModels\TankVisualizationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\act01.png" />
+    <Resource Include="Images\act02.png" />
+    <Resource Include="Images\act05.png" />
+    <Resource Include="Images\actgn01.png" />
+    <Resource Include="Images\actgn02.png" />
+    <Resource Include="Images\actgn02left.png" />
+    <Resource Include="Images\actgn02right.png" />
+    <Resource Include="Images\actgn05.png" />
+    <Resource Include="Images\actrd01.png" />
+    <Resource Include="Images\actrd02.png" />
+    <Resource Include="Images\actrd05.png" />
+    <Resource Include="Images\Baghouse.png" />
+    <Resource Include="Images\Baghousegn.png" />
+    <Resource Include="Images\Baghouserd.png" />
+    <Resource Include="Images\BannerRingwood.png" />
+    <Resource Include="Images\fill-green.png" />
+    <Resource Include="Images\LogoCompany.png" />
+    <Resource Include="Images\LogoGeorgiaPacific.png" />
+    <Resource Include="Images\LogoInternationalPaper.png" />
+    <Resource Include="Images\LogoRingwood.png" />
+    <Resource Include="Images\LogoSSCC.png" />
+    <Resource Include="Images\LogoWeyerhaeuser.png" />
+    <Resource Include="Images\Motor01.png" />
+    <Resource Include="Images\Motor03.png" />
+    <Resource Include="Images\Motorgn01.png" />
+    <Resource Include="Images\Motorgn03.png" />
+    <Resource Include="Images\Motorrd01.png" />
+    <Resource Include="Images\Motorrd03.png" />
+    <Resource Include="Images\norcross.png" />
+    <Resource Include="Images\norcrossgn.png" />
+    <Resource Include="Images\norcrossrd.png" />
+    <Resource Include="Images\probe01.png" />
+    <Resource Include="Images\probegn01.png" />
+    <Resource Include="Images\proberd01.png" />
+    <Resource Include="Images\pumpn01.png" />
+    <Resource Include="Images\pumpngn01.png" />
+    <Resource Include="Images\pumpnrd01.png" />
+    <Resource Include="Images\Ringwood Splash Center.png" />
+    <Resource Include="Images\Ringwood Splash Left.png" />
+    <Resource Include="Images\Ringwood Splash Right.png" />
+    <Resource Include="Images\RW-Blue.ico" />
+    <Resource Include="Images\Splash Center.png" />
+    <Resource Include="Images\Splash Left.png" />
+    <Resource Include="Images\Splash Right.png" />
+    <Resource Include="Images\tank.png" />
+    <Resource Include="Images\tvc.png" />
+    <Resource Include="Images\uselegs.png" />
+    <Resource Include="Images\usesquare.png" />
+    <Resource Include="Images\usesquareleg.png" />
+    <Resource Include="Images\usetank.png" />
+    <Resource Include="Images\Valve01.png" />
+    <Resource Include="Images\Valvegn01.png" />
+    <Resource Include="Images\Valverd01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WPF\Microsoft.WPF.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WPF\Microsoft.WPF.targets')" />
+  <!-- Copy SQLite native DLLs to output directory -->
+  <Target Name="CopySQLiteNativeDlls" AfterTargets="Build">
+    <PropertyGroup>
+      <SQLiteNativeDllPath Condition="'$(PlatformTarget)' == 'x64'">..\packages\SQLitePCLRaw.lib.e_sqlite3.3.50.3\runtimes\win-x64\native\e_sqlite3.dll</SQLiteNativeDllPath>
+      <SQLiteNativeDllPath Condition="'$(PlatformTarget)' == 'x86'">..\packages\SQLitePCLRaw.lib.e_sqlite3.3.50.3\runtimes\win-x86\native\e_sqlite3.dll</SQLiteNativeDllPath>
+      <SQLiteNativeDllPath Condition="'$(PlatformTarget)' == ''">..\packages\SQLitePCLRaw.lib.e_sqlite3.3.50.3\runtimes\win-x64\native\e_sqlite3.dll</SQLiteNativeDllPath>
+    </PropertyGroup>
+    <Copy SourceFiles="$(SQLiteNativeDllPath)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(SQLiteNativeDllPath)')" />
+    <Message Text="Copying SQLite native DLL: $(SQLiteNativeDllPath) to $(OutputPath)" Condition="Exists('$(SQLiteNativeDllPath)')" />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
+  <Import Project="..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" />
+</Project>

@@ -1,0 +1,177 @@
+<Window x:Class="Ring.Views.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ring - Loading..." Height="400" Width="600"
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        ResizeMode="NoResize"
+        Topmost="True">
+    
+    <Window.Resources>
+        <!-- Custom Fonts -->
+        <FontFamily x:Key="TitleFont">Segoe UI Light</FontFamily>
+        <FontFamily x:Key="BodyFont">Segoe UI</FontFamily>
+        
+        <!-- Gradients -->
+        <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1a1a1a" Offset="0"/>
+            <GradientStop Color="#0d0d0d" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFD700" Offset="0"/>
+            <GradientStop Color="#FFA500" Offset="1"/>
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="RingGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFD700" Offset="0"/>
+            <GradientStop Color="#FF8C00" Offset="0.5"/>
+            <GradientStop Color="#FFD700" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+    
+    <Border Background="{StaticResource BackgroundGradient}" 
+            CornerRadius="15" 
+            BorderBrush="#333333" 
+            BorderThickness="1">
+        
+        <Grid>
+            <!-- Main Content -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Top Section with App Name -->
+            <StackPanel Grid.Row="0" Margin="30,30,30,20">
+                <TextBlock Text="RING" 
+                           FontFamily="{StaticResource TitleFont}" 
+                           FontSize="36" 
+                           FontWeight="Light"
+                           Foreground="White" 
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="Industrial Control System" 
+                           FontFamily="{StaticResource BodyFont}" 
+                           FontSize="14" 
+                           Foreground="#CCCCCC" 
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+            
+            <!-- Center Section with Logo and Branding -->
+            <Grid Grid.Row="1" Margin="30,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- Left Side - Ringwood Branding -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="RINGWOOD" 
+                               FontFamily="{StaticResource TitleFont}" 
+                               FontSize="24" 
+                               FontWeight="Light"
+                               Foreground="{StaticResource RingGradient}" 
+                               HorizontalAlignment="Center"
+                               RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="-90"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock Text="®" 
+                               FontSize="12" 
+                               Foreground="{StaticResource RingGradient}" 
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+                
+                <!-- Center - Main Logo -->
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <!-- Outer Ring -->
+                    <Ellipse Width="120" Height="120" 
+                             Fill="{StaticResource AccentGradient}" 
+                             Opacity="0.8">
+                        <Ellipse.Effect>
+                            <DropShadowEffect Color="#FFD700" 
+                                            Direction="270" 
+                                            ShadowDepth="10" 
+                                            BlurRadius="20" 
+                                            Opacity="0.6"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                    
+                    <!-- Inner Ring -->
+                    <Ellipse Width="100" Height="100" 
+                             Fill="Black" 
+                             Margin="10"/>
+                    
+                    <!-- Ring Symbol -->
+                    <Path Data="M 30,60 A 20,20 0 1,1 70,60 A 20,20 0 1,1 30,60 Z" 
+                          Fill="{StaticResource AccentGradient}" 
+                          Stroke="{StaticResource AccentGradient}" 
+                          StrokeThickness="3"
+                          Margin="25,25,0,0"/>
+                    
+                    <!-- Center Dot -->
+                    <Ellipse Width="15" Height="15" 
+                             Fill="{StaticResource AccentGradient}" 
+                             Margin="52.5,52.5,0,0"/>
+                </Grid>
+                
+                <!-- Right Side - Version Info -->
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="v2.0" 
+                               FontFamily="{StaticResource BodyFont}" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentGradient}" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Control Suite" 
+                               FontFamily="{StaticResource BodyFont}" 
+                               FontSize="12" 
+                               Foreground="#CCCCCC" 
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+            </Grid>
+            
+            <!-- Bottom Section with Loading and Attribution -->
+            <StackPanel Grid.Row="2" Margin="30,20,30,30">
+                <!-- Loading Message -->
+                <TextBlock x:Name="LoadingText" 
+                           Text="Initializing Application..." 
+                           FontFamily="{StaticResource BodyFont}" 
+                           FontSize="14" 
+                           Foreground="White" 
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,15"/>
+                
+                <!-- Progress Bar -->
+                <ProgressBar x:Name="LoadingProgress" 
+                             Height="4" 
+                             Margin="50,0,50,15"
+                             Background="#333333"
+                             Foreground="{StaticResource AccentGradient}">
+                    <ProgressBar.Effect>
+                        <DropShadowEffect Color="#FFD700" 
+                                        Direction="270" 
+                                        ShadowDepth="2" 
+                                        BlurRadius="5" 
+                                        Opacity="0.8"/>
+                    </ProgressBar.Effect>
+                </ProgressBar>
+                
+                <!-- Powered By -->
+                <TextBlock Text="Powered by Ringwood Technologies™" 
+                           FontFamily="{StaticResource BodyFont}" 
+                           FontSize="11" 
+                           Foreground="#888888" 
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

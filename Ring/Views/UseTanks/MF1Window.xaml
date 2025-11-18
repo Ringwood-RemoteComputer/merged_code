@@ -1,0 +1,159 @@
+﻿<UserControl x:Class="Ring.Views.UseTanks.MF1Window"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F5F5F5" FontFamily="Segoe UI">
+    <Grid>
+        <!-- Centered Container -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="1200">
+            <!-- Main Content -->
+            <StackPanel Margin="24">
+                <!-- Title -->
+                <Border BorderThickness="1" 
+                        BorderBrush="#E0E0E0" 
+                        CornerRadius="6" 
+                        Margin="0,0,0,20"
+                        Background="White">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="MF 1" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="16" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="0,0,0,0" 
+                                   Foreground="#0078D4" 
+                                   LineHeight="20" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Two Card Layout -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Tank Controls Card -->
+                    <Border Grid.Column="0" 
+                            Background="White" 
+                            BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="8" 
+                            Effect="{StaticResource DropShadowEffect}"
+                            Margin="0,0,12,0">
+                        <StackPanel Margin="16">
+                            <!-- Card Header -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    CornerRadius="6" 
+                                    Margin="0,0,0,16"
+                                    Background="White">
+                                <StackPanel Margin="16">
+                                    <TextBlock Text="Tank Controls" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="14" 
+                                               HorizontalAlignment="Center" 
+                                               Margin="0,0,0,0" 
+                                               Foreground="#1E1E1E" 
+                                               LineHeight="18" />
+                                </StackPanel>
+                            </Border>
+                            <!-- Controls -->
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Tank Control" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <ComboBox Width="120" FontSize="14" Padding="8,6">
+                                        <ComboBoxItem Content="On" IsSelected="True" />
+                                        <ComboBoxItem Content="Off" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Additive 1" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <ComboBox Width="120" FontSize="14" Padding="8,6">
+                                        <ComboBoxItem Content="None" IsSelected="True" />
+                                        <ComboBoxItem Content="WRA" />
+                                        <ComboBoxItem Content="WPA" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Additive 2" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <ComboBox Width="120" FontSize="14" Padding="8,6">
+                                        <ComboBoxItem Content="None" IsSelected="True" />
+                                        <ComboBoxItem Content="WRA" />
+                                        <ComboBoxItem Content="WPA" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Additive 3" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <ComboBox Width="120" FontSize="14" Padding="8,6">
+                                        <ComboBoxItem Content="None" IsSelected="True" />
+                                        <ComboBoxItem Content="WRA" />
+                                        <ComboBoxItem Content="WPA" />
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tank Agitator Controls Card -->
+                    <Border Grid.Column="1" 
+                            Background="White" 
+                            BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="8" 
+                            Effect="{StaticResource DropShadowEffect}"
+                            Margin="12,0,0,0">
+                        <StackPanel Margin="16">
+                            <!-- Card Header -->
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    CornerRadius="6" 
+                                    Margin="0,0,0,16"
+                                    Background="White">
+                                <StackPanel Margin="16">
+                                    <TextBlock Text="Tank Agitator Controls" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="14" 
+                                               HorizontalAlignment="Center" 
+                                               Margin="0,0,0,0" 
+                                               Foreground="#1E1E1E" 
+                                               LineHeight="18" />
+                                </StackPanel>
+                            </Border>
+                            <!-- Controls -->
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Agitator Mode" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <ComboBox Width="120" FontSize="14" Padding="8,6">
+                                        <ComboBoxItem Content="Automatic" IsSelected="True" />
+                                        <ComboBoxItem Content="Manual" />
+                                        <ComboBoxItem Content="Off" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Agitator Preset Timer On" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <TextBox Width="80" FontSize="14" Padding="8,6" Text="10" />
+                                    <TextBlock Text="Minutes" VerticalAlignment="Center" Margin="8,0,0,0" FontSize="12" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8">
+                                    <TextBlock Text="Agitator Preset Timer Off" VerticalAlignment="Center" Width="140" FontSize="12" />
+                                    <TextBox Width="80" FontSize="14" Padding="8,6" Text="5" />
+                                    <TextBlock Text="Minutes" VerticalAlignment="Center" Margin="8,0,0,0" FontSize="12" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer with Close Button -->
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+            <Button Name="CloseButton" 
+                    Content="CLOSE" 
+                    Width="120"
+                    Height="40"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource CloseButtonStyle}"
+                    Click="Close_Click" />
+        </StackPanel>
+    </Grid>
+</UserControl>

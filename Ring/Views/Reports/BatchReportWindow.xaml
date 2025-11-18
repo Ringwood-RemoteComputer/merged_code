@@ -1,0 +1,55 @@
+﻿<Window x:Class="Ring.BatchReportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Batch Report Query Form" Height="600" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Background="#B0C4DE">
+        <!-- Main Grid -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Batch Report Table -->
+        <DataGrid Grid.Column="0" Grid.Row="0" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Batch ID" Width="*" />
+                <DataGridTextColumn Header="Formula Name" Width="*" />
+                <DataGridTextColumn Header="Batch Start Time" Width="*" />
+                <DataGridTextColumn Header="Batch Start Date" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Right Panel -->
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="10">
+            <!-- Visible Data Range -->
+            <GroupBox Header="Visible Data Range" Margin="0,0,0,10">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Start Date" Margin="5,0" />
+                    <DatePicker Width="150" />
+                    <TextBlock Text="End Date" Margin="5,10,0,0" />
+                    <DatePicker Width="150" />
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Single Selected Batch -->
+            <GroupBox Header="Single Selected Batch" Margin="0,0,0,10">
+                <StackPanel Margin="10">
+                    <Button Content="Preview Batch Report" Width="180" Height="30" Margin="0,5" />
+                    <Button Content="Print Batch Report" Width="180" Height="30" Margin="0,5" />
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+        <!-- Bottom Panel -->
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
+            <CheckBox Content="Automatically print Batch Report after each batch" />
+        </StackPanel>
+
+        <!-- Close Button -->
+        <Button Content="Close" Width="100" Height="30" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="10" Click="Close_Click" />
+    </Grid>
+</Window>

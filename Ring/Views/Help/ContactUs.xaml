@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="Ring.Views.Help.ContactUs"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Segoe UI">
+    <Grid Background="#F5F5F5">
+        <!-- Centered Container -->
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="600">
+            <!-- Main Card -->
+            <Border Background="White" 
+                    BorderThickness="1" 
+                    BorderBrush="#E0E0E0" 
+                    CornerRadius="8" 
+                    Effect="{StaticResource DropShadowEffect}"
+                    Margin="24">
+                <StackPanel Margin="24">
+                    <!-- Header Section -->
+                    <Border BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6" 
+                            Margin="0,0,0,20"
+                            Background="White">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="Contact Us" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="16" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="0,0,0,0" 
+                                       Foreground="#0078D4" 
+                                       LineHeight="20" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Contact Information -->
+                    <!-- Phone Number -->
+                    <Border BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6" 
+                            Margin="0,0,0,16"
+                            Background="White">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="Customer Service Phone Number:" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="0,0,0,16" 
+                                       Foreground="#1E1E1E" 
+                                       LineHeight="18" />
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="12,8" 
+                                    Background="White"
+                                    CornerRadius="4">
+                                <TextBlock Text="(800) 624-3677" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Email Addresses -->
+                    <!-- Email 1 -->
+                    <Border BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6" 
+                            Margin="0,0,0,16"
+                            Background="White">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="Customer Service Email:" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="0,0,0,16" 
+                                       Foreground="#1E1E1E" 
+                                       LineHeight="18" />
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="12,8" 
+                                    Background="White"
+                                    CornerRadius="4">
+                                <TextBlock Text="service@ringwoodstarchmix.com" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Email 2 -->
+                    <Border BorderThickness="1" 
+                            BorderBrush="#E0E0E0" 
+                            CornerRadius="6" 
+                            Margin="0,0,0,0"
+                            Background="White">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="Customer Orders Email:" 
+                                       FontWeight="SemiBold" 
+                                       FontSize="14" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="0,0,0,16" 
+                                       Foreground="#1E1E1E" 
+                                       LineHeight="18" />
+                            <Border BorderThickness="1" 
+                                    BorderBrush="#E0E0E0" 
+                                    Padding="12,8" 
+                                    Background="White"
+                                    CornerRadius="4">
+                                <TextBlock Text="orders@ringwoodstarchmix.com" 
+                                           HorizontalAlignment="Center"
+                                           Foreground="#1E1E1E" 
+                                           FontSize="14"
+                                           LineHeight="18" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

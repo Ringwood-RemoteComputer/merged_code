@@ -1,0 +1,411 @@
+<UserControl x:Class="Ring.Views.CausticSystemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="900" Height="520">
+  <!-- === Enhanced Industrial Theme / palette === -->
+  <UserControl.Resources>
+    <!-- Steel Colors -->
+    <SolidColorBrush x:Key="Steel" Color="#FFC0C0C0"/>
+    <SolidColorBrush x:Key="SteelDark" Color="#FF8E8E8E"/>
+    <SolidColorBrush x:Key="SteelLight" Color="#FFE8E8E8"/>
+    <SolidColorBrush x:Key="SteelShadow" Color="#FF6B6B6B"/>
+    
+    <!-- Safety Colors -->
+    <SolidColorBrush x:Key="DangerRed" Color="#FFFF0000"/>
+    <SolidColorBrush x:Key="WarnYellow" Color="#FFFFD700"/>
+    <SolidColorBrush x:Key="SafetyYellow" Color="#FFFFF000"/>
+    <SolidColorBrush x:Key="RailingYellow" Color="#FFFFE000"/>
+    <SolidColorBrush x:Key="SafetyGreen" Color="#FF00FF00"/>
+    
+    <!-- Industrial Colors -->
+    <SolidColorBrush x:Key="OffWhite" Color="#FFF5F5F5"/>
+    <SolidColorBrush x:Key="ConcreteGray" Color="#FFA0A0A0"/>
+    <SolidColorBrush x:Key="PipeGray" Color="#FF808080"/>
+    <SolidColorBrush x:Key="Ink" Color="#FF222222"/>
+    <SolidColorBrush x:Key="InkMuted" Color="#FF555555"/>
+    
+    <!-- Enhanced Gradients -->
+    <LinearGradientBrush x:Key="SteelGrad" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#FFE5E5E5" Offset="0"/>
+      <GradientStop Color="#FFCFCFCF" Offset="0.5"/>
+      <GradientStop Color="#FFB8B8B8" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="SteelGradDark" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#FFB8B8B8" Offset="0"/>
+      <GradientStop Color="#FF8E8E8E" Offset="0.5"/>
+      <GradientStop Color="#FF6B6B6B" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="ConcreteGrad" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#FFC0C0C0" Offset="0"/>
+      <GradientStop Color="#FFA0A0A0" Offset="0.5"/>
+      <GradientStop Color="#FF808080" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="PipeGrad" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#FFA0A0A0" Offset="0"/>
+      <GradientStop Color="#FF808080" Offset="0.5"/>
+      <GradientStop Color="#FF606060" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Lighting Effects -->
+    <RadialGradientBrush x:Key="Spotlight" Center="0.5,0.3" RadiusX="0.8" RadiusY="0.6">
+      <GradientStop Color="#40FFFFFF" Offset="0"/>
+      <GradientStop Color="#20FFFFFF" Offset="0.5"/>
+      <GradientStop Color="#00FFFFFF" Offset="1"/>
+    </RadialGradientBrush>
+    
+    <LinearGradientBrush x:Key="FloorLight" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#20FFFFFF" Offset="0"/>
+      <GradientStop Color="#00FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+  </UserControl.Resources>
+
+  <!-- === Enhanced Industrial Canvas === -->
+  <Viewbox Stretch="Uniform">
+    <Grid Width="1200" Height="700" Background="#FFF9FAFB">
+      <!-- Enhanced Background wall with texture -->
+      <Rectangle Fill="#FFEDE7DC">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="20" ShadowDepth="5" Opacity="0.1"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      
+      <!-- Industrial ceiling beams with realistic shadows -->
+      <Rectangle Fill="#7A4A2B" Width="20" Height="700" HorizontalAlignment="Left" Margin="120,0,0,0">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="15" ShadowDepth="3" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      <Rectangle Fill="#7A4A2B" Width="20" Height="700" HorizontalAlignment="Left" Margin="680,0,0,0">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="15" ShadowDepth="3" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      
+      <!-- Enhanced diamond-plate floor with realistic pattern -->
+      <Grid VerticalAlignment="Bottom" Height="170">
+        <Rectangle Fill="{StaticResource ConcreteGrad}">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Diamond plate pattern -->
+        <Grid>
+          <!-- Horizontal lines -->
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,20,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,40,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,60,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,80,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,100,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,120,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,140,0,0"/>
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="1" Opacity="0.3" Height="1" VerticalAlignment="Top" Margin="0,160,0,0"/>
+          
+          <!-- Diagonal pattern -->
+          <Rectangle Stroke="#FFFFFFFF" StrokeThickness="0.5" Opacity="0.25" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+              <TransformGroup>
+                <RotateTransform Angle="45"/>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+              </TransformGroup>
+            </Rectangle.RenderTransform>
+          </Rectangle>
+          <Rectangle Stroke="#FF9AA3AF" StrokeThickness="0.5" Opacity="0.25" RenderTransformOrigin="0.5,0.5">
+            <Rectangle.RenderTransform>
+              <TransformGroup>
+                <RotateTransform Angle="-45"/>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+              </TransformGroup>
+            </Rectangle.RenderTransform>
+          </Rectangle>
+        </Grid>
+        
+        <!-- Floor lighting effect -->
+        <Rectangle Fill="{StaticResource FloorLight}" VerticalAlignment="Top" Height="50"/>
+      </Grid>
+
+      <!-- Right-side yellow railing -->
+      <Rectangle Width="22" Fill="{StaticResource RailingYellow}" HorizontalAlignment="Right" Margin="40,180,40,170"/>
+      <Rectangle Height="22" Fill="{StaticResource RailingYellow}" HorizontalAlignment="Right" Margin="40,220,62,0" VerticalAlignment="Top" Width="280"/>
+
+      <!-- ====== Enhanced Equipment group ====== -->
+      <Canvas Margin="80,180,80,170">
+        <!-- Industrial lighting overhead -->
+        <Ellipse Canvas.Left="200" Canvas.Top="20" Width="400" Height="200" Fill="{StaticResource Spotlight}" Opacity="0.3"/>
+        
+        <!-- Left: Realistic industrial caustic cylinder matching real image -->
+        <!-- Main cylinder body - larger and more industrial -->
+        <Rectangle Canvas.Left="20" Canvas.Top="40" Width="200" Height="220" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="3">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="15" ShadowDepth="5" Opacity="0.4"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Cylinder top cap -->
+        <Ellipse Canvas.Left="20" Canvas.Top="20" Width="200" Height="40" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="3">
+          <Ellipse.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="3" Opacity="0.3"/>
+          </Ellipse.Effect>
+        </Ellipse>
+        
+        <!-- Cylinder bottom cap -->
+        <Ellipse Canvas.Left="20" Canvas.Top="240" Width="200" Height="40" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="3">
+          <Ellipse.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="10" ShadowDepth="3" Opacity="0.3"/>
+          </Ellipse.Effect>
+        </Ellipse>
+        
+        <!-- Industrial support legs -->
+        <Rectangle Canvas.Left="30" Canvas.Top="280" Width="12" Height="40" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="3" Opacity="0.4"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <Rectangle Canvas.Left="178" Canvas.Top="280" Width="12" Height="40" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="3" Opacity="0.4"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Realistic DANGER CAUSTIC label matching real image -->
+        <Rectangle Canvas.Left="50" Canvas.Top="80" Width="140" Height="80" Fill="White" Stroke="{StaticResource DangerRed}" StrokeThickness="3" RadiusX="4" RadiusY="4">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="2" Opacity="0.4"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <TextBlock Canvas.Left="60" Canvas.Top="90" Text="DANGER" Foreground="{StaticResource DangerRed}"
+                   FontWeight="Bold" FontSize="24" HorizontalAlignment="Center">
+          <TextBlock.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="3" ShadowDepth="1" Opacity="0.6"/>
+          </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock Canvas.Left="60" Canvas.Top="120" Text="CAUSTIC" Foreground="Black"
+                   FontWeight="Bold" FontSize="28" HorizontalAlignment="Center">
+          <TextBlock.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="3" ShadowDepth="1" Opacity="0.6"/>
+          </TextBlock.Effect>
+        </TextBlock>
+        
+        <!-- Industrial pressure gauge matching real image -->
+        <Ellipse Canvas.Left="180" Canvas.Top="100" Width="40" Height="40" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="3">
+          <Ellipse.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="2" Opacity="0.4"/>
+          </Ellipse.Effect>
+        </Ellipse>
+        <Ellipse Canvas.Left="185" Canvas.Top="105" Width="30" Height="30" Fill="White" Stroke="{StaticResource SteelDark}" StrokeThickness="2"/>
+        <!-- Gauge needle -->
+        <Line Canvas.Left="200" Canvas.Top="120" X1="0" Y1="0" X2="12" Y2="0" Stroke="Black" StrokeThickness="3"/>
+        <!-- Gauge face markings -->
+        <Line Canvas.Left="195" Canvas.Top="115" X1="0" Y1="0" X2="10" Y2="0" Stroke="Black" StrokeThickness="1"/>
+        <Line Canvas.Left="195" Canvas.Top="125" X1="0" Y1="0" X2="10" Y2="0" Stroke="Black" StrokeThickness="1"/>
+        
+        <!-- VENT label matching real image -->
+        <Rectangle Canvas.Left="30" Canvas.Top="30" Width="40" Height="20" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="2" RadiusY="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <TextBlock Canvas.Left="35" Canvas.Top="35" Text="VENT" Foreground="Black" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"/>
+        
+        <!-- PRV (Pressure Relief Valve) label matching real image -->
+        <Rectangle Canvas.Left="30" Canvas.Top="10" Width="40" Height="20" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="2" RadiusY="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <TextBlock Canvas.Left="35" Canvas.Top="15" Text="PRV" Foreground="Black" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"/>
+        
+        <!-- Enhanced piping system with realistic connections -->
+        <Path Stroke="{StaticResource SteelDark}" StrokeThickness="12" StrokeEndLineCap="Round" Data="M 120,216 C 220,250 320,250 420,210">
+          <Path.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Path.Effect>
+        </Path>
+        <Path Stroke="{StaticResource PipeGray}" StrokeThickness="8" Data="M 120,216 C 220,250 320,250 420,210"/>
+        
+        <!-- Pipe connections and flanges -->
+        <Ellipse Canvas.Left="115" Canvas.Top="210" Width="10" Height="10" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        <Ellipse Canvas.Left="415" Canvas.Top="205" Width="10" Height="10" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        
+        <!-- Pipe supports -->
+        <Rectangle Canvas.Left="200" Canvas.Top="240" Width="4" Height="20" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        <Rectangle Canvas.Left="300" Canvas.Top="240" Width="4" Height="20" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+
+        <!-- Center: Enhanced white hopper/bin with realistic industrial details -->
+        <Rectangle Canvas.Left="420" Canvas.Top="40" Width="460" Height="230" Fill="{StaticResource OffWhite}" Stroke="#FFCCCCCC" RadiusX="6" RadiusY="6" StrokeThickness="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="12" ShadowDepth="4" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Hopper top with loading hatch -->
+        <Rectangle Canvas.Left="440" Canvas.Top="20" Width="420" Height="40" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="4" RadiusY="4">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Loading hatch handle -->
+        <Ellipse Canvas.Left="600" Canvas.Top="30" Width="20" Height="20" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        <Rectangle Canvas.Left="610" Canvas.Top="35" Width="10" Height="10" Fill="{StaticResource SteelShadow}"/>
+        
+        <!-- Enhanced frame legs with realistic supports -->
+        <Rectangle Canvas.Left="430" Canvas.Top="270" Width="18" Height="50" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="1">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <Rectangle Canvas.Left="850" Canvas.Top="270" Width="18" Height="50" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="1">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- Cross braces for structural support -->
+        <Rectangle Canvas.Left="430" Canvas.Top="290" Width="420" Height="4" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        
+        <!-- Hopper chute with discharge valve -->
+        <Path Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" Data="M 440,270 L 520,320 L 600,320 L 680,270 Z">
+          <Path.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="2" Opacity="0.3"/>
+          </Path.Effect>
+        </Path>
+        
+        <!-- Chute discharge valve -->
+        <Rectangle Canvas.Left="550" Canvas.Top="310" Width="40" Height="20" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        <Ellipse Canvas.Left="565" Canvas.Top="315" Width="10" Height="10" Fill="{StaticResource SteelShadow}"/>
+        
+        <!-- Safety placards -->
+        <Rectangle Canvas.Left="500" Canvas.Top="160" Width="80" Height="40" Fill="{StaticResource SafetyYellow}" Stroke="Black" StrokeThickness="2" RadiusX="2" RadiusY="2"/>
+        <TextBlock Canvas.Left="510" Canvas.Top="170" Text="⚠️" FontSize="20" HorizontalAlignment="Center"/>
+        <TextBlock Canvas.Left="510" Canvas.Top="185" Text="HAZARD" Foreground="Black" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"/>
+        
+        <Rectangle Canvas.Left="600" Canvas.Top="160" Width="80" Height="40" Fill="{StaticResource SafetyYellow}" Stroke="Black" StrokeThickness="2" RadiusX="2" RadiusY="2"/>
+        <TextBlock Canvas.Left="610" Canvas.Top="170" Text="🔥" FontSize="20" HorizontalAlignment="Center"/>
+        <TextBlock Canvas.Left="610" Canvas.Top="185" Text="FLAMMABLE" Foreground="Black" FontWeight="Bold" FontSize="10" HorizontalAlignment="Center"/>
+
+        <!-- Danger + Caution placards -->
+        <Rectangle Canvas.Left="640" Canvas.Top="60" Width="160" Height="40" Fill="{StaticResource DangerRed}" RadiusX="4" RadiusY="4"/>
+        <TextBlock Canvas.Left="650" Canvas.Top="70" Text="DANGER" Foreground="White" FontWeight="Bold" FontSize="18"/>
+        <TextBlock Canvas.Left="650" Canvas.Top="90" Text="AUTOMATIC EQUIPMENT MAY START" Foreground="White" FontSize="10"/>
+
+        <Rectangle Canvas.Left="640" Canvas.Top="110" Width="160" Height="60" Fill="{StaticResource WarnYellow}" RadiusX="4" RadiusY="4" Stroke="#FFB89900"/>
+        <TextBlock Canvas.Left="650" Canvas.Top="120" Text="CAUTION" Foreground="Black" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Canvas.Left="650" Canvas.Top="140" Text="DO NOT FILL THIS HOPPER DURING A BATCH" Foreground="Black" FontSize="10" TextWrapping="Wrap" Width="140"/>
+
+        <!-- Enhanced E-Stop with realistic industrial styling -->
+        <Rectangle Canvas.Left="880" Canvas.Top="10" Width="56" Height="56" Fill="{StaticResource WarnYellow}" Stroke="#FFB89900" RadiusX="6" RadiusY="6">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="3" Opacity="0.4"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        
+        <!-- E-Stop mushroom button with realistic depth -->
+        <Ellipse Canvas.Left="896" Canvas.Top="22" Width="24" Height="24" Fill="{StaticResource DangerRed}" Stroke="#FFAA0000" StrokeThickness="2">
+          <Ellipse.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.5"/>
+          </Ellipse.Effect>
+        </Ellipse>
+        
+        <!-- E-Stop label -->
+        <TextBlock Canvas.Left="890" Canvas.Top="50" Text="E-STOP" Foreground="Black" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center"/>
+        
+        <!-- Emergency shower station -->
+        <Rectangle Canvas.Left="950" Canvas.Top="20" Width="30" Height="80" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <Ellipse Canvas.Left="955" Canvas.Top="25" Width="20" Height="20" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+        <TextBlock Canvas.Left="960" Canvas.Top="50" Text="🚿" FontSize="12" HorizontalAlignment="Center"/>
+        <TextBlock Canvas.Left="945" Canvas.Top="85" Text="SHOWER" Foreground="Black" FontWeight="Bold" FontSize="6" HorizontalAlignment="Center"/>
+        
+        <!-- Fire extinguisher -->
+        <Rectangle Canvas.Left="990" Canvas.Top="30" Width="20" Height="60" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <Rectangle Canvas.Left="992" Canvas.Top="32" Width="16" Height="40" Fill="{StaticResource DangerRed}" Stroke="#FFAA0000" StrokeThickness="1"/>
+        <TextBlock Canvas.Left="995" Canvas.Top="95" Text="🔥" FontSize="8" HorizontalAlignment="Center"/>
+        <TextBlock Canvas.Left="985" Canvas.Top="105" Text="FIRE" Foreground="Black" FontWeight="Bold" FontSize="6" HorizontalAlignment="Center"/>
+        
+        <!-- Control panel -->
+        <Rectangle Canvas.Left="1020" Canvas.Top="20" Width="60" Height="40" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="4" RadiusY="4">
+          <Rectangle.Effect>
+            <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+          </Rectangle.Effect>
+        </Rectangle>
+        <TextBlock Canvas.Left="1030" Canvas.Top="25" Text="CONTROL" Foreground="Black" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center"/>
+        <TextBlock Canvas.Left="1030" Canvas.Top="35" Text="PANEL" Foreground="Black" FontWeight="Bold" FontSize="8" HorizontalAlignment="Center"/>
+        
+        <!-- Status lights -->
+        <Ellipse Canvas.Left="1035" Canvas.Top="45" Width="8" Height="8" Fill="{StaticResource SafetyGreen}"/>
+        <Ellipse Canvas.Left="1050" Canvas.Top="45" Width="8" Height="8" Fill="{StaticResource WarnYellow}"/>
+        <Ellipse Canvas.Left="1065" Canvas.Top="45" Width="8" Height="8" Fill="{StaticResource DangerRed}"/>
+
+      </Canvas>
+      <!-- Enhanced blue safety curtain with realistic details -->
+      <Rectangle Width="140" HorizontalAlignment="Right" Margin="0,120,220,170" Fill="#FF1F3C88" Opacity="0.5" RadiusX="6" RadiusY="6">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="3" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      
+      <!-- Curtain hardware -->
+      <Rectangle Width="4" Height="200" HorizontalAlignment="Right" Margin="0,120,220,170" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+      <Ellipse Width="12" Height="12" HorizontalAlignment="Right" Margin="0,115,216,0" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+      
+      <!-- Curtain label -->
+      <TextBlock HorizontalAlignment="Right" Margin="0,200,240,0" Text="SAFETY CURTAIN" Foreground="White" FontWeight="Bold" FontSize="8" TextAlignment="Center"/>
+      
+      <!-- Additional industrial equipment -->
+      <!-- Air ventilation system -->
+      <Rectangle HorizontalAlignment="Left" Margin="20,50,0,0" Width="40" Height="20" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="2" RadiusY="2">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      <TextBlock HorizontalAlignment="Left" Margin="25,55,0,0" Text="VENT" Foreground="Black" FontWeight="Bold" FontSize="8"/>
+      
+      <!-- Temperature sensor -->
+      <Ellipse HorizontalAlignment="Left" Margin="30,80,0,0" Width="20" Height="20" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2">
+        <Ellipse.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
+        </Ellipse.Effect>
+      </Ellipse>
+      <TextBlock HorizontalAlignment="Left" Margin="35,85,0,0" Text="🌡️" FontSize="10"/>
+      
+      <!-- Pressure relief valve -->
+      <Rectangle HorizontalAlignment="Left" Margin="25,110,0,0" Width="30" Height="15" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1" RadiusX="2" RadiusY="2">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      <TextBlock HorizontalAlignment="Left" Margin="30,115,0,0" Text="PRV" Foreground="Black" FontWeight="Bold" FontSize="6"/>
+      
+      <!-- Floor drain -->
+      <Ellipse HorizontalAlignment="Left" Margin="35,300,0,0" Width="30" Height="30" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="2">
+        <Ellipse.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+        </Ellipse.Effect>
+      </Ellipse>
+      <TextBlock HorizontalAlignment="Left" Margin="40,305,0,0" Text="💧" FontSize="12"/>
+      
+      <!-- Safety equipment cabinet -->
+      <Rectangle HorizontalAlignment="Right" Margin="0,200,20,0" Width="60" Height="80" Fill="{StaticResource SteelGrad}" Stroke="{StaticResource SteelDark}" StrokeThickness="2" RadiusX="4" RadiusY="4">
+        <Rectangle.Effect>
+          <DropShadowEffect Color="#FF000000" BlurRadius="8" ShadowDepth="3" Opacity="0.3"/>
+        </Rectangle.Effect>
+      </Rectangle>
+      <TextBlock HorizontalAlignment="Right" Margin="0,210,30,0" Text="SAFETY" Foreground="Black" FontWeight="Bold" FontSize="8" TextAlignment="Center"/>
+      <TextBlock HorizontalAlignment="Right" Margin="0,220,30,0" Text="EQUIPMENT" Foreground="Black" FontWeight="Bold" FontSize="8" TextAlignment="Center"/>
+      
+      <!-- Cabinet door handle -->
+      <Ellipse HorizontalAlignment="Right" Margin="0,240,35,0" Width="10" Height="10" Fill="{StaticResource SteelGradDark}" Stroke="{StaticResource SteelShadow}" StrokeThickness="1"/>
+    </Grid>
+  </Viewbox>
+</UserControl>

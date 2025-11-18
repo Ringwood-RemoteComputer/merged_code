@@ -1,0 +1,157 @@
+﻿<Window x:Class="Ring.Views.Reports.ShiftConsumption"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Shift Consumption Report Manager" Height="700" Width="1200" 
+        WindowStartupLocation="CenterScreen" Background="#F5F5F5"
+        FontFamily="Segoe UI" FontSize="14">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2196F3" Padding="20">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                    <Image Source="pack://application:,,,/Images/BannerRingwood.png" Width="40" Height="40" Margin="0,0,15,0" Stretch="Uniform"/>
+                    <StackPanel>
+                        <TextBlock Text="Shift Consumption Report Manager" 
+                                  FontSize="24" FontWeight="Bold" 
+                                  Foreground="White"/>
+                        <TextBlock Text="Analyze shift-based consumption patterns" 
+                                  Foreground="#B3FFFFFF" FontSize="16"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="20" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Controls -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Background="#2196F3" CornerRadius="6" Margin="0,0,10,0">
+                        <Button Content="Refresh Data" Background="Transparent" Foreground="White" 
+                                Padding="16,8" BorderThickness="0"
+                                Click="RefreshData_Click"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#2196F3" BorderThickness="1" CornerRadius="6" Margin="0,0,10,0">
+                        <Button Content="Filter Shifts" Background="Transparent" 
+                                Foreground="#2196F3" BorderThickness="0"
+                                Padding="16,8"
+                                Click="FilterShifts_Click"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#2196F3" BorderThickness="1" CornerRadius="6" Margin="0,0,10,0">
+                        <Button Content="Generate Report" Background="Transparent" 
+                                Foreground="#2196F3" BorderThickness="0"
+                                Padding="16,8"
+                                Click="GenerateReport_Click"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#2196F3" BorderThickness="1" CornerRadius="6">
+                        <Button Content="Clear Filters" Background="Transparent" 
+                                Foreground="#2196F3" BorderThickness="0"
+                                Padding="16,8"
+                                Click="ClearFilters_Click"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="1" Name="ShiftDataGrid" 
+                         AutoGenerateColumns="False" 
+                         SelectionMode="Single"
+                         SelectionUnit="FullRow"
+                         GridLinesVisibility="Horizontal"
+                         AlternatingRowBackground="#F8F9FA"
+                         RowHeaderWidth="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Shift ID" Width="100" Binding="{Binding ShiftId}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Shift Name" Width="*" Binding="{Binding ShiftName}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Time" Width="150" Binding="{Binding ShiftStartTime}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Start Date" Width="150" Binding="{Binding ShiftStartDate}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Duration" Width="120" Binding="{Binding ShiftDuration}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Consumption" Width="120" Binding="{Binding Consumption}">
+                            <DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#2196F3"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                </Style>
+                            </DataGridTextColumn.HeaderStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="#E0E0E0" Padding="20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Border Background="Transparent" BorderBrush="#2196F3" BorderThickness="1" CornerRadius="6" Margin="0,0,10,0">
+                    <Button Content="Close" Background="Transparent" 
+                            Foreground="#2196F3" BorderThickness="0"
+                            Padding="16,8"
+                            Click="Close_Click"/>
+                </Border>
+                <Border Background="#2196F3" CornerRadius="6">
+                    <Button Content="Export Report" Background="Transparent" Foreground="White" 
+                            Padding="16,8" BorderThickness="0"
+                            Click="ExportReport_Click"/>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
