@@ -173,84 +173,17 @@
             <Grid Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Dashboard Header -->
+                <!-- Combined Dashboard Header and Alarms -->
                 <Border Grid.Row="0" 
                         Background="{StaticResource IndustrialDataPanelBrush}" 
                         BorderThickness="1" 
                         BorderBrush="{StaticResource TextSecondaryBrush}" 
                         CornerRadius="8" 
                         Effect="{StaticResource DropShadowEffect}"
-                        Margin="0,0,0,16"
-                        Padding="24">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="System Dashboard" 
-                                       FontSize="24" 
-                                       FontWeight="Bold" 
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       Margin="0,0,0,8"/>
-                        </StackPanel>
-                        
-                        <!-- Simulation Mode and Date/Time -->
-                        <StackPanel Grid.Column="1" 
-                                    Orientation="Horizontal" 
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,20,0">
-                            <Button x:Name="SimulationToggleButton" 
-                                    Content="Simulation Mode" 
-                                    Click="ToggleSimulationMode_Click"
-                                    Background="{StaticResource PrimaryBrush}" 
-                                    Foreground="White" 
-                                    BorderThickness="0"
-                                    Padding="12,6" 
-                                    FontSize="12" 
-                                    FontWeight="SemiBold"
-                                    Cursor="Hand" 
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,16,0"/>
-                            <TextBlock x:Name="SystemTimeText" 
-                                       Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='yyyy-MM-dd HH:mm:ss'}" 
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        
-                        <!-- Connection Status -->
-                        <StackPanel Grid.Column="2" 
-                                    Orientation="Horizontal" 
-                                    VerticalAlignment="Center">
-                            <Ellipse Style="{StaticResource ConnectionStatusIndicatorStyle}" 
-                                     Fill="{Binding ConnectionStatusBrush}">
-                                <Ellipse.ToolTip>
-                                    <ToolTip Content="System Connection Status"/>
-                                </Ellipse.ToolTip>
-                            </Ellipse>
-                            <TextBlock Text="{Binding ConnectionStatus}" 
-                                       VerticalAlignment="Center"
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextPrimaryBrush}"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <!-- Alarm/Alert Panel -->
-                <Border Grid.Row="1" 
-                        Background="{StaticResource IndustrialDataPanelBrush}" 
-                        BorderThickness="1" 
-                        BorderBrush="#DC3545" 
-                        CornerRadius="8" 
-                        Effect="{StaticResource DropShadowEffect}"
-                        Margin="0,0,0,12"
+                        Margin="8,0,8,16"
                         Padding="16">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -258,133 +191,188 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         
-                        <!-- Alarm Header -->
-                        <Grid Grid.Row="0" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <!-- Header Section -->
+                        <Grid Grid.Row="0" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             
-                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <Ellipse Width="20" Height="20" Fill="#DC3545" 
-                                         VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBlock Text="ACTIVE ALARMS" 
-                                           FontSize="16" 
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="System Dashboard" 
+                                           FontSize="24" 
                                            FontWeight="Bold" 
-                                           Foreground="#DC3545"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,8,0"/>
-                                <Border Background="#DC3545" 
-                                        CornerRadius="12" 
-                                        Padding="8,4"
-                                        VerticalAlignment="Center">
-                                    <TextBlock Text="3" 
-                                               FontSize="14" 
-                                               FontWeight="Bold" 
-                                               Foreground="White"/>
-                                </Border>
+                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           Margin="0,0,0,8"/>
                             </StackPanel>
                             
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Content="View All" 
-                                        Style="{StaticResource ActionButtonStyle}"
-                                        Width="100"
-                                        Height="32"
-                                        FontSize="12"
-                                        Margin="0,0,8,0"
-                                        Click="ViewAllAlarms_Click"/>
-                                <Button Content="Acknowledge All" 
-                                        Style="{StaticResource ActionButtonStyle}"
-                                        Width="140"
-                                        Height="32"
-                                        FontSize="12"/>
+                            <!-- Simulation Mode and Date/Time -->
+                            <StackPanel Grid.Column="1" 
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,20,0">
+                                <Button x:Name="SimulationToggleButton" 
+                                        Content="Simulation Mode" 
+                                        Click="ToggleSimulationMode_Click"
+                                        Background="{StaticResource PrimaryBrush}" 
+                                        Foreground="White" 
+                                        BorderThickness="0"
+                                        Padding="12,6" 
+                                        FontSize="12" 
+                                        FontWeight="SemiBold"
+                                        Cursor="Hand" 
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,16,0"/>
+                                <TextBlock x:Name="SystemTimeText" 
+                                           Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='yyyy-MM-dd HH:mm:ss'}" 
+                                           FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            
+                            <!-- Connection Status -->
+                            <StackPanel Grid.Column="2" 
+                                        Orientation="Horizontal" 
+                                        VerticalAlignment="Center">
+                                <Ellipse Style="{StaticResource ConnectionStatusIndicatorStyle}" 
+                                         Fill="{Binding ConnectionStatusBrush}">
+                                    <Ellipse.ToolTip>
+                                        <ToolTip Content="System Connection Status"/>
+                                    </Ellipse.ToolTip>
+                                </Ellipse>
+                                <TextBlock Text="{Binding ConnectionStatus}" 
+                                           VerticalAlignment="Center"
+                                           FontSize="14"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
                             </StackPanel>
                         </Grid>
                         
-                        <!-- Alarm List -->
-                        <ListBox Grid.Row="1" 
-                                 Name="AlarmListBox"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                 MaxHeight="100">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="White" 
-                                            BorderThickness="1" 
-                                            BorderBrush="#E0E0E0" 
-                                            CornerRadius="4" 
-                                            Padding="12,8"
-                                            Margin="0,0,0,8">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            
-                                            <!-- Severity Indicator -->
-                                            <Ellipse Grid.Column="0" 
-                                                     Width="16" 
-                                                     Height="16" 
-                                                     Fill="{Binding SeverityColor}"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                                            
-                                            <!-- Severity Text -->
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding Severity}" 
-                                                       FontSize="13" 
-                                                       FontWeight="Bold"
-                                                       Foreground="{Binding SeverityColor}"
-                                                       VerticalAlignment="Center"
-                                                       Margin="0,0,12,0"
-                                                       MinWidth="65"/>
-                                            
-                                            <!-- Alarm Description -->
-                                            <TextBlock Grid.Column="2" 
-                                                       VerticalAlignment="Center"
-                                                       FontSize="13">
-                                                <Run Text="{Binding Source}" FontWeight="SemiBold" Foreground="#1E1E1E"/>
-                                                <Run Text=" " Foreground="#666666"/>
-                                                <Run Text="{Binding Description}" Foreground="#1E1E1E"/>
-                                            </TextBlock>
-                                            
-                                            <!-- Time -->
-                                            <TextBlock Grid.Column="3" 
-                                                       Text="{Binding TimeAgo}" 
-                                                       FontSize="12" 
-                                                       Foreground="#666666"
-                                                       VerticalAlignment="Center"
-                                                       Margin="16,0,0,0"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    <Setter Property="Padding" Value="0"/>
-                                    <Setter Property="Margin" Value="0"/>
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="ListBoxItem">
-                                                <ContentPresenter/>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
+                        <!-- Alarm Section -->
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Alarm Header -->
+                            <Grid Grid.Row="0" Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <Ellipse Width="20" Height="20" Fill="#DC3545" 
+                                             VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                    <TextBlock Text="ACTIVE ALARMS" 
+                                               FontSize="16" 
+                                               FontWeight="Bold" 
+                                               Foreground="#DC3545"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button Content="View All" 
+                                            Style="{StaticResource ActionButtonStyle}"
+                                            Width="100"
+                                            Height="32"
+                                            FontSize="12"
+                                            Margin="0,0,8,0"
+                                            Click="ViewAllAlarms_Click"/>
+                                    <Button Content="Acknowledge All" 
+                                            Style="{StaticResource ActionButtonStyle}"
+                                            Width="140"
+                                            Height="32"
+                                            FontSize="12"/>
+                                </StackPanel>
+                            </Grid>
+                            
+                            <!-- Alarm List -->
+                            <ListBox Grid.Row="1" 
+                                     Name="AlarmListBox"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     MaxHeight="100">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="White" 
+                                                BorderThickness="1" 
+                                                BorderBrush="#E0E0E0" 
+                                                CornerRadius="4" 
+                                                Padding="12,8"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <!-- Severity Indicator -->
+                                                <Ellipse Grid.Column="0" 
+                                                         Width="16" 
+                                                         Height="16" 
+                                                         Fill="{Binding SeverityColor}"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0,0,12,0"/>
+                                                
+                                                <!-- Severity Text -->
+                                                <TextBlock Grid.Column="1" 
+                                                           Text="{Binding Severity}" 
+                                                           FontSize="13" 
+                                                           FontWeight="Bold"
+                                                           Foreground="{Binding SeverityColor}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,12,0"
+                                                           MinWidth="65"/>
+                                                
+                                                <!-- Alarm Description -->
+                                                <TextBlock Grid.Column="2" 
+                                                           VerticalAlignment="Center"
+                                                           FontSize="13">
+                                                    <Run Text="{Binding Source}" FontWeight="SemiBold" Foreground="#1E1E1E"/>
+                                                    <Run Text=" " Foreground="#666666"/>
+                                                    <Run Text="{Binding Description}" Foreground="#1E1E1E"/>
+                                                </TextBlock>
+                                                
+                                                <!-- Time -->
+                                                <TextBlock Grid.Column="3" 
+                                                           Text="{Binding TimeAgo}" 
+                                                           FontSize="12" 
+                                                           Foreground="#666666"
+                                                           VerticalAlignment="Center"
+                                                           Margin="16,0,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <ContentPresenter/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>
                     </Grid>
                 </Border>
 
                 <!-- Dashboard Cards Grid -->
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>

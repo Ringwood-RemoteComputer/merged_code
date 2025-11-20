@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Xunit;
-using Ring.Views;
+using Ring.Views.MainScreen;
 
 namespace Ring.Tests.Windows
 {

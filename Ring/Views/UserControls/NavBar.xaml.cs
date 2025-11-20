@@ -360,7 +360,7 @@ namespace Ring.Views.UserControls
                     var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
                     if (mainContentArea != null)
                     {
-                        mainContentArea.Content = new Ring.Views.MakeReadyTank();
+                        mainContentArea.Content = new Ring.Views.MainScreen.MakeReadyTank();
                     }
                 }
             }

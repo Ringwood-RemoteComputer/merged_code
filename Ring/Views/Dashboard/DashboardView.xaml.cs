@@ -176,7 +176,7 @@ namespace Ring.Views.Dashboard
                         switch (viewName)
                         {
                             case "MakeReadyTank":
-                                var makeReadyTankControl = new Ring.Views.MakeReadyTank();
+                                var makeReadyTankControl = new Ring.Views.MainScreen.MakeReadyTank();
                                 mainContentArea.Content = makeReadyTankControl;
                                 break;
                             case "StorageTankGroup":
