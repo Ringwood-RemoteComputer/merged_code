@@ -29,6 +29,13 @@ namespace Ring
         // Simulation mode
         private bool _simulationMode = true; // Default to simulation mode
         
+        // Public property to access simulation mode state
+        public bool IsSimulationMode
+        {
+            get => _simulationMode;
+            private set => _simulationMode = value;
+        }
+        
         // Setup menu authentication
         private bool _isSupervisorAuthenticated = false;
         private bool _isAdminAuthenticated = false;
@@ -104,13 +111,6 @@ namespace Ring
                 }
             }
             
-            // Set initial button state for simulation mode
-            var simulationButton = this.FindName("SimulationToggleButton") as Button;
-            if (simulationButton != null)
-            {
-                simulationButton.Content = "Simulation Mode";
-                simulationButton.Foreground = new SolidColorBrush(Color.FromRgb(26, 58, 138)); // Blue color
-            }
             
             // PLC monitoring will read values (simulation or live PLC)
             Console.WriteLine($"MainWindow - PLC monitoring started in {(_simulationMode ? "SIMULATION" : "LIVE PLC")} mode");
@@ -665,27 +665,6 @@ namespace Ring
             Console.WriteLine($"Alarm Status: {(totalActive > 0 ? $"Active ({totalActive})" : "No Active Alarms")}");
         }
 
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        private void Maximize_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-            else
-            {
-                this.WindowState = WindowState.Maximized;
-            }
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
 
         // Navigation is now handled by NavBar UserControl
 
@@ -815,12 +794,13 @@ namespace Ring
             }
         }
 
-        private void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
+        // Make this method public so Dashboard can call it
+        public void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
         {
-            _simulationMode = !_simulationMode;
+            IsSimulationMode = !IsSimulationMode;
             
             // Reinitialize PLC readers when switching to live mode
-            if (!_simulationMode)
+            if (!IsSimulationMode)
             {
                 try
                 {
@@ -862,25 +842,18 @@ namespace Ring
                 }
             }
             
-            var button = sender as Button;
-            if (button != null)
+            // Button state is now managed by Dashboard, so we don't update it here
+            if (IsSimulationMode)
             {
-                if (_simulationMode)
-                {
-                    button.Content = "Simulation Mode";
-                    button.Foreground = new SolidColorBrush(Color.FromRgb(26, 58, 138)); // Blue color
-                    Console.WriteLine("Switched to SIMULATION MODE - Generating realistic test data");
-                }
-                else
-                {
-                    button.Content = "Live PLC Mode";
-                    button.Foreground = new SolidColorBrush(Color.FromRgb(220, 38, 38)); // Red color
-                    Console.WriteLine("Switched to LIVE PLC MODE - Reading from actual PLC at 192.168.202.10");
-                }
+                Console.WriteLine("Switched to SIMULATION MODE - Generating realistic test data");
+            }
+            else
+            {
+                Console.WriteLine("Switched to LIVE PLC MODE - Reading from actual PLC at 192.168.202.10");
             }
             
-            MessageBox.Show($"Switched to {(_simulationMode ? "Simulation" : "Live PLC")} mode.\n\n" +
-                          (_simulationMode ? 
+            MessageBox.Show($"Switched to {(IsSimulationMode ? "Simulation" : "Live PLC")} mode.\n\n" +
+                          (IsSimulationMode ? 
                            "• Generating realistic test data\n• Will occasionally trigger alarms for testing\n• No PLC connection required" :
                            "• Reading from live PLC at 192.168.202.10\n• Requires PLC connection\n• Real production data"), 
                           "Mode Changed", MessageBoxButton.OK, MessageBoxImage.Information);
