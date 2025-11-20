@@ -13,15 +13,11 @@
         <StackPanel Orientation="Vertical" Margin="0,5,5,5">
 
             <!--  Ringwood Logo  -->
-            <Border Background="#2D2D2D" 
-                    CornerRadius="8" 
-                    Margin="8,8,8,16" 
-                    Padding="8">
-                <Image Source="/Images/LogoCompany.png" 
-                       Height="80" 
-                       Width="80" 
-                       HorizontalAlignment="Center" />
-            </Border>
+            <Image Source="/Images/LogoCompany.png" 
+                   Height="80" 
+                   Width="80" 
+                   HorizontalAlignment="Center"
+                   Margin="8,8,8,16" />
            
             <TextBlock Text="Navigation" 
                        FontWeight="SemiBold" 
