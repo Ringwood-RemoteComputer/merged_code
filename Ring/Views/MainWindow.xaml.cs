@@ -389,11 +389,12 @@ namespace Ring
             if (_simulatedWeight > 600) _simulatedWeight = 600;
             
             // Occasionally create alarm condition for testing (10% chance)
-            if (_random.NextDouble() < 0.1)
-            {
-                _simulatedWeight = 500 + _random.NextDouble() * 100; // 500-600 lbs for alarm
-                Console.WriteLine("SIMULATION: Creating alarm condition for testing");
-            }
+            // COMMENTED OUT: This was causing random alarm popups in simulation mode
+            // if (_random.NextDouble() < 0.1)
+            // {
+            //     _simulatedWeight = 500 + _random.NextDouble() * 100; // 500-600 lbs for alarm
+            //     Console.WriteLine("SIMULATION: Creating alarm condition for testing");
+            // }
             
             // Temperature: Gradual changes with small variations
             double tempChange = (_random.NextDouble() - 0.5) * 2; // -1 to +1°C variation
