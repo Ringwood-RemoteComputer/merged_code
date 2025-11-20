@@ -1,0 +1,644 @@
+<UserControl x:Class="Ring.Views.UserControls.NavBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ring.Views.UserControls"
+             mc:Ignorable="d" 
+             Width="150"
+             d:DesignHeight="450">
+
+    <Grid Background="#1E1E1E">
+        <!-- Main Navigation StackPanel -->
+        <StackPanel Orientation="Vertical" Margin="0,5,5,5">
+
+            <!--  Ringwood Logo  -->
+            <Border Background="#2D2D2D" 
+                    CornerRadius="8" 
+                    Margin="8,8,8,16" 
+                    Padding="8">
+                <Image Source="/Images/LogoCompany.png" 
+                       Height="80" 
+                       Width="80" 
+                       HorizontalAlignment="Center" />
+            </Border>
+           
+            <TextBlock Text="Navigation" 
+                       FontWeight="SemiBold" 
+                       FontSize="16"
+                       Margin="0,0,0,16" 
+                       HorizontalAlignment="Center" 
+                       Foreground="#FFFFFF"
+                       LineHeight="20" />
+
+            <Button x:Name="DashboardButton" Content="Dashboard" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="ProcessButton" Content="Process" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="MainScreenButton" Content="Main Screen" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="ReportsButton" Content="Reports" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="BatchStartButton" Content="Batch Start" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="TvcControlButton" Content="TVC Control" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="UseTanksButton" Content="Use Tanks" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="ShiftsButton" Content="Shifts" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="LanguageButton" Content="Language" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="SetupButton" Content="Setup" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+            <Button x:Name="HelpButton" Content="Help" Height="42" Padding="8,6" Click="HandleButtonClick" Style="{StaticResource NavButtonStyle}"/>
+        </StackPanel>
+
+        <!-- Process Submenu Popup -->
+        <Popup x:Name="ProcessSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=ProcessButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="90">
+                    <Button x:Name="HoldButton" 
+                            Content="Hold" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="AlarmsButton" 
+                            Content="Alarms" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Main Screen Submenu Popup -->
+        <Popup x:Name="MainScreenSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=MainScreenButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="120">
+                    <Button x:Name="MakeReadyTankButton" 
+                            Content="Make Ready Tank" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="StorageTankGroupButton" 
+                            Content="Storage Tank Group" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="UseTankGroupButton" 
+                            Content="Use Tank Group" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="BoraxCausticTankButton" 
+                            Content="Borax/Caustic Tank" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="TvcButton" 
+                            Content="TVC" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Reports Submenu Popup -->
+        <Popup x:Name="ReportsSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=ReportsButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="150">
+                    <Button x:Name="BatchReportButton" 
+                            Content="Batch Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="UsageReportButton" 
+                            Content="Usage Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="BatchHistoryReportButton" 
+                            Content="Batch History Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="BatchUsageReportButton" 
+                            Content="Batch Usage Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="AlarmHistoryButton" 
+                            Content="Alarm History" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="InventoryReportButton" 
+                            Content="Inventory Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="FormulaReportButton" 
+                            Content="Formula Report" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="ShiftConsumptionButton" 
+                            Content="Shift Consumption" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="DatabaseExportButton" 
+                            Content="Database Export" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Batch Start Submenu Popup -->
+        <Popup x:Name="BatchStartSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=BatchStartButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="120">
+                    <Button x:Name="StorageTank1Button" 
+                            Content="Storage Tank 1" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="StorageTank2Button" 
+                            Content="Storage Tank 2" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- TVC Control Submenu Popup -->
+        <Popup x:Name="TvcControlSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=TvcControlButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="120">
+                    <Button x:Name="TvcStorageTank1Button" 
+                            Content="Storage Tank 1" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="TvcStorageTank2Button" 
+                            Content="Storage Tank 2" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Use Tanks Submenu Popup -->
+        <Popup x:Name="UseTanksSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=UseTanksButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="120">
+                    <Button x:Name="Mf1Button" 
+                            Content="MF 1" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="Mf2Button" 
+                            Content="MF 2" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="DoubleBackerButton" 
+                            Content="Double Backer" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Shifts Submenu Popup -->
+        <Popup x:Name="ShiftsSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=ShiftsButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="150">
+                    <Button x:Name="ShiftsControlButton" 
+                            Content="Shifts Control" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="Shift1Button" 
+                            Content="Shift 1" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="Shift2Button" 
+                            Content="Shift 2" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="Shift3Button" 
+                            Content="Shift 3" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="TwentyFourHourButton" 
+                            Content="24 Hour" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Language Submenu Popup -->
+        <Popup x:Name="LanguageSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=LanguageButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="180">
+                    <Button x:Name="EnglishUsButton" 
+                            Content="English (United States)" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="EspanolArgentinaButton" 
+                            Content="Español (Argentina)" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Setup Submenu Popup -->
+        <Popup x:Name="SetupSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=SetupButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="250">
+                    <Button x:Name="PasswordButton" 
+                            Content="Password" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="LanguageSetupButton" 
+                            Content="Language" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="MakeReadyTankInventoryEditButton" 
+                            Content="Make Ready Tank Inventory Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="MakeReadyTankFormulaEditButton" 
+                            Content="Make Ready Tank Formula Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="MakeReadyTankFormulaExchangeButton" 
+                            Content="Make Ready Tank Formula Exchange" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="MakeReadyTankNamesEditButton" 
+                            Content="Make Ready Tank Names Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="StorageGroupSystemNamesEditButton" 
+                            Content="Storage Group System Names Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="UseGroupSystemNamesEditButton" 
+                            Content="Use Group System Names Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="UseTankSupervisorEditButton" 
+                            Content="Use Tank Supervisor Edit" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="ShiftNamesAndSpansButton" 
+                            Content="Shift Names and Spans" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="EditPasswordsButton" 
+                            Content="Edit Passwords" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="CommunicationMonitorButton" 
+                            Content="Communication Monitor" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="CommunicationDiskLoggingButton" 
+                            Content="Communication Disk Logging" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="UpdateProcessorTimeDateButton" 
+                            Content="Update Processor Time/Date" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="AlarmAlertsButton" 
+                            Content="Alarm Alerts" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <!-- Help Submenu Popup -->
+        <Popup x:Name="HelpSubmenuPopup" 
+               Placement="Right" 
+               PlacementTarget="{Binding ElementName=HelpButton}"
+               IsOpen="False"
+               PopupAnimation="Fade"
+               AllowsTransparency="True"
+               HorizontalOffset="5">
+            <Border Background="#2D2D2D" 
+                    BorderBrush="#E0E0E0" 
+                    BorderThickness="1" 
+                    CornerRadius="6"
+                    Padding="8"
+                    Margin="0">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" 
+                                    Direction="270" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.15" 
+                                    BlurRadius="8"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical" MinWidth="100">
+                    <Button x:Name="ContentsButton" 
+                            Content="Contents" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="ContactUsButton" 
+                            Content="Contact Us" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="AboutButton" 
+                            Content="About" 
+                            Height="36" 
+                            Padding="8,4"
+                            HorizontalAlignment="Left" 
+                            Click="HandleButtonClick" 
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>
+
