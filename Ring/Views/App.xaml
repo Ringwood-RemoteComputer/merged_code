@@ -296,5 +296,78 @@
             </Setter>
         </Style>
 
+        <!-- Modern Progress Bar Style with Glow Effect -->
+        <Style TargetType="ProgressBar">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Background" Value="#E8F5E9"/>
+            <Setter Property="Foreground" Value="#4CAF50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid x:Name="PART_Track">
+                            <!-- Background Track -->
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="8"
+                                    BorderThickness="1"
+                                    BorderBrush="#C8E6C9"/>
+                            
+                            <!-- Progress Indicator with Glow -->
+                            <Border x:Name="PART_Indicator" 
+                                    HorizontalAlignment="Left" 
+                                    CornerRadius="8">
+                                <Border.Width>
+                                    <MultiBinding Converter="{StaticResource ProgressBarWidthConverter}">
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Maximum"/>
+                                        <Binding ElementName="PART_Track" Path="ActualWidth"/>
+                                    </MultiBinding>
+                                </Border.Width>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#66BB6A" Offset="0"/>
+                                        <GradientStop Color="#4CAF50" Offset="0.5"/>
+                                        <GradientStop Color="#43A047" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#4CAF50" 
+                                                      BlurRadius="10" 
+                                                      ShadowDepth="0" 
+                                                      Opacity="0.6"/>
+                                </Border.Effect>
+                            </Border>
+                            
+                            <!-- Percentage Text Overlay -->
+                            <TextBlock x:Name="PART_Text" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E1E1E">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource ProgressBarValueConverter}">
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Maximum"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="White" 
+                                                      BlurRadius="4" 
+                                                      ShadowDepth="0" 
+                                                      Opacity="0.8"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsIndeterminate" Value="True">
+                                <Setter TargetName="PART_Indicator" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Application.Resources>
 </Application>

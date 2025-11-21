@@ -180,6 +180,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _currentStep = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(MRTImage));
                 }
             }
         }
@@ -249,6 +250,7 @@ namespace Ring.ViewModels.MainScreen
                     OnPropertyChanged(nameof(MotorStatus));
                     OnPropertyChanged(nameof(MotorImage));
                     OnPropertyChanged(nameof(MotorTooltip));
+                    OnPropertyChanged(nameof(MRTImage));
                 }
             }
         }
@@ -261,6 +263,94 @@ namespace Ring.ViewModels.MainScreen
         public BitmapImage MotorImage => Ring.Services.Images.ImageLoader.LoadImage(
             IsMotorOn ? "TransparentBackgrounds/Motorgn01.png" : "TransparentBackgrounds/Motorrd01.png");
         public BitmapImage TankImage => Ring.Services.Images.ImageLoader.LoadImage("TransparentBackgrounds/tank.png");
+
+        // MRT Image property - determines which image to show based on current step and agitator state
+        // Defaults to MRT.png when no specific step is set
+        public BitmapImage MRTImage
+        {
+            get
+            {
+                string imageName = GetMRTImageName();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Make Ready Tank/{imageName}");
+            }
+        }
+
+        /// <summary>
+        /// Determines which MRT image to display based on current step and agitator state
+        /// Defaults to MRT.png when no specific step is set
+        /// </summary>
+        private string GetMRTImageName()
+        {
+            string baseImageName;
+            string agitatorSuffix = IsMotorOn ? "_agitator" : "";
+
+            // Check if we have a current step to determine specific image
+            if (!string.IsNullOrEmpty(CurrentStep))
+            {
+                string stepLower = CurrentStep.ToLower();
+
+                // Map step descriptions to image filenames
+                if (stepLower.Contains("transfer") || stepLower.Contains("discharge"))
+                {
+                    baseImageName = "MRT_discharge";
+                }
+                else if (stepLower.Contains("steam"))
+                {
+                    baseImageName = "MRT_steam";
+                }
+                else if (stepLower.Contains("finish water"))
+                {
+                    baseImageName = "MRT_alt_water";
+                }
+                else if (stepLower.Contains("water") && !stepLower.Contains("finish"))
+                {
+                    baseImageName = "MRT_main_water";
+                }
+                else if (stepLower.Contains("caustic"))
+                {
+                    baseImageName = "MRT_caustic";
+                }
+                else if (stepLower.Contains("domestic starch"))
+                {
+                    baseImageName = "MRT_dom_starch";
+                }
+                else if (stepLower.Contains("modified starch"))
+                {
+                    baseImageName = "MRT_mod_starch";
+                }
+                else if (stepLower.Contains("borax") || stepLower.Contains("borex"))
+                {
+                    baseImageName = "MRT_borax";
+                }
+                else if (stepLower.Contains("liquid additive 1") || stepLower.Contains("add1") || stepLower.Contains("additive 1"))
+                {
+                    baseImageName = "MRT_additive1";
+                }
+                else if (stepLower.Contains("liquid additive 2") || stepLower.Contains("add2") || stepLower.Contains("additive 2"))
+                {
+                    baseImageName = "MRT_additive2";
+                }
+                else if (stepLower.Contains("liquid additive 3") || stepLower.Contains("add3") || stepLower.Contains("additive 3"))
+                {
+                    baseImageName = "MRT_additive3";
+                }
+                else
+                {
+                    // Default: base image (with or without agitator)
+                    baseImageName = IsMotorOn ? "MRT_agitator" : "MRT";
+                    return $"{baseImageName}.png";
+                }
+            }
+            else
+            {
+                // Default: base image (with or without agitator) when no step is set
+                baseImageName = IsMotorOn ? "MRT_agitator" : "MRT";
+                return $"{baseImageName}.png";
+            }
+
+            // Append agitator suffix if motor is on
+            return $"{baseImageName}{agitatorSuffix}.png";
+        }
 
         public MakeReadyTankViewModel()
         {
