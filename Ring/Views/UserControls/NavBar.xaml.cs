@@ -433,19 +433,26 @@ namespace Ring.Views.UserControls
             }
         }
 
-        /// Opens the Alarms Window (separate window, not in content area)
+        /// Loads the Alarms UserControl into the main content area
         private void OpenAlarms()
         {
             try
             {
-                var alarmWindow = new Ring.AlarmWindow();
-                alarmWindow.Show(); // Opens the AlarmWindow (non-modal so it can refresh)
-                Console.WriteLine("[NavBar] AlarmWindow opened");
+                var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
+                if (mainWindow != null)
+                {
+                    var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
+                    if (mainContentArea != null)
+                    {
+                        mainContentArea.Content = new Ring.Views.Process.Alarm();
+                        Console.WriteLine("[NavBar] Alarm view loaded");
+                    }
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[NavBar] Error opening AlarmWindow: {ex.Message}");
-                MessageBox.Show($"Error opening Alarms window: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine($"[NavBar] Error opening Alarm view: {ex.Message}");
+                MessageBox.Show($"Error opening Alarms view: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

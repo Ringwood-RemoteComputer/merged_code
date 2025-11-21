@@ -269,8 +269,11 @@ namespace Ring.Views.Dashboard
                 var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
                 if (mainWindow != null)
                 {
-                    var alarmWindow = new Ring.AlarmWindow();
-                    alarmWindow.Show();
+                    var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
+                    if (mainContentArea != null)
+                    {
+                        mainContentArea.Content = new Ring.Views.Process.Alarm();
+                    }
                 }
             }
             catch (Exception ex)
