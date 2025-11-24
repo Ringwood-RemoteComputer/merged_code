@@ -29,6 +29,13 @@ namespace Ring
         // Simulation mode
         private bool _simulationMode = true; // Default to simulation mode
         
+        // Public property to access simulation mode state
+        public bool IsSimulationMode
+        {
+            get => _simulationMode;
+            private set => _simulationMode = value;
+        }
+        
         // Setup menu authentication
         private bool _isSupervisorAuthenticated = false;
         private bool _isAdminAuthenticated = false;
@@ -104,13 +111,6 @@ namespace Ring
                 }
             }
             
-            // Set initial button state for simulation mode
-            var simulationButton = this.FindName("SimulationToggleButton") as Button;
-            if (simulationButton != null)
-            {
-                simulationButton.Content = "Simulation Mode";
-                simulationButton.Foreground = new SolidColorBrush(Color.FromRgb(26, 58, 138)); // Blue color
-            }
             
             // PLC monitoring will read values (simulation or live PLC)
             Console.WriteLine($"MainWindow - PLC monitoring started in {(_simulationMode ? "SIMULATION" : "LIVE PLC")} mode");
@@ -389,11 +389,12 @@ namespace Ring
             if (_simulatedWeight > 600) _simulatedWeight = 600;
             
             // Occasionally create alarm condition for testing (10% chance)
-            if (_random.NextDouble() < 0.1)
-            {
-                _simulatedWeight = 500 + _random.NextDouble() * 100; // 500-600 lbs for alarm
-                Console.WriteLine("SIMULATION: Creating alarm condition for testing");
-            }
+            // COMMENTED OUT: This was causing random alarm popups in simulation mode
+            // if (_random.NextDouble() < 0.1)
+            // {
+            //     _simulatedWeight = 500 + _random.NextDouble() * 100; // 500-600 lbs for alarm
+            //     Console.WriteLine("SIMULATION: Creating alarm condition for testing");
+            // }
             
             // Temperature: Gradual changes with small variations
             double tempChange = (_random.NextDouble() - 0.5) * 2; // -1 to +1°C variation
@@ -665,218 +666,8 @@ namespace Ring
             Console.WriteLine($"Alarm Status: {(totalActive > 0 ? $"Active ({totalActive})" : "No Active Alarms")}");
         }
 
-        private void Minimize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
 
-        private void Maximize_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-            else
-            {
-                this.WindowState = WindowState.Maximized;
-            }
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        // Event handlers for Menu Items
-
-        private void Report_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Report clicked.");
-        }
-
-        private void GenerateBatchReport_Click(object sender, RoutedEventArgs e)
-        {
-            var batchReportWindow = new BatchReportWindow();
-            var window = new Window
-            {
-                Title = "Batch Report Generator",
-                Content = batchReportWindow,
-                Width = 1000,
-                Height = 700,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ResizeMode = ResizeMode.CanResize
-            };
-            window.ShowDialog();
-        }
-
-        private void TVCControl_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("TVC Control clicked.");
-        }
-
-        private void Hold_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Hold clicked.");
-        }
-
-        private void BatchStart_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Batch Start clicked.");
-        }
-
-        private void Shifts_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Add prominent clicked state
-                var shiftsButton = this.FindName("ShiftsButton") as Button;
-                if (shiftsButton != null)
-                {
-                    // Highlight the button with a bright background
-                    shiftsButton.Background = new SolidColorBrush(Color.FromRgb(0, 150, 255)); // Bright blue
-                    shiftsButton.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255)); // White border
-                    shiftsButton.BorderThickness = new Thickness(2);
-                    
-                    // Reset other menu buttons to normal state
-                    ResetAllMenuButtons();
-                    
-                    // Keep this button highlighted
-                    shiftsButton.Background = new SolidColorBrush(Color.FromRgb(0, 150, 255));
-                    shiftsButton.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    shiftsButton.BorderThickness = new Thickness(2);
-                }
-                
-                var shiftsWindow = new ShiftControlWindow();
-                shiftsWindow.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error opening Shifts: {ex.Message}", "Error", 
-                               MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ResetAllMenuButtons()
-        {
-            // Reset all menu buttons to normal state
-            var menuButtons = new[] { "DashboardButton", "ProcessButton", "MainScreenButton", "ReportsButton", 
-                                    "BatchStartButton", "TVCControlButton", "UseTanksButton", "ShiftsButton", 
-                                    "LanguageButton", "SetupButton", "WindowButton", "HelpButton" };
-            
-            foreach (var buttonName in menuButtons)
-            {
-                var button = this.FindName(buttonName) as Button;
-                if (button != null)
-                {
-                    button.Background = new SolidColorBrush(Colors.Transparent);
-                    button.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                    button.BorderThickness = new Thickness(0);
-                }
-            }
-        }
-
-        private void Setup_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Setup clicked.");
-        }
-
-        private void Window_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Window clicked.");
-        }
-
-        private void Help_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Help clicked.");
-        }
-
-        private void Alarms_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var alarmWindow = new AlarmWindow();
-                alarmWindow.Show(); // Opens the AlarmWindow (non-modal so it can refresh)
-                Console.WriteLine("[MainWindow] AlarmWindow opened");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[MainWindow] Error opening AlarmWindow: {ex.Message}");
-                MessageBox.Show($"Error opening Alarms window: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void MainScreen_Click(object sender, RoutedEventArgs e)
-        {
-            var makeReadyTankControl = new Ring.Views.MakeReadyTank();
-            var mainContentArea = FindName("MainContentArea") as ContentControl;
-            if (mainContentArea != null)
-            {
-                mainContentArea.Content = makeReadyTankControl;
-            }
-        }
-
-        private void BatchReport_Click(object sender, RoutedEventArgs e)
-        {
-            var batchReportWindow = new BatchReportWindow();
-            batchReportWindow.ShowDialog(); // Opens the Batch Report window as a modal dialog
-        }
-
-        private void UsageReport_Click(object sender, RoutedEventArgs e)
-        {
-            var usageReportWindow = new UsageReportWindow();
-            usageReportWindow.ShowDialog(); // Opens the Usage Report window as a modal dialog
-        }
-
-        private void AlarmHistory_Click(object sender, RoutedEventArgs e)
-        {
-            var alarmHistoryWindow = new AlarmHistory();
-            alarmHistoryWindow.ShowDialog(); // Opens the Usage Report window as a modal dialog
-        }
-
-        private void BatchHistoryReport_Click(object sender, RoutedEventArgs e)
-        {
-            var batchHistoryReport = new BatchHistoryReport();
-            batchHistoryReport.ShowDialog(); // Opens the window as a modal dialog
-        }
-
-        private void BatchHistoryUsageReport_Click(object sender, RoutedEventArgs e)
-        {
-            var batchHistoryUsageReport = new BatchHistoryUsageReport();
-            batchHistoryUsageReport.ShowDialog(); // Opens the window as a modal dialog
-        }
-
-        private void InventoryReport_Click(object sender, RoutedEventArgs e)
-        {
-            var inventoryReport = new InventoryReport();
-            inventoryReport.ShowDialog(); // Opens the window as a modal dialog
-        }
-
-        private void FormulaReport_Click(object sender, RoutedEventArgs e)
-        {
-            var formulaReport = new FormulaReport();
-            formulaReport.ShowDialog(); // Opens the window as a modal dialog
-        }
-
-        private void ShiftConsumption_Click(object sender, RoutedEventArgs e)
-        {
-            var shiftConsumption = new ShiftConsumption();
-            shiftConsumption.ShowDialog(); // Opens the window as a modal dialog
-        }
-
-        private void BatchQuery_Click(object sender, RoutedEventArgs e)
-        {
-            var batchQueryWindow = new BatchQueryView();
-            batchQueryWindow.ShowDialog(); // Opens the Batch Query Manager window as a modal dialog
-        }
-
-        private void DatabaseTest_Click(object sender, RoutedEventArgs e)
-        {
-            // Temporarily disabled - DatabaseTestWindow has XAML compilation issues
-            MessageBox.Show("Database Test window is temporarily disabled due to XAML compilation issues.", 
-                          "Feature Disabled", 
-                          MessageBoxButton.OK, 
-                          MessageBoxImage.Information);
-        }
+        // Navigation is now handled by NavBar UserControl
 
         private void ReadTags_Click(object sender, RoutedEventArgs e)
         {
@@ -929,80 +720,9 @@ namespace Ring
             }
         }
 
-        private void StorageGroup_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // --- EXAMPLE A: write a single BOOL bit (e.g., a DINT bit alias like PC_Write_Integer[0].0) ---
-                // If you're targeting a single bit of a DINT, use PlcDataType.BOOL and the .0 suffix.
-                //var bitWriter = new PlcTagWriter("PC_Write_Integer[0].0", "192.168.202.10", PlcDataType.BOOL);
-                //bitWriter.Write("true");  // or "1"
+        // Navigation is now handled by NavBar UserControl
 
-                //// --- EXAMPLE B: write an entire DINT element ---
-                //// If you want to write the whole word, drop the .0 and use DINT.
-                //var dintWriter = new PlcTagWriter("PC_Write_Integer[0]", "192.168.202.10", PlcDataType.DINT);
-                //dintWriter.Write("42");
-
-                // --- EXAMPLE C: write a REAL (float) ---
-                var realWriter = new PlcTagWriter("PC_Read_Float[32]", "192.168.202.10", PlcDataType.REAL);
-                realWriter.Write("78.65");
-
-                // Optionally update UI or status message here
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"PLC write failed: {ex.Message}", "Write Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        // Additional click handlers for the new menu items
-        private void Dashboard_Click(object sender, RoutedEventArgs e)
-        {
-            // Navigate to Dashboard view
-            var mainContentArea = this.FindName("MainContentArea") as ContentControl;
-            if (mainContentArea != null)
-            {
-                mainContentArea.Content = new Ring.Views.Dashboard.DashboardView();
-            }
-        }
-
-        private void Process_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Process clicked.");
-        }
-
-        private void UseTanks_Click(object sender, RoutedEventArgs e)
-        {
-            // Navigate to Use Tank Group view
-            var mainContentArea = this.FindName("MainContentArea") as ContentControl;
-            if (mainContentArea != null)
-            {
-                mainContentArea.Content = new Ring.Views.MainScreen.UseTankGroup();
-            }
-        }
-
-        private void Language_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Language clicked.");
-        }
-
-        private void TankMonitoring_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var makeReadyTankControl = new Ring.Views.MakeReadyTank();
-                var mainContentArea = FindName("MainContentArea") as ContentControl;
-                if (mainContentArea != null)
-                {
-                    mainContentArea.Content = makeReadyTankControl;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error opening Make Ready Tank: {ex.Message}", "Error", 
-                               MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+        // Navigation is now handled by NavBar UserControl
 
         private void Password_Click(object sender, RoutedEventArgs e)
         {
@@ -1075,12 +795,13 @@ namespace Ring
             }
         }
 
-        private void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
+        // Make this method public so Dashboard can call it
+        public void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
         {
-            _simulationMode = !_simulationMode;
+            IsSimulationMode = !IsSimulationMode;
             
             // Reinitialize PLC readers when switching to live mode
-            if (!_simulationMode)
+            if (!IsSimulationMode)
             {
                 try
                 {
@@ -1122,25 +843,18 @@ namespace Ring
                 }
             }
             
-            var button = sender as Button;
-            if (button != null)
+            // Button state is now managed by Dashboard, so we don't update it here
+            if (IsSimulationMode)
             {
-                if (_simulationMode)
-                {
-                    button.Content = "Simulation Mode";
-                    button.Foreground = new SolidColorBrush(Color.FromRgb(26, 58, 138)); // Blue color
-                    Console.WriteLine("Switched to SIMULATION MODE - Generating realistic test data");
-                }
-                else
-                {
-                    button.Content = "Live PLC Mode";
-                    button.Foreground = new SolidColorBrush(Color.FromRgb(220, 38, 38)); // Red color
-                    Console.WriteLine("Switched to LIVE PLC MODE - Reading from actual PLC at 192.168.202.10");
-                }
+                Console.WriteLine("Switched to SIMULATION MODE - Generating realistic test data");
+            }
+            else
+            {
+                Console.WriteLine("Switched to LIVE PLC MODE - Reading from actual PLC at 192.168.202.10");
             }
             
-            MessageBox.Show($"Switched to {(_simulationMode ? "Simulation" : "Live PLC")} mode.\n\n" +
-                          (_simulationMode ? 
+            MessageBox.Show($"Switched to {(IsSimulationMode ? "Simulation" : "Live PLC")} mode.\n\n" +
+                          (IsSimulationMode ? 
                            "• Generating realistic test data\n• Will occasionally trigger alarms for testing\n• No PLC connection required" :
                            "• Reading from live PLC at 192.168.202.10\n• Requires PLC connection\n• Real production data"), 
                           "Mode Changed", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1287,334 +1001,13 @@ namespace Ring
 
         private void MainContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Close all submenus when clicking on main content
-            HideAllSubmenus();
-        }
-
-        // Setup menu item click handlers
-        private void MakeReadyTankInventoryEdit_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Make Ready Tank Inventory Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void MakeReadyTankFormulaEdit_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Make Ready Tank Formula Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void MakeReadyTankFormulaExchange_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Make Ready Tank Formula Exchange - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void MakeReadyTankNamesEdit_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Make Ready Tank Names Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void StorageGroupSystemNamesEdit_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Storage Group System Names Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void ShiftNamesAndSpans_Click(object sender, RoutedEventArgs e)
-        {
-            // Submenu is handled by hover events
-        }
-
-        private void ShiftNamesAndSpans_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("ShiftNamesAndSpansSubmenu");
-        }
-
-        private void ShiftNamesAndSpans_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void EditPasswords_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Edit Passwords - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void CommunicationDiskLogging_Click(object sender, RoutedEventArgs e)
-        {
-            // Submenu is handled by hover events
-        }
-
-        private void CommunicationDiskLogging_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("CommunicationDiskLoggingSubmenu");
-        }
-
-        private void CommunicationDiskLogging_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void UpdateProcessorTimeDate_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Update Processor Time/Date - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        // Admin menu item click handlers
-        private void Mixers_Click(object sender, RoutedEventArgs e) { }
-        private void Mixers_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("MixersSubmenu"); }
-        private void Mixers_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Distribution_Click(object sender, RoutedEventArgs e) { }
-        private void Distribution_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DistributionSubmenu"); }
-        private void Distribution_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Viscometer_Click(object sender, RoutedEventArgs e) { }
-        private void Viscometer_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ViscometerSubmenu"); }
-        private void Viscometer_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Groups_Click(object sender, RoutedEventArgs e) { }
-        private void Groups_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("GroupsSubmenu"); }
-        private void Groups_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Tanks_Click(object sender, RoutedEventArgs e) { }
-        private void Tanks_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("TanksSubmenu"); }
-        private void Tanks_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void DataEntry_Click(object sender, RoutedEventArgs e) { }
-        private void DataEntry_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DataEntrySubmenu"); }
-        private void DataEntry_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void AlarmsAdmin_Click(object sender, RoutedEventArgs e) { }
-        private void AlarmsAdmin_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("AlarmsAdminSubmenu"); }
-        private void AlarmsAdmin_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Inventory_Click(object sender, RoutedEventArgs e) { }
-        private void Inventory_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("InventorySubmenu"); }
-        private void Inventory_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void MixerBatchFormulaData_Click(object sender, RoutedEventArgs e) { }
-        private void MixerBatchFormulaData_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("MixerBatchFormulaDataSubmenu"); }
-        private void MixerBatchFormulaData_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void DistributionBatchData_Click(object sender, RoutedEventArgs e) { }
-        private void DistributionBatchData_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DistributionBatchDataSubmenu"); }
-        private void DistributionBatchData_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void ShiftsAdmin_Click(object sender, RoutedEventArgs e) { }
-        private void ShiftsAdmin_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ShiftsAdminSubmenu"); }
-        private void ShiftsAdmin_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void PasswordSubmenu_Click(object sender, RoutedEventArgs e) { }
-        private void PasswordSubmenu_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("PasswordSubmenu"); }
-        private void PasswordSubmenu_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void Communication_Click(object sender, RoutedEventArgs e) { }
-        private void Communication_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("CommunicationSubmenu"); }
-        private void Communication_MouseLeave(object sender, MouseEventArgs e) { }
-
-        private void ImportExportSetupDatabase_Click(object sender, RoutedEventArgs e) { }
-        private void ImportExportSetupDatabase_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ImportExportSetupDatabaseSubmenu"); }
-        private void ImportExportSetupDatabase_MouseLeave(object sender, MouseEventArgs e) { }
-
-        // Submenu management
-        private string _currentSubmenu = null;
-
-        // Submenu hover event handlers
-        private void Process_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("ProcessSubmenu");
-        }
-
-        private void Process_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void MainScreen_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("MainScreenSubmenu");
-        }
-
-        private void MainScreen_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void Reports_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("ReportsSubmenu");
-        }
-
-        private void Reports_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void BatchStart_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("BatchStartSubmenu");
-        }
-
-        private void BatchStart_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void TVCControl_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("TVCControlSubmenu");
-        }
-
-        private void TVCControl_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void Shifts_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("ShiftsSubmenu");
-        }
-
-        private void Shifts_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void Setup_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("SetupSubmenu");
-        }
-
-        private void Setup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void Window_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("WindowSubmenu");
-        }
-
-        private void Window_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void Help_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSubmenu("HelpSubmenu");
-        }
-
-        private void Help_MouseLeave(object sender, MouseEventArgs e)
-        {
-            // Submenu will stay open until user clicks elsewhere
-        }
-
-        private void ShowSubmenu(string submenuName)
-        {
-            // Hide any currently open submenu
-            if (_currentSubmenu != null && _currentSubmenu != submenuName)
+            // Close all NavBar popups when clicking on main content
+            if (NavBar != null)
             {
-                HideSubmenu(_currentSubmenu);
-            }
-
-            _currentSubmenu = submenuName;
-            var submenu = this.FindName(submenuName) as Border;
-            if (submenu != null)
-            {
-                submenu.Visibility = Visibility.Visible;
-                submenu.Opacity = 0;
-                submenu.RenderTransform = new TranslateTransform(-10, 0);
-                
-                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150));
-                var slideIn = new DoubleAnimation(-10, 0, TimeSpan.FromMilliseconds(150));
-                
-                submenu.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-                submenu.RenderTransform.BeginAnimation(TranslateTransform.XProperty, slideIn);
+                NavBar.CloseAllPopupsPublic();
             }
         }
 
-        private void HideSubmenu(string submenuName)
-        {
-            var submenu = this.FindName(submenuName) as Border;
-            if (submenu != null)
-            {
-                var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150));
-                var slideOut = new DoubleAnimation(0, -10, TimeSpan.FromMilliseconds(150));
-                
-                fadeOut.Completed += (s, e) => submenu.Visibility = Visibility.Collapsed;
-                
-                submenu.BeginAnimation(UIElement.OpacityProperty, fadeOut);
-                submenu.RenderTransform.BeginAnimation(TranslateTransform.XProperty, slideOut);
-            }
-        }
-
-        private void HideAllSubmenus()
-        {
-            if (_currentSubmenu != null)
-            {
-                HideSubmenu(_currentSubmenu);
-                _currentSubmenu = null;
-            }
-        }
-
-        // Additional click handlers for submenu items
-        private void StorageTank1_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Storage Tank 1 clicked.");
-        }
-
-        private void StorageTank2_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Storage Tank 2 clicked.");
-        }
-
-        private void LowMidtank_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("LOW/MID D/B TANK clicked.");
-        }
-
-        private void StorageTank4_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Storage Tank 4 clicked.");
-        }
-
-        private void TVCStorageTank1_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("TVC Storage Tank 1 clicked.");
-        }
-
-        private void TVCStorageTank2_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("TVC Storage Tank 2 clicked.");
-        }
-
-        private void TVClowmidtank_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("TVC LOW/MID D/B TANK clicked.");
-        }
-
-        private void TVCStorageTank4_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("TVC Storage Tank 4 clicked.");
-        }
-
-        private void ShiftControl_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Shift Control clicked.");
-        }
-
-        private void Shift1_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Shift 1 clicked.");
-        }
-
-        private void Shift2_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Shift 2 clicked.");
-        }
-
-        private void Shift3_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Shift 3 clicked.");
-        }
+        // Navigation is now handled by NavBar UserControl
     }
 }

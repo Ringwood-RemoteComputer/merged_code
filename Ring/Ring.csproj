@@ -243,7 +243,7 @@
       <DependentUpon>BatchQueryView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MakeReadyTank.xaml.cs">
+    <Compile Include="Views\MainScreen\MakeReadyTank.xaml.cs">
       <DependentUpon>MakeReadyTank.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PasswordDialog.xaml.cs">
@@ -330,6 +330,15 @@
     <Compile Include="Views\UserControls\TankModels\TankVisualizationControl.xaml.cs">
       <DependentUpon>TankVisualizationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserControls\NavBar.xaml.cs">
+      <DependentUpon>NavBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Help\ContactUs.xaml.cs">
+      <DependentUpon>ContactUs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UseTanks\MF1Window.xaml.cs">
+      <DependentUpon>MF1Window.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -352,7 +361,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MakeReadyTank.xaml">
+    <Page Include="Views\MainScreen\MakeReadyTank.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -476,6 +485,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserControls\NavBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Help\ContactUs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UseTanks\MF1Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="app.ico" />
@@ -534,6 +555,30 @@
     <Resource Include="Images\Valve01.png" />
     <Resource Include="Images\Valvegn01.png" />
     <Resource Include="Images\Valverd01.png" />
+    <Resource Include="Images\Make Ready Tank\MRT.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive1.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive1_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive2.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive2_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive3.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_additive3_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_alt_water.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_alt_water_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_borax.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_borax_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_caustic.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_caustic_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_discharge.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_discharge_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_dom_starch.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_dom_starch_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_main_water.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_main_water_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_mod_starch.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_mod_starch_agitator.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_steam.png" />
+    <Resource Include="Images\Make Ready Tank\MRT_steam_agitator.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />

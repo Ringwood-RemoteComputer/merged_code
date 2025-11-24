@@ -1,15 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using Ring.Database;
 using Ring.Services.PLC;
 using Ring.ViewModels.MainScreen;
 using Ring.Views.Dashboard;
 
-namespace Ring.Views
+namespace Ring.Views.MainScreen
 {
     public partial class MakeReadyTank : UserControl
     {
@@ -33,6 +35,9 @@ namespace Ring.Views
             
             // Start timer to refresh alarms periodically (every 5 seconds)
             StartAlarmRefreshTimer();
+            
+            // Populate component grid (will be updated with PLC data in Step 9)
+            PopulateMakeReadyComponentGrid();
         }
 
         private void StartPlcDataUpdateTimer()
@@ -213,6 +218,110 @@ namespace Ring.Views
         {
             LoadAlarmData();
         }
+
+        /// <summary>
+        /// Shows the component details popup for Make Ready Tank
+        /// </summary>
+        private void ShowComponentsButtonMakeReady_Click(object sender, RoutedEventArgs e)
+        {
+            ComponentPopupMakeReady.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Populates the component grid for Make Ready Tank
+        /// This will be updated in Step 9 to use PLC data from MakeReadyTankPlcData
+        /// </summary>
+        private void PopulateMakeReadyComponentGrid()
+        {
+            // Component data: Name, Status (true = On/Open/High, false = Off/Closed/Low)
+            // For now using static data - will be updated in Step 9 to use PLC data
+            var components = new[]
+            {
+                ("Agitator", true),
+                ("Secondary agitator", false),
+                ("Temperature probe", true),
+                ("Transfer valve", false),
+                ("Transfer pump", false),
+                ("Domestic starch auger", true),
+                ("Domestic starch valve", true),
+                ("Modified starch valve", false),
+                ("Modified starch auger", false),
+                ("Liquid caustic valve", true),
+                ("Borax valve", false),
+                ("Borax feeder motor", true),
+                ("Liquid borax pump", false),
+                ("Liquid borax valve", false),
+                ("Steam valve", true),
+                ("Fast water valve", true),
+                ("Slow water valve", false),
+                ("Additive #1 valve", false),
+                ("Additive #1 pump", false),
+                ("Additive #2 valve", true),
+                ("Additive #2 pump", true),
+                ("Additive #3 valve", false),
+                ("Additive #3 pump", false)
+            };
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                var (componentName, isOn) = components[i];
+                var row = i / 2;  // 2 columns per row
+                var col = i % 2;
+
+                // Create component container
+                var border = new Border
+                {
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = new SolidColorBrush(Color.FromRgb(224, 224, 224)),
+                    Background = Brushes.White,
+                    CornerRadius = new CornerRadius(4),
+                    Margin = new Thickness(4),
+                    Padding = new Thickness(10, 8, 10, 8),
+                    ToolTip = $"{componentName} - {(isOn ? "On" : "Off")}"
+                };
+
+                Grid.SetRow(border, row);
+                Grid.SetColumn(border, col);
+
+                // Create grid for label and status light alignment
+                var innerGrid = new Grid();
+                innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                innerGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                // Component name (left-aligned)
+                var textBlock = new TextBlock
+                {
+                    Text = componentName,
+                    FontSize = 13,
+                    FontWeight = FontWeights.Normal,
+                    Foreground = new SolidColorBrush(Color.FromRgb(30, 30, 30)),
+                    Margin = new Thickness(0, 0, 10, 0),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    TextWrapping = TextWrapping.NoWrap
+                };
+                System.Windows.Controls.Grid.SetColumn(textBlock, 0);
+
+                // Status indicator (right-aligned)
+                var statusLight = new Ellipse
+                {
+                    Width = 14,
+                    Height = 14,
+                    Fill = isOn 
+                        ? new SolidColorBrush(Color.FromRgb(76, 175, 80))  // Green
+                        : new SolidColorBrush(Color.FromRgb(244, 67, 54)), // Red
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
+                };
+                System.Windows.Controls.Grid.SetColumn(statusLight, 1);
+
+                innerGrid.Children.Add(textBlock);
+                innerGrid.Children.Add(statusLight);
+                border.Child = innerGrid;
+
+                ComponentGridMakeReady.Children.Add(border);
+            }
+        }
     }
 
     public class AlarmData
@@ -227,3 +336,4 @@ namespace Ring.Views
         public string AcknowledgeTime { get; set; }
     }
 }
+

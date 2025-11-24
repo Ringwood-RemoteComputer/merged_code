@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
+using Ring.Database;
 
-namespace Ring
+namespace Ring.Views.Process
 {
-    public partial class AlarmWindow : Window
+    public partial class Alarm : UserControl
     {
         private DispatcherTimer _refreshTimer;
+        private List<AlarmData> _allAlarms;
+        private const int DEFAULT_ALARM_COUNT = 20;
         
-        public AlarmWindow()
+        public Alarm()
         {
             InitializeComponent();
-
+            
+            // Initialize date pickers to default range (last 30 days to today)
+            EndDatePicker.SelectedDate = DateTime.Today;
+            StartDatePicker.SelectedDate = DateTime.Today.AddDays(-30);
+            
+            // Subscribe to date picker events using lambda to avoid signature issues
+            StartDatePicker.SelectedDateChanged += (sender, e) => ApplyDateFilter();
+            EndDatePicker.SelectedDateChanged += (sender, e) => ApplyDateFilter();
+            
             // Load alarms from database
             LoadAlarmsFromDatabase();
             
@@ -21,35 +34,21 @@ namespace Ring
             _refreshTimer.Interval = TimeSpan.FromSeconds(2);
             _refreshTimer.Tick += (s, e) => LoadAlarmsFromDatabase();
             _refreshTimer.Start();
-            
-            // Refresh when window is activated (brought to front)
-            this.Activated += (s, e) => LoadAlarmsFromDatabase();
-        }
-        
-        protected override void OnClosed(EventArgs e)
-        {
-            // Stop timer when window closes
-            if (_refreshTimer != null)
-            {
-                _refreshTimer.Stop();
-                _refreshTimer = null;
-            }
-            base.OnClosed(e);
         }
         
         private void LoadAlarmsFromDatabase()
         {
             try
             {
-                Console.WriteLine($"[AlarmWindow] Loading alarms from database...");
-                var alarmRecords = Ring.Database.AlarmDatabaseHelper.GetAlarms();
-                Console.WriteLine($"[AlarmWindow] Retrieved {alarmRecords.Count} alarm(s) from database");
+                Console.WriteLine($"[Alarm] Loading alarms from database...");
+                var alarmRecords = AlarmDatabaseHelper.GetAlarms();
+                Console.WriteLine($"[Alarm] Retrieved {alarmRecords.Count} alarm(s) from database");
                 
-                var alarms = new List<Alarm>();
+                _allAlarms = new List<AlarmData>();
                 
                 foreach (var record in alarmRecords)
                 {
-                    alarms.Add(new Alarm
+                    _allAlarms.Add(new AlarmData
                     {
                         Type = record.ALMTYPENUMBER == 1 ? "Critical" : "Warning",
                         Status = record.ALMSTATUSNUMBER == 1 ? "Active" : "Acknowledged",
@@ -62,63 +61,118 @@ namespace Ring
                     });
                 }
                 
-                // If no alarms in database, show message
-                if (alarms.Count == 0)
+                // Sort by most recent first (by date and time)
+                _allAlarms = _allAlarms.OrderByDescending(a => 
                 {
-                    alarms.Add(new Alarm { Type = "Info", Status = "No Alarms", AlarmNumber = 0, AlarmDescription = "No alarms found in database", AlarmDate = "", AlarmTime = "", AcknowledgeDate = "", AcknowledgeTime = "" });
-                    Console.WriteLine($"[AlarmWindow] No alarms in database");
-                }
-                else
-                {
-                    Console.WriteLine($"[AlarmWindow] Displaying {alarms.Count} alarm(s) in grid");
-                }
+                    if (DateTime.TryParse($"{a.AlarmDate} {a.AlarmTime}", out DateTime dt))
+                        return dt;
+                    return DateTime.MinValue;
+                }).ToList();
                 
-                AlarmDataGrid.ItemsSource = alarms;
+                // Apply date filtering and update display
+                ApplyDateFilter();
+                
+                // Update active alarm count
+                UpdateActiveAlarmCount();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[AlarmWindow] ✗ ERROR loading alarms: {ex.Message}");
-                Console.WriteLine($"[AlarmWindow] Stack trace: {ex.StackTrace}");
-                System.Windows.MessageBox.Show($"Error loading alarms: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                Console.WriteLine($"[Alarm] ✗ ERROR loading alarms: {ex.Message}");
+                Console.WriteLine($"[Alarm] Stack trace: {ex.StackTrace}");
+                MessageBox.Show($"Error loading alarms: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 
-                // Fallback to sample data on error
-                var alarms = new List<Alarm>
-                {
-                    new Alarm { Type = "Warning", Status = "Active", AlarmNumber = 101, AlarmDescription = "Low Pressure", AlarmDate = "01/15/2025", AlarmTime = "14:30", AcknowledgeDate = "", AcknowledgeTime = "" },
-                    new Alarm { Type = "Critical", Status = "Acknowledged", AlarmNumber = 102, AlarmDescription = "High Temperature", AlarmDate = "01/14/2025", AlarmTime = "10:15", AcknowledgeDate = "01/14/2025", AcknowledgeTime = "10:20" }
-                };
-                AlarmDataGrid.ItemsSource = alarms;
+                // Fallback to empty list on error
+                _allAlarms = new List<AlarmData>();
+                AlarmDataGrid.ItemsSource = _allAlarms;
+                UpdateActiveAlarmCount();
             }
         }
-
-        private void RefreshAlarms_Click(object sender, RoutedEventArgs e)
+        
+        private void ApplyDateFilter()
         {
-            // Refresh alarm data from database
-            LoadAlarmsFromDatabase();
+            if (_allAlarms == null)
+            {
+                AlarmDataGrid.ItemsSource = new List<AlarmData>();
+                return;
+            }
+            
+            var filteredAlarms = _allAlarms.ToList();
+            
+            // Apply date range filter if dates are selected
+            if (StartDatePicker.SelectedDate.HasValue || EndDatePicker.SelectedDate.HasValue)
+            {
+                filteredAlarms = filteredAlarms.Where(a =>
+                {
+                    if (string.IsNullOrEmpty(a.AlarmDate))
+                        return false;
+                    
+                    if (DateTime.TryParse(a.AlarmDate, out DateTime alarmDate))
+                    {
+                        bool afterStart = !StartDatePicker.SelectedDate.HasValue || alarmDate.Date >= StartDatePicker.SelectedDate.Value.Date;
+                        bool beforeEnd = !EndDatePicker.SelectedDate.HasValue || alarmDate.Date <= EndDatePicker.SelectedDate.Value.Date;
+                        return afterStart && beforeEnd;
+                    }
+                    return false;
+                }).ToList();
+            }
+            else
+            {
+                // If no date filter, show most recent DEFAULT_ALARM_COUNT alarms
+                filteredAlarms = filteredAlarms.Take(DEFAULT_ALARM_COUNT).ToList();
+            }
+            
+            Console.WriteLine($"[Alarm] Displaying {filteredAlarms.Count} alarm(s) in grid (filtered from {_allAlarms.Count} total)");
+            AlarmDataGrid.ItemsSource = filteredAlarms;
         }
-
-        private void AcknowledgeAll_Click(object sender, RoutedEventArgs e)
+        
+        private void UpdateActiveAlarmCount()
         {
-            MessageBox.Show("All alarms acknowledged.", "Acknowledge All", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void ClearHistory_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Alarm history cleared.", "Clear History", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void Export_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Alarm data exported.", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_allAlarms == null)
+            {
+                ActiveAlarmCountText.Text = "0";
+                return;
+            }
+            
+            // Count only active alarms (Status == "Active")
+            int activeCount = _allAlarms.Count(a => a.Status == "Active");
+            ActiveAlarmCountText.Text = activeCount.ToString();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            // Stop refresh timer
+            if (_refreshTimer != null)
+            {
+                _refreshTimer.Stop();
+                _refreshTimer = null;
+            }
+            
+            // Navigate back to Dashboard
+            var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
+            if (mainWindow != null)
+            {
+                var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
+                if (mainContentArea != null)
+                {
+                    mainContentArea.Content = new Ring.Views.Dashboard.DashboardView();
+                }
+            }
+        }
+
+        private void AlarmSilence_Click(object sender, RoutedEventArgs e)
+        {
+            // Keep current behavior - show message box
+            MessageBox.Show("Alarm silence activated", "Alarm Management", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+            // Placeholder export functionality - show message box
+            MessageBox.Show("Alarm data exported.", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
-    public class Alarm
+    public class AlarmData
     {
         public string Type { get; set; }
         public string Status { get; set; }
@@ -127,38 +181,6 @@ namespace Ring
         public string AlarmDate { get; set; }
         public string AlarmTime { get; set; }
         public string AcknowledgeDate { get; set; }
-        public string AcknowledgeTime { get; set;         }
-
-        //private void RefreshAlarms_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Refresh alarm data
-        //    var alarms = new List<Alarm>
-        //    {
-        //        new Alarm { Type = "Warning", Status = "Active", AlarmNumber = 101, AlarmDescription = "Low Pressure", AlarmDate = "01/15/2025", AlarmTime = "14:30", AcknowledgeDate = "", AcknowledgeTime = "" },
-        //        new Alarm { Type = "Critical", Status = "Acknowledged", AlarmNumber = 102, AlarmDescription = "High Temperature", AlarmDate = "01/14/2025", AlarmTime = "10:15", AcknowledgeDate = "01/14/2025", AcknowledgeTime = "10:20" },
-        //        new Alarm { Type = "Info", Status = "Active", AlarmNumber = 103, AlarmDescription = "System Maintenance", AlarmDate = "01/15/2025", AlarmTime = "16:45", AcknowledgeDate = "", AcknowledgeTime = "" }
-        //    };
-        //    AlarmDataGrid.ItemsSource = alarms;
-        //}
-
-        private void AcknowledgeAll_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("All alarms acknowledged.", "Acknowledge All", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void ClearHistory_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Alarm history cleared.", "Clear History", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        //private void Close_Click(object sender, RoutedEventArgs e)
-        //{
-        //    this.Close();
-        //}
-
-        private void Export_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Alarm data exported.", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+        public string AcknowledgeTime { get; set; }
     }
 }

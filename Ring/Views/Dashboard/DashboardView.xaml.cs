@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Ring.Services;
 using Ring.ViewModels;
 using Ring.Views.UserControls;
@@ -18,6 +19,7 @@ namespace Ring.Views.Dashboard
         private DashboardService _dashboardService;
         private DashboardGraphViewModel _graphViewModel;
         private List<DashboardAlarm> _recentAlarms;
+        private DispatcherTimer _dateTimeTimer;
 
         public DashboardView()
         {
@@ -30,6 +32,8 @@ namespace Ring.Views.Dashboard
                 SetAlarmDataSource();
                 InitializeToggleState();
                 InitializeGraphToggleState();
+                InitializeDateTimeTimer();
+                UpdateSimulationButtonState();
             };
         }
 
@@ -172,7 +176,7 @@ namespace Ring.Views.Dashboard
                         switch (viewName)
                         {
                             case "MakeReadyTank":
-                                var makeReadyTankControl = new Ring.Views.MakeReadyTank();
+                                var makeReadyTankControl = new Ring.Views.MainScreen.MakeReadyTank();
                                 mainContentArea.Content = makeReadyTankControl;
                                 break;
                             case "StorageTankGroup":
@@ -265,8 +269,11 @@ namespace Ring.Views.Dashboard
                 var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
                 if (mainWindow != null)
                 {
-                    var alarmWindow = new Ring.AlarmWindow();
-                    alarmWindow.Show();
+                    var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
+                    if (mainContentArea != null)
+                    {
+                        mainContentArea.Content = new Ring.Views.Process.Alarm();
+                    }
                 }
             }
             catch (Exception ex)
@@ -276,10 +283,94 @@ namespace Ring.Views.Dashboard
         }
         #endregion
 
+        #region Date/Time Timer
+        private void InitializeDateTimeTimer()
+        {
+            _dateTimeTimer = new DispatcherTimer();
+            _dateTimeTimer.Interval = TimeSpan.FromSeconds(1); // Update every second
+            _dateTimeTimer.Tick += DateTimeTimer_Tick;
+            _dateTimeTimer.Start();
+            
+            // Update immediately
+            UpdateDateTime();
+        }
+
+        private void DateTimeTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateDateTime();
+        }
+
+        private void UpdateDateTime()
+        {
+            if (SystemTimeText != null)
+            {
+                SystemTimeText.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+        }
+        #endregion
+
+        #region Simulation Mode Toggle
+        private void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
+                if (mainWindow != null)
+                {
+                    // Call MainWindow's toggle method
+                    mainWindow.ToggleSimulationMode_Click(sender, e);
+                    
+                    // Update button state after toggle
+                    UpdateSimulationButtonState();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error toggling simulation mode: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UpdateSimulationButtonState()
+        {
+            try
+            {
+                var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
+                if (mainWindow != null && SimulationToggleButton != null)
+                {
+                    bool isSimulationMode = mainWindow.IsSimulationMode;
+                    
+                    if (isSimulationMode)
+                    {
+                        SimulationToggleButton.Content = "Simulation Mode";
+                        SimulationToggleButton.Background = new SolidColorBrush(Color.FromRgb(33, 150, 243)); // Primary blue #2196F3
+                        SimulationToggleButton.Foreground = new SolidColorBrush(Colors.White);
+                    }
+                    else
+                    {
+                        SimulationToggleButton.Content = "Live PLC Mode";
+                        SimulationToggleButton.Background = new SolidColorBrush(Color.FromRgb(220, 53, 69)); // Red #DC3545
+                        SimulationToggleButton.Foreground = new SolidColorBrush(Colors.White);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Silently fail - button state will update on next check
+                Console.WriteLine($"Error updating simulation button state: {ex.Message}");
+            }
+        }
+        #endregion
+
         #region Cleanup
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             // Clean up resources
+            if (_dateTimeTimer != null)
+            {
+                _dateTimeTimer.Stop();
+                _dateTimeTimer = null;
+            }
+            
             if (_dashboardService != null)
             {
                 _dashboardService.NavigationRequested -= OnNavigationRequested;
