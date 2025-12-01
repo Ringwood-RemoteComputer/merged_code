@@ -500,6 +500,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="MakeReadyTankFormulaEditButton" 
                             Content="Make Ready Tank Formula Edit" 
@@ -507,6 +508,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="MakeReadyTankFormulaExchangeButton" 
                             Content="Make Ready Tank Formula Exchange" 
@@ -514,6 +516,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="MakeReadyTankNamesEditButton" 
                             Content="Make Ready Tank Names Edit" 
@@ -521,6 +524,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="StorageGroupSystemNamesEditButton" 
                             Content="Storage Group System Names Edit" 
@@ -528,6 +532,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="UseGroupSystemNamesEditButton" 
                             Content="Use Group System Names Edit" 
@@ -535,6 +540,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="UseTankSupervisorEditButton" 
                             Content="Use Tank Supervisor Edit" 
@@ -542,6 +548,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="ShiftNamesAndSpansButton" 
                             Content="Shift Names and Spans" 
@@ -549,6 +556,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="EditPasswordsButton" 
                             Content="Edit Passwords" 
@@ -556,6 +564,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="CommunicationMonitorButton" 
                             Content="Communication Monitor" 
@@ -563,6 +572,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="CommunicationDiskLoggingButton" 
                             Content="Communication Disk Logging" 
@@ -570,6 +580,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="UpdateProcessorTimeDateButton" 
                             Content="Update Processor Time/Date" 
@@ -577,6 +588,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                     <Button x:Name="AlarmAlertsButton" 
                             Content="Alarm Alerts" 
@@ -584,6 +596,7 @@
                             Padding="8,4"
                             HorizontalAlignment="Left" 
                             Click="HandleButtonClick" 
+                            Visibility="Collapsed"
                             Style="{StaticResource NavButtonStyle}"/>
                 </StackPanel>
             </Border>

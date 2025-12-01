@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Reflection;
 
 namespace Ring.Database
 {
@@ -17,24 +16,6 @@ namespace Ring.Database
             // Log the database path for debugging
             Console.WriteLine($"AlarmDatabaseHelper: Database path = {_dbPath}");
             Console.WriteLine($"AlarmDatabaseHelper: Database exists = {File.Exists(_dbPath)}");
-            
-            // Try to initialize SQLite - this helps with native DLL loading
-            try
-            {
-                // Force SQLite to initialize by creating a test connection
-                using (var testConn = new SQLiteConnection(_connectionString))
-                {
-                    testConn.Open();
-                    testConn.Close();
-                }
-                Console.WriteLine("AlarmDatabaseHelper: SQLite initialized successfully");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"AlarmDatabaseHelper: WARNING - SQLite initialization failed: {ex.Message}");
-                Console.WriteLine($"AlarmDatabaseHelper: This may be due to missing native DLL (e_sqlite3.dll)");
-                Console.WriteLine($"AlarmDatabaseHelper: Try reinstalling System.Data.SQLite package or ensure native DLLs are in output directory");
-            }
         }
 
         public static void CreateTable()

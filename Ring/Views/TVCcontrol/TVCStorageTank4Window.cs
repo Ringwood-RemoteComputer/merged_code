@@ -5,9 +5,6 @@ using System.Windows.Input;
 
 namespace Ring
 {
-    /// <summary>
-    /// Interaction logic for TVCStorageTank4Window.xaml
-    /// </summary>
     public partial class TVCStorageTank4Window : Window
     {
         public TVCStorageTank4Window()

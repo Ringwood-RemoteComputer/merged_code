@@ -1,88 +1,424 @@
-﻿<Window x:Class="Ring.Views.TVCcontrol.TVCStorageTank2Window"
+﻿<Window x:Class="Ring.TVCStorageTank2Window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Ring.Views.TVCcontrol"
-        mc:Ignorable="d"
-        Title="TVCStorageTank2Window" Height="450" Width="800">
-    <Grid Background="#B0C4DE">
-        <!-- Main Content -->
-        <StackPanel Margin="10">
-            <!-- Title -->
-            <TextBlock Text="Storage Tank 2" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" />
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Tank TVC User Edit Screen" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen" Background="#F3F4F6"
+        FontFamily="Segoe UI" FontSize="13"
+        ResizeMode="CanResize">
 
-            <!-- Tank Agitator Controls -->
-            <GroupBox Header="Tank Agitator Controls" Margin="0,0,0,20">
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank Agitator Mode" VerticalAlignment="Center" Width="200" />
-                        <ComboBox Width="200">
-                            <ComboBoxItem Content="Agitator Mode Off" />
-                            <ComboBoxItem Content="Agitator Mode On" />
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank Agitator Preset Timer On" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Minutes:" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank Agitator Preset Timer Off" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Minutes:" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
+    <Window.Resources>
+        <!-- Card Shadow Effect -->
+        <DropShadowEffect x:Key="CardShadow"
+                          BlurRadius="18"
+                          ShadowDepth="2"
+                          Opacity="0.18"
+                          Direction="270" />
 
-            <!-- Tank TVC Controls -->
-            <GroupBox Header="Tank TVC Controls" Margin="0,0,0,20">
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank TVC Control" VerticalAlignment="Center" Width="200" />
-                        <ComboBox Width="200">
-                            <ComboBoxItem Content="Tank TVC Control Off" />
-                            <ComboBoxItem Content="Tank TVC Control On" />
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank Heating Temperature Preset" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Celsius" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Tank Cooling Temperature Preset" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Celsius" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
+        <!-- Card Style -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        </Style>
 
-            <!-- Main TVC Controls -->
-            <GroupBox Header="Main TVC Controls">
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Main TVC Control" VerticalAlignment="Center" Width="200" />
-                        <ComboBox Width="200">
-                            <ComboBoxItem Content="Main TVC Control Off" />
-                            <ComboBoxItem Content="Main TVC Control On" />
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Main TVC Heating Temperature Preset" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Celsius" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Main TVC Cooling Temperature Preset" VerticalAlignment="Center" Width="200" />
-                        <TextBox Width="100" />
-                        <TextBlock Text="Celsius" VerticalAlignment="Center" Margin="10,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
-            </GroupBox>
+        <!-- Section Header Style -->
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <!-- Label Style -->
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="280"/>
+        </Style>
+
+        <!-- Modern ComboBox Style -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Numeric Input Field Style -->
+        <Style x:Key="NumericFieldStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,8,40,8"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Unit Label Style -->
+        <Style TargetType="TextBlock" x:Key="UnitLabelStyle">
+            <Setter Property="Foreground" Value="#6B7280"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="12,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Spinner Button Style -->
+        <Style TargetType="Button" x:Key="SpinnerButtonStyle">
+            <Setter Property="Background" Value="#F9FAFB"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E5E7EB"/>
+                    <Setter Property="BorderBrush" Value="#2563EB"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#D1D5DB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Secondary Button Style -->
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F9FAFB"/>
+                    <Setter Property="BorderBrush" Value="#9CA3AF"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#F3F4F6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page Header -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="Storage Tank 2"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#1F2933"/>
+            <TextBlock Text="  •  Tank TVC User Edit Screen"
+                       FontSize="14"
+                       Foreground="#6B7280"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,0,2"/>
         </StackPanel>
 
+        <!-- Main Content Area -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Tank Agitator Controls Card -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Tank Agitator Controls" Style="{StaticResource SectionHeaderStyle}"/>
+                        
+                        <!-- Tank Agitator Mode -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Tank Agitator Mode" Style="{StaticResource FieldLabelStyle}"/>
+                            <ComboBox x:Name="AgitatorModeComboBox" Width="300">
+                                <ComboBoxItem Content="Agitator Mode Off"/>
+                                <ComboBoxItem Content="Agitator Mode On"/>
+                                <ComboBoxItem Content="Agitator Mode Automatic" IsSelected="True"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                        <!-- Tank Agitator Preset Timer On -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Tank Agitator Preset Timer On" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="AgitatorTimerOnTextBox" 
+                                         Text="5" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="AgitatorTimerOnUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="AgitatorTimerOnDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Minutes" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Tank Agitator Preset Timer Off -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tank Agitator Preset Timer Off" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="AgitatorTimerOffTextBox" 
+                                         Text="15" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="AgitatorTimerOffUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="AgitatorTimerOffDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Minutes" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                    </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tank TVC Controls Card -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Tank TVC Controls" Style="{StaticResource SectionHeaderStyle}"/>
+                        
+                        <!-- Tank TVC Control -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Tank TVC Control" Style="{StaticResource FieldLabelStyle}"/>
+                            <ComboBox x:Name="TankTVCControlComboBox" Width="300">
+                                <ComboBoxItem Content="Tank TVC Control Off"/>
+                                <ComboBoxItem Content="Tank TVC Control On"/>
+                                <ComboBoxItem Content="Tank TVC Control Automatic On" IsSelected="True"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                        <!-- Tank Heating Temperature Preset -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Tank Heating Temperature Preset" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TankHeatingTempTextBox" 
+                                         Text="99" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="TankHeatingTempUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="TankHeatingTempDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Celsius" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Tank Cooling Temperature Preset -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tank Cooling Temperature Preset" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TankCoolingTempTextBox" 
+                                         Text="0" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="TankCoolingTempUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="TankCoolingTempDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Celsius" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                    </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Main TVC Controls Card -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Main TVC Controls" Style="{StaticResource SectionHeaderStyle}"/>
+                        
+                        <!-- Main TVC Control -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Main TVC Control" Style="{StaticResource FieldLabelStyle}"/>
+                            <ComboBox x:Name="MainTVCControlComboBox" Width="300">
+                                <ComboBoxItem Content="Main TVC Control Off" IsSelected="True"/>
+                                <ComboBoxItem Content="Main TVC Control On"/>
+                                <ComboBoxItem Content="Main TVC Control Automatic On"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                        <!-- Main TVC Heating Temperature Preset -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <TextBlock Text="Main TVC Heating Temperature Preset" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="MainHeatingTempTextBox" 
+                                         Text="0" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="MainHeatingTempUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="MainHeatingTempDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Celsius" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Main TVC Cooling Temperature Preset -->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Main TVC Cooling Temperature Preset" Style="{StaticResource FieldLabelStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="MainCoolingTempTextBox" 
+                                         Text="0" 
+                                         Style="{StaticResource NumericFieldStyle}"
+                                         PreviewTextInput="NumberValidationTextBox"/>
+                                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="8,0,0,0">
+                                    <Button Content="▲" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Click="MainCoolingTempUp_Click"/>
+                                    <Button Content="▼" Style="{StaticResource SpinnerButtonStyle}" 
+                                            Margin="0,2,0,0"
+                                            Click="MainCoolingTempDown_Click"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" 
+                                           Text="Celsius" 
+                                           Style="{StaticResource UnitLabelStyle}"
+                                           HorizontalAlignment="Right"/>
+                            </Grid>
+                    </StackPanel>
+                    </StackPanel>
+                </Border>
+                </StackPanel>
+        </ScrollViewer>
+
         <!-- Close Button -->
-        <Button Content="Close" Width="100" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="Close_Click" />
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,0,0">
+            <Button Content="Close" 
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Width="120"
+                    Height="40"
+                    Click="Close_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

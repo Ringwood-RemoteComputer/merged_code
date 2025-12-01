@@ -656,7 +656,7 @@ namespace Ring.Views.UserControls
         {
             try
             {
-                var tvcStorageTank2Window = new Ring.Views.TVCcontrol.TVCStorageTank2Window();
+                var tvcStorageTank2Window = new Ring.TVCStorageTank2Window();
                 tvcStorageTank2Window.Show();
             }
             catch (Exception ex)
@@ -790,6 +790,10 @@ namespace Ring.Views.UserControls
             }
         }
 
+        // Setup menu authentication
+        private bool _isSupervisorAuthenticated = false;
+        private bool _isAdminAuthenticated = false;
+
         /// Opens the Password Dialog
         private void OpenPasswordView()
         {
@@ -802,12 +806,146 @@ namespace Ring.Views.UserControls
                     {
                         Owner = mainWindow
                     };
-                    passwordDialog.ShowDialog();
+                    
+                    bool? result = passwordDialog.ShowDialog();
+                    
+                    if (result == true && passwordDialog.IsPasswordCorrect)
+                    {
+                        if (passwordDialog.PasswordType == "Supervisor")
+                        {
+                            _isSupervisorAuthenticated = true;
+                            _isAdminAuthenticated = false;
+                            ShowSetupMenuItems();
+                            MessageBox.Show("Supervisor access granted.", "Access Granted", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else if (passwordDialog.PasswordType == "Admin")
+                        {
+                            _isSupervisorAuthenticated = true;
+                            _isAdminAuthenticated = true;
+                            ShowSetupMenuItems();
+                            MessageBox.Show("Admin access granted.", "Access Granted", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading Password View: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShowSetupMenuItems()
+        {
+            // Supervisor-level items (shown when supervisor password is entered)
+            var supervisorButtons = new[]
+            {
+                "MakeReadyTankInventoryEditButton",
+                "MakeReadyTankFormulaEditButton",
+                "MakeReadyTankFormulaExchangeButton",
+                "MakeReadyTankNamesEditButton",
+                "StorageGroupSystemNamesEditButton",
+                "ShiftNamesAndSpansButton",
+                "EditPasswordsButton",
+                "CommunicationDiskLoggingButton",
+                "UpdateProcessorTimeDateButton"
+            };
+
+            // Admin-level items (shown only when admin password is entered)
+            var adminButtons = new[]
+            {
+                "MixersButton",
+                "DistributionButton",
+                "ViscometerButton",
+                "GroupsButton",
+                "TanksButton",
+                "DataEntryButton",
+                "AlarmAlertsButton",
+                "InventoryButton",
+                "MixerBatchFormulaDataButton",
+                "DistributionBatchDataButton",
+                "ShiftsAdminButton",
+                "PasswordSubmenuButton",
+                "CommunicationButton",
+                "ImportExportSetupDatabaseButton"
+            };
+
+            // Hide all first
+            HideSetupMenuItems();
+
+            // Show supervisor items if supervisor is authenticated
+            if (_isSupervisorAuthenticated)
+            {
+                foreach (var buttonName in supervisorButtons)
+                {
+                    var button = this.FindName(buttonName) as Button;
+                    if (button != null)
+                    {
+                        button.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+
+            // Show admin items if admin is authenticated
+            if (_isAdminAuthenticated)
+            {
+                // Admin gets all supervisor items plus admin items
+                foreach (var buttonName in supervisorButtons)
+                {
+                    var button = this.FindName(buttonName) as Button;
+                    if (button != null)
+                    {
+                        button.Visibility = Visibility.Visible;
+                    }
+                }
+
+                foreach (var buttonName in adminButtons)
+                {
+                    var button = this.FindName(buttonName) as Button;
+                    if (button != null)
+                    {
+                        button.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        private void HideSetupMenuItems()
+        {
+            // Hide all protected setup menu items (supervisor + admin)
+            var allButtons = new[]
+            {
+                "MakeReadyTankInventoryEditButton",
+                "MakeReadyTankFormulaEditButton",
+                "MakeReadyTankFormulaExchangeButton",
+                "MakeReadyTankNamesEditButton",
+                "StorageGroupSystemNamesEditButton",
+                "ShiftNamesAndSpansButton",
+                "EditPasswordsButton",
+                "CommunicationDiskLoggingButton",
+                "UpdateProcessorTimeDateButton",
+                "MixersButton",
+                "DistributionButton",
+                "ViscometerButton",
+                "GroupsButton",
+                "TanksButton",
+                "DataEntryButton",
+                "AlarmAlertsButton",
+                "InventoryButton",
+                "MixerBatchFormulaDataButton",
+                "DistributionBatchDataButton",
+                "ShiftsAdminButton",
+                "PasswordSubmenuButton",
+                "CommunicationButton",
+                "ImportExportSetupDatabaseButton"
+            };
+
+            foreach (var buttonName in allButtons)
+            {
+                var button = this.FindName(buttonName) as Button;
+                if (button != null)
+                {
+                    button.Visibility = Visibility.Collapsed;
+                }
             }
         }
 

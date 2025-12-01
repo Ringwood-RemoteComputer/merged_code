@@ -11,7 +11,8 @@ using Ring.Views;
 using Ring.Views.BatchStart;
 using Ring.Views.Reports;
 using Ring.Views.Shifts;
-using Ring.Views.TVCcontrol;
+using Ring.Views.MainScreen;
+using Ring.Views.Process;
 using Ring.Services.PLC;
 using Ring.Services.Alarms;
 using System.Collections.Generic;
@@ -29,11 +30,14 @@ namespace Ring
         // Simulation mode
         private bool _simulationMode = true; // Default to simulation mode
         
-        // Public property to access simulation mode state
-        public bool IsSimulationMode
+        // Static property to expose simulation mode to other windows
+        public static bool IsSimulationMode
         {
-            get => _simulationMode;
-            private set => _simulationMode = value;
+            get
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                return mainWindow?._simulationMode ?? true; // Default to simulation if MainWindow not found
+            }
         }
         
         // Setup menu authentication
@@ -798,10 +802,10 @@ namespace Ring
         // Make this method public so Dashboard can call it
         public void ToggleSimulationMode_Click(object sender, RoutedEventArgs e)
         {
-            IsSimulationMode = !IsSimulationMode;
+            _simulationMode = !_simulationMode;
             
             // Reinitialize PLC readers when switching to live mode
-            if (!IsSimulationMode)
+            if (!_simulationMode)
             {
                 try
                 {
@@ -844,7 +848,7 @@ namespace Ring
             }
             
             // Button state is now managed by Dashboard, so we don't update it here
-            if (IsSimulationMode)
+            if (_simulationMode)
             {
                 Console.WriteLine("Switched to SIMULATION MODE - Generating realistic test data");
             }
@@ -1001,11 +1005,636 @@ namespace Ring
 
         private void MainContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Close all NavBar popups when clicking on main content
-            if (NavBar != null)
+            // Close all submenus when clicking on main content
+            HideAllSubmenus();
+        }
+
+        // Setup menu item click handlers
+        private void MakeReadyTankInventoryEdit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Make Ready Tank Inventory Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MakeReadyTankFormulaEdit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Make Ready Tank Formula Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MakeReadyTankFormulaExchange_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Make Ready Tank Formula Exchange - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MakeReadyTankNamesEdit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Make Ready Tank Names Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void StorageGroupSystemNamesEdit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Storage Group System Names Edit - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ShiftNamesAndSpans_Click(object sender, RoutedEventArgs e)
+        {
+            // Submenu is handled by hover events
+        }
+
+        private void ShiftNamesAndSpans_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("ShiftNamesAndSpansSubmenu");
+        }
+
+        private void ShiftNamesAndSpans_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void EditPasswords_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Edit Passwords - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CommunicationDiskLogging_Click(object sender, RoutedEventArgs e)
+        {
+            // Submenu is handled by hover events
+        }
+
+        private void CommunicationDiskLogging_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("CommunicationDiskLoggingSubmenu");
+        }
+
+        private void CommunicationDiskLogging_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void UpdateProcessorTimeDate_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Update Processor Time/Date - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        // Admin menu item click handlers
+        private void Mixers_Click(object sender, RoutedEventArgs e) { }
+        private void Mixers_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("MixersSubmenu"); }
+        private void Mixers_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Distribution_Click(object sender, RoutedEventArgs e) { }
+        private void Distribution_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DistributionSubmenu"); }
+        private void Distribution_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Viscometer_Click(object sender, RoutedEventArgs e) { }
+        private void Viscometer_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ViscometerSubmenu"); }
+        private void Viscometer_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Groups_Click(object sender, RoutedEventArgs e) { }
+        private void Groups_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("GroupsSubmenu"); }
+        private void Groups_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Tanks_Click(object sender, RoutedEventArgs e) { }
+        private void Tanks_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("TanksSubmenu"); }
+        private void Tanks_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void DataEntry_Click(object sender, RoutedEventArgs e) { }
+        private void DataEntry_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DataEntrySubmenu"); }
+        private void DataEntry_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void AlarmsAdmin_Click(object sender, RoutedEventArgs e) { }
+        private void AlarmsAdmin_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("AlarmsAdminSubmenu"); }
+        private void AlarmsAdmin_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Inventory_Click(object sender, RoutedEventArgs e) { }
+        private void Inventory_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("InventorySubmenu"); }
+        private void Inventory_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void MixerBatchFormulaData_Click(object sender, RoutedEventArgs e) { }
+        private void MixerBatchFormulaData_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("MixerBatchFormulaDataSubmenu"); }
+        private void MixerBatchFormulaData_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void DistributionBatchData_Click(object sender, RoutedEventArgs e) { }
+        private void DistributionBatchData_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("DistributionBatchDataSubmenu"); }
+        private void DistributionBatchData_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void ShiftsAdmin_Click(object sender, RoutedEventArgs e) { }
+        private void ShiftsAdmin_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ShiftsAdminSubmenu"); }
+        private void ShiftsAdmin_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void PasswordSubmenu_Click(object sender, RoutedEventArgs e) { }
+        private void PasswordSubmenu_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("PasswordSubmenu"); }
+        private void PasswordSubmenu_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void Communication_Click(object sender, RoutedEventArgs e) { }
+        private void Communication_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("CommunicationSubmenu"); }
+        private void Communication_MouseLeave(object sender, MouseEventArgs e) { }
+
+        private void ImportExportSetupDatabase_Click(object sender, RoutedEventArgs e) { }
+        private void ImportExportSetupDatabase_MouseEnter(object sender, MouseEventArgs e) { ShowSubmenu("ImportExportSetupDatabaseSubmenu"); }
+        private void ImportExportSetupDatabase_MouseLeave(object sender, MouseEventArgs e) { }
+
+        // Submenu management
+        private string _currentSubmenu = null;
+
+        // Submenu hover event handlers
+        private void Process_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("ProcessSubmenu");
+        }
+
+        private void Process_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void MainScreen_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("MainScreenSubmenu");
+        }
+
+        private void MainScreen_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void Reports_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("ReportsSubmenu");
+        }
+
+        private void Reports_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void BatchStart_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("BatchStartSubmenu");
+        }
+
+        private void BatchStart_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void TVCControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("TVCControlSubmenu");
+        }
+
+        private void TVCControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void Shifts_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("ShiftsSubmenu");
+        }
+
+        private void Shifts_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void Setup_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("SetupSubmenu");
+        }
+
+        private void Setup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void Window_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("WindowSubmenu");
+        }
+
+        private void Window_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void Help_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ShowSubmenu("HelpSubmenu");
+        }
+
+        private void Help_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Submenu will stay open until user clicks elsewhere
+        }
+
+        private void ShowSubmenu(string submenuName)
+        {
+            // Hide any currently open submenu
+            if (_currentSubmenu != null && _currentSubmenu != submenuName)
             {
-                NavBar.CloseAllPopupsPublic();
+                HideSubmenu(_currentSubmenu);
             }
+
+            _currentSubmenu = submenuName;
+            var submenu = this.FindName(submenuName) as Border;
+            if (submenu != null)
+            {
+                submenu.Visibility = Visibility.Visible;
+                submenu.Opacity = 0;
+                submenu.RenderTransform = new TranslateTransform(-10, 0);
+                
+                var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150));
+                var slideIn = new DoubleAnimation(-10, 0, TimeSpan.FromMilliseconds(150));
+                
+                submenu.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+                submenu.RenderTransform.BeginAnimation(TranslateTransform.XProperty, slideIn);
+            }
+        }
+
+        private void HideSubmenu(string submenuName)
+        {
+            var submenu = this.FindName(submenuName) as Border;
+            if (submenu != null)
+            {
+                var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150));
+                var slideOut = new DoubleAnimation(0, -10, TimeSpan.FromMilliseconds(150));
+                
+                fadeOut.Completed += (s, e) => submenu.Visibility = Visibility.Collapsed;
+                
+                submenu.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+                submenu.RenderTransform.BeginAnimation(TranslateTransform.XProperty, slideOut);
+            }
+        }
+
+        private void HideAllSubmenus()
+        {
+            if (_currentSubmenu != null)
+            {
+                HideSubmenu(_currentSubmenu);
+                _currentSubmenu = null;
+            }
+        }
+
+        // Additional click handlers for submenu items
+        private void StorageTank1_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var storageTank1Window = new Ring.Views.BatchStart.StorageTank1();
+                storageTank1Window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Storage Tank 1: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void StorageTank2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var storageTank2Window = new Ring.Views.BatchStart.StorageTank2();
+                storageTank2Window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Storage Tank 2: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LowMidtank_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var storageTank3Window = new Ring.Views.BatchStart.Lowmidtank();
+                storageTank3Window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Storage Tank 3: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void StorageTank4_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var storageTank4Window = new Ring.Views.BatchStart.StorageTank4();
+                storageTank4Window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Storage Tank 4: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TVCStorageTank1_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var window = new TVCStorageTank1Window();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening TVC Storage Tank 1: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TVCStorageTank2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var window = new TVCStorageTank2Window();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening TVC Storage Tank 2: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TVClowmidtank_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var window = new TVClowmidtank();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening TVC Storage Tank 3: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TVCStorageTank4_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var window = new TVCStorageTank4Window();
+                window.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening TVC Storage Tank 4: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShiftControl_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Shift Control clicked.");
+        }
+
+        private void Shift1_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Shift 1 clicked.");
+        }
+
+        private void Shift2_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Shift 2 clicked.");
+        }
+
+        private void Shift3_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Shift 3 clicked.");
+        }
+
+        // Main menu click handlers
+        private void Dashboard_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dashboardView = new Ring.Views.Dashboard.DashboardView();
+                MainContentArea.Content = dashboardView;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Dashboard: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Process_Click(object sender, RoutedEventArgs e)
+        {
+            // Process menu - handled by submenu
+        }
+
+        private void Alarms_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Alarm is a UserControl, so we need to create a Window to host it
+                var alarmWindow = new Window
+                {
+                    Title = "Alarms",
+                    Content = new Alarm(),
+                    Width = 800,
+                    Height = 600,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                };
+                alarmWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Alarms: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Hold_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hold - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MainScreen_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var makeReadyTank = new MakeReadyTank();
+                MainContentArea.Content = makeReadyTank;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Main Screen: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TankMonitoring_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var makeReadyTank = new MakeReadyTank();
+                MainContentArea.Content = makeReadyTank;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Tank Monitoring: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void StorageGroup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var storageGroupWindow = new StorageGroupWindow();
+                storageGroupWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Storage Group: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UseTanks_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Use Tanks - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+            // Reports menu - handled by submenu
+        }
+
+        private void BatchQuery_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchQueryWindow = new BatchQueryView();
+                batchQueryWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Batch Query: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UsageReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var usageReportWindow = new Ring.UsageReportWindow();
+                usageReportWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Usage Report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BatchHistoryReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchHistoryReportWindow = new BatchHistoryReport();
+                batchHistoryReportWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Batch History Report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BatchHistoryUsageReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var batchHistoryUsageReportWindow = new BatchHistoryUsageReport();
+                batchHistoryUsageReportWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Batch History Usage Report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void AlarmHistory_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var alarmHistoryWindow = new AlarmHistory();
+                alarmHistoryWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Alarm History: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void InventoryReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var inventoryReportWindow = new InventoryReport();
+                inventoryReportWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Inventory Report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void FormulaReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var formulaReportWindow = new FormulaReport();
+                formulaReportWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Formula Report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ShiftConsumption_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var shiftConsumptionWindow = new ShiftConsumption();
+                shiftConsumptionWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening Shift Consumption: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void DatabaseTest_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Database Test feature is disabled.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void BatchStart_Click(object sender, RoutedEventArgs e)
+        {
+            // Batch Start menu - handled by submenu
+        }
+
+        private void TVCControl_Click(object sender, RoutedEventArgs e)
+        {
+            // TVC Control menu - handled by submenu
+        }
+
+        private void Shifts_Click(object sender, RoutedEventArgs e)
+        {
+            // Shifts menu - handled by submenu
+        }
+
+        private void Language_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Language selection - Feature to be implemented", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Setup_Click(object sender, RoutedEventArgs e)
+        {
+            // Setup menu - handled by submenu
+        }
+
+        private void Window_Click(object sender, RoutedEventArgs e)
+        {
+            // Window menu - handled by submenu
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            // Help menu - handled by submenu
         }
 
         // Navigation is now handled by NavBar UserControl

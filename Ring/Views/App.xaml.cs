@@ -34,6 +34,9 @@ namespace Ring
                     var mainWindow = new MainWindow();
                     mainWindow.Show();
                     
+                    // Set as main window so application shuts down when it closes
+                    this.MainWindow = mainWindow;
+                    
                     // Close splash screen
                     splashScreen.Close();
                 };

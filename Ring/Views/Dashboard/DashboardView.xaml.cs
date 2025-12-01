@@ -337,7 +337,7 @@ namespace Ring.Views.Dashboard
                 var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
                 if (mainWindow != null && SimulationToggleButton != null)
                 {
-                    bool isSimulationMode = mainWindow.IsSimulationMode;
+                    bool isSimulationMode = MainWindow.IsSimulationMode;
                     
                     if (isSimulationMode)
                     {

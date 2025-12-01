@@ -1,337 +1,394 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Text.RegularExpressions;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Windows.Threading;
+using Ring.Services.PLC;
+using Ring;
 
 namespace Ring.Views.BatchStart
 {
     /// <summary>
     /// Interaction logic for StorageTank1.xaml
     /// </summary>
-    public partial class StorageTank1 : Window, INotifyPropertyChanged
+    public partial class StorageTank1 : Window
     {
-        // Data binding properties
-        private double _tankLevel = 65.5;
-        private double _tankVolume = 1625;
-        private double _temperature = 67.2;
-        private double _viscosity = 245;
-        private double _pressure = 32.8;
-        private string _currentBatchId = "BATCH-2025-001";
-        private string _currentFormula = "Formula 1 - Standard Mix";
-        private double _batchProgress = 45.5;
-        private DateTime _lastUpdateTime = DateTime.Now;
-        private List<AlarmInfo> _activeAlarms;
+        private const int MIN_BATCH_VOLUME = 900;
+        private const int MAX_BATCH_VOLUME = 1350;
+        private const int MIN_BATCH_START_LEVEL = 0;
+        private const int MAX_BATCH_START_LEVEL = 2500;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        // PLC Configuration
+        private const string PLC_IP = "192.168.202.10";
+        private const string PLC_PATH = "1,0";
+        private const int TANK_INDEX = 0; // Tanks[0] for Storage Tank 1
+        
+        private bool _simulationMode => MainWindow.IsSimulationMode;
+
+        // PLC Tag Readers
+        private PlcTagReader _formulaNumberReader;
+        private PlcTagReader _requestLevelReader;
+        private PlcTagReader _startTypeReader;
+        private PlcTagReader _splittingAReader;
+        private PlcTagReader _splittingBReader;
+
+        // PLC Tag Writers
+        private PlcTagWriter _formulaNumberWriter;
+        private PlcTagWriter _requestLevelWriter;
+        private PlcTagWriter _startTypeWriter;
+        private PlcTagWriter _splittingAWriter;
+        private PlcTagWriter _splittingBWriter;
+
+        // Update timer
+        private DispatcherTimer _plcUpdateTimer;
+        private bool _isUpdatingFromPlc = false; // Prevent circular updates
 
         public StorageTank1()
         {
             InitializeComponent();
-            InitializeData();
-            DataContext = this;
-        }
-
-        private void InitializeData()
-        {
-            // Initialize sample alarm data
-            _activeAlarms = new List<AlarmInfo>
-            {
-                new AlarmInfo { Timestamp = DateTime.Now.AddMinutes(-5), Description = "Temperature above setpoint", Priority = "Medium", Status = "Active" },
-                new AlarmInfo { Timestamp = DateTime.Now.AddMinutes(-12), Description = "Agitator motor overload", Priority = "High", Status = "Acknowledged" },
-                new AlarmInfo { Timestamp = DateTime.Now.AddMinutes(-25), Description = "Low tank level warning", Priority = "Low", Status = "Active" }
-            };
-
-            // Start timer for real-time updates
-            var timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(2);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            // Simulate real-time data updates
-            LastUpdateTime = DateTime.Now;
             
-            // Simulate tank level changes
-            var random = new Random();
-            TankLevel = Math.Max(0, Math.Min(100, TankLevel + (random.NextDouble() - 0.5) * 2));
-            TankVolume = TankLevel * 25; // 2500 gallons max capacity
+            // Wait for window to load before initializing
+            this.Loaded += StorageTank1_Loaded;
+            this.Closing += StorageTank1_Closing;
+        }
+
+        private void StorageTank1_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Initialize PLC readers/writers
+            InitializePlcTags();
             
-            // Simulate temperature changes
-            Temperature = Math.Max(20, Math.Min(80, Temperature + (random.NextDouble() - 0.5) * 1));
+            // Subscribe to text changes for summary updates
+            if (BatchVolumeTextBox != null)
+            {
+                BatchVolumeTextBox.TextChanged += BatchVolumeTextBox_TextChanged;
+            }
+            if (BatchStartLevelTextBox != null)
+            {
+                BatchStartLevelTextBox.TextChanged += BatchStartLevelTextBox_TextChanged;
+            }
+            if (FormulaListBox != null)
+            {
+                FormulaListBox.SelectionChanged += FormulaListBox_SelectionChanged;
+            }
             
-            // Simulate viscosity changes
-            Viscosity = Math.Max(100, Math.Min(500, Viscosity + (random.NextDouble() - 0.5) * 10));
+            // Read initial values from PLC
+            ReadFromPlc();
             
-            // Simulate pressure changes
-            Pressure = Math.Max(25, Math.Min(45, Pressure + (random.NextDouble() - 0.5) * 0.5));
+            // Start periodic PLC read timer (every 2 seconds)
+            StartPlcUpdateTimer();
+            
+            // Initial summary update after everything is loaded
+            UpdateSummary();
         }
 
-        #region Properties
-
-        public double TankLevel
+        private void StorageTank1_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            get => _tankLevel;
-            set
+            // Stop and dispose timer
+            if (_plcUpdateTimer != null)
             {
-                _tankLevel = value;
-                OnPropertyChanged();
+                _plcUpdateTimer.Stop();
+                _plcUpdateTimer = null;
             }
         }
 
-        public double TankVolume
+        private void InitializePlcTags()
         {
-            get => _tankVolume;
-            set
+            try
             {
-                _tankVolume = value;
-                OnPropertyChanged();
+                if (!_simulationMode)
+                {
+                    // Initialize readers
+                    _formulaNumberReader = new PlcTagReader($"Tanks[{TANK_INDEX}].Formula_number", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _requestLevelReader = new PlcTagReader($"Tanks[{TANK_INDEX}].Request_level", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _startTypeReader = new PlcTagReader($"Tanks[{TANK_INDEX}].Start_Type", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _splittingAReader = new PlcTagReader($"Tanks[{TANK_INDEX}].Splitting_A", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _splittingBReader = new PlcTagReader($"Tanks[{TANK_INDEX}].Splitting_B", PLC_IP, PlcDataType.DINT, PLC_PATH);
+
+                    // Initialize writers
+                    _formulaNumberWriter = new PlcTagWriter($"Tanks[{TANK_INDEX}].Formula_number", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _requestLevelWriter = new PlcTagWriter($"Tanks[{TANK_INDEX}].Request_level", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _startTypeWriter = new PlcTagWriter($"Tanks[{TANK_INDEX}].Start_Type", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _splittingAWriter = new PlcTagWriter($"Tanks[{TANK_INDEX}].Splitting_A", PLC_IP, PlcDataType.DINT, PLC_PATH);
+                    _splittingBWriter = new PlcTagWriter($"Tanks[{TANK_INDEX}].Splitting_B", PLC_IP, PlcDataType.DINT, PLC_PATH);
+
+                    Console.WriteLine($"[StorageTank1] PLC tags initialized for Tanks[{TANK_INDEX}]");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[StorageTank1] Error initializing PLC tags: {ex.Message}");
             }
         }
 
-        public double Temperature
+        private void StartPlcUpdateTimer()
         {
-            get => _temperature;
-            set
+            if (_plcUpdateTimer == null)
             {
-                _temperature = value;
-                OnPropertyChanged();
+                _plcUpdateTimer = new DispatcherTimer();
+                _plcUpdateTimer.Interval = TimeSpan.FromSeconds(2); // Update every 2 seconds
+                _plcUpdateTimer.Tick += (s, e) => ReadFromPlc();
+            }
+            
+            if (!_simulationMode)
+            {
+                _plcUpdateTimer.Start();
             }
         }
 
-        public double Viscosity
+        private void ReadFromPlc()
         {
-            get => _viscosity;
-            set
+            if (_simulationMode || _isUpdatingFromPlc)
+                return;
+
+            try
             {
-                _viscosity = value;
-                OnPropertyChanged();
+                _isUpdatingFromPlc = true;
+
+                // Read Formula Number (1-6)
+                string formulaValue = _formulaNumberReader?.Read();
+                if (formulaValue != null && formulaValue != "Error" && int.TryParse(formulaValue, out int formulaNum) && formulaNum >= 1 && formulaNum <= 6)
+                {
+                    UpdateFormulaSelection(formulaNum);
+                }
+
+                // Read Request Level (0-2500)
+                string levelValue = _requestLevelReader?.Read();
+                if (levelValue != null && levelValue != "Error" && int.TryParse(levelValue, out int level) && level >= 0 && level <= 2500)
+                {
+                    if (BatchStartLevelTextBox != null && BatchStartLevelTextBox.Text != level.ToString())
+                    {
+                        BatchStartLevelTextBox.Text = level.ToString();
+                    }
+                }
+
+                // Read Start Type (0=No Batching, 1=Single Batch, 2=Continuous Batching)
+                string startTypeValue = _startTypeReader?.Read();
+                if (startTypeValue != null && startTypeValue != "Error" && int.TryParse(startTypeValue, out int startType) && startType >= 0 && startType <= 2)
+                {
+                    UpdateBatchStartType(startType);
+                }
+
+                // Read Splitting A (0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4)
+                string splittingAValue = _splittingAReader?.Read();
+                if (splittingAValue != null && splittingAValue != "Error" && int.TryParse(splittingAValue, out int splittingA) && splittingA >= 0 && splittingA <= 3)
+                {
+                    UpdateSplittingTypeA(splittingA);
+                }
+
+                // Read Splitting B (0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4)
+                string splittingBValue = _splittingBReader?.Read();
+                if (splittingBValue != null && splittingBValue != "Error" && int.TryParse(splittingBValue, out int splittingB) && splittingB >= 0 && splittingB <= 3)
+                {
+                    UpdateSplittingTypeB(splittingB);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[StorageTank1] Error reading from PLC: {ex.Message}");
+            }
+            finally
+            {
+                _isUpdatingFromPlc = false;
             }
         }
 
-        public double Pressure
+        private void UpdateFormulaSelection(int formulaNumber)
         {
-            get => _pressure;
-            set
+            if (FormulaListBox == null) return;
+
+            // Formula numbers are 1-6, ListBox items are 0-5 indexed
+            int index = formulaNumber - 1;
+            if (index >= 0 && index < FormulaListBox.Items.Count)
             {
-                _pressure = value;
-                OnPropertyChanged();
+                FormulaListBox.SelectedIndex = index;
             }
         }
 
-        public string CurrentBatchId
+        private void UpdateBatchStartType(int startType)
         {
-            get => _currentBatchId;
-            set
+            // 0=No Batching, 1=Single Batch, 2=Continuous Batching
+            var batchTypeButtons = FindVisualChildren<RadioButton>(this)
+                .Where(rb => rb.GroupName == "BatchType")
+                .ToList();
+
+            if (batchTypeButtons.Count >= 3)
             {
-                _currentBatchId = value;
-                OnPropertyChanged();
+                // Order: No Batching (0), Single Batch (1), Continuous Batching (2)
+                if (startType >= 0 && startType < batchTypeButtons.Count)
+                {
+                    batchTypeButtons[startType].IsChecked = true;
+                }
             }
         }
 
-        public string CurrentFormula
+        private void UpdateSplittingTypeA(int splittingType)
         {
-            get => _currentFormula;
-            set
+            // 0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4
+            var splitAButtons = FindVisualChildren<RadioButton>(this)
+                .Where(rb => rb.GroupName == "SplitA")
+                .ToList();
+
+            if (splitAButtons.Count >= 4 && splittingType >= 0 && splittingType < splitAButtons.Count)
             {
-                _currentFormula = value;
-                OnPropertyChanged();
+                splitAButtons[splittingType].IsChecked = true;
             }
         }
 
-        public double BatchProgress
+        private void UpdateSplittingTypeB(int splittingType)
         {
-            get => _batchProgress;
-            set
+            // 0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4
+            var splitBButtons = FindVisualChildren<RadioButton>(this)
+                .Where(rb => rb.GroupName == "SplitB")
+                .ToList();
+
+            if (splitBButtons.Count >= 4 && splittingType >= 0 && splittingType < splitBButtons.Count)
             {
-                _batchProgress = value;
-                OnPropertyChanged();
+                splitBButtons[splittingType].IsChecked = true;
             }
         }
 
-        public DateTime LastUpdateTime
+        private void WriteToPlc(string tagName, int value, PlcTagWriter writer)
         {
-            get => _lastUpdateTime;
-            set
+            if (_simulationMode || writer == null)
+                return;
+
+            try
             {
-                _lastUpdateTime = value;
-                OnPropertyChanged();
+                bool success = writer.Write(value.ToString());
+                if (success)
+                {
+                    Console.WriteLine($"[StorageTank1] ✓ Wrote {tagName} = {value}");
+                }
+                else
+                {
+                    Console.WriteLine($"[StorageTank1] ✗ Failed to write {tagName} = {value}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[StorageTank1] Error writing {tagName}: {ex.Message}");
             }
         }
 
-        public List<AlarmInfo> ActiveAlarms
+        private void UpdateSummary()
         {
-            get => _activeAlarms;
-            set
+            try
             {
-                _activeAlarms = value;
-                OnPropertyChanged();
+                // Check if controls are initialized
+                if (SummaryTextBlock == null || BatchVolumeTextBox == null || BatchStartLevelTextBox == null)
+                {
+                    return;
+                }
+
+                string formula = "Formula 1";
+                if (FormulaListBox != null && FormulaListBox.SelectedItem is ListBoxItem selectedItem)
+                {
+                    formula = selectedItem.Content.ToString();
+                }
+
+                string batchType = "No Batching";
+                // Find checked radio button in BatchType group
+                var batchTypeRb = FindVisualChildren<RadioButton>(this)
+                    .FirstOrDefault(rb => rb.GroupName == "BatchType" && rb.IsChecked == true);
+                if (batchTypeRb != null)
+                {
+                    batchType = batchTypeRb.Content.ToString();
+                }
+
+                string splitting = "No splitting";
+                // Find checked radio button in SplitA group
+                var splitRb = FindVisualChildren<RadioButton>(this)
+                    .FirstOrDefault(rb => rb.GroupName == "SplitA" && rb.IsChecked == true);
+                if (splitRb != null)
+                {
+                    string splitText = splitRb.Content.ToString();
+                    splitting = splitText == "No Splitting" ? "No splitting" : splitText.Replace("Split with ", "");
+                }
+
+                string volume = BatchVolumeTextBox?.Text ?? "900";
+                string level = BatchStartLevelTextBox?.Text ?? "500";
+
+                SummaryTextBlock.Text = $"{formula} • {batchType} • {splitting} • {volume} gal from level {level}";
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't crash
+                Console.WriteLine($"Error updating summary: {ex.Message}");
             }
         }
 
-        #endregion
+        private System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = System.Windows.Media.VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
 
-        #region Event Handlers
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void AgitatorToggle_Click(object sender, RoutedEventArgs e)
+        private void FormulaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var button = sender as Button;
-            if (button.Content.ToString() == "OFF")
-            {
-                button.Content = "ON";
-                button.Background = Brushes.Green;
-                MessageBox.Show("Agitator started successfully!", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                button.Content = "OFF";
-                button.Background = Brushes.LightGray;
-                MessageBox.Show("Agitator stopped.", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void HeatingToggle_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button.Content.ToString() == "OFF")
-            {
-                button.Content = "ON";
-                button.Background = Brushes.Orange;
-                MessageBox.Show("Heating system activated!", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                button.Content = "OFF";
-                button.Background = Brushes.LightGray;
-                MessageBox.Show("Heating system deactivated.", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void FillValveToggle_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button.Content.ToString() == "CLOSED")
-            {
-                button.Content = "OPEN";
-                button.Background = Brushes.Blue;
-                MessageBox.Show("Fill valve opened!", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                button.Content = "CLOSED";
-                button.Background = Brushes.LightGray;
-                MessageBox.Show("Fill valve closed.", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void DischargeValveToggle_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button.Content.ToString() == "CLOSED")
-            {
-                button.Content = "OPEN";
-                button.Background = Brushes.Red;
-                MessageBox.Show("Discharge valve opened!", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                button.Content = "CLOSED";
-                button.Background = Brushes.LightGray;
-                MessageBox.Show("Discharge valve closed.", "Control Action", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
-        private void EmergencyStop_Click(object sender, RoutedEventArgs e)
-        {
-            var result = MessageBox.Show("Are you sure you want to activate EMERGENCY STOP?\nThis will immediately stop all tank operations!", 
-                                       "EMERGENCY STOP", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            
-            if (result == MessageBoxResult.Yes)
-            {
-                // Reset all buttons
-                AgitatorToggle.Content = "OFF";
-                AgitatorToggle.Background = Brushes.LightGray;
-                
-                HeatingToggle.Content = "OFF";
-                HeatingToggle.Background = Brushes.LightGray;
-                
-                FillValveToggle.Content = "CLOSED";
-                FillValveToggle.Background = Brushes.LightGray;
-                
-                DischargeValveToggle.Content = "CLOSED";
-                DischargeValveToggle.Background = Brushes.LightGray;
-                
-                MessageBox.Show("EMERGENCY STOP ACTIVATED!\nAll tank operations have been stopped.", 
-                              "EMERGENCY STOP", MessageBoxButton.OK, MessageBoxImage.Stop);
-            }
-        }
-
-        private void StartBatch_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(FormulaComboBox.Text))
-            {
-                MessageBox.Show("Please select a formula before starting the batch.", "Batch Start", MessageBoxButton.OK, MessageBoxImage.Warning);
+            if (_isUpdatingFromPlc || FormulaListBox == null)
                 return;
-            }
 
-            var result = MessageBox.Show($"Start batch with formula: {FormulaComboBox.Text}?\nVolume: {BatchVolumeTextBox.Text} gallons\nStart Level: {StartLevelTextBox.Text} gallons", 
-                                       "Start Batch", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
-            if (result == MessageBoxResult.Yes)
+            if (FormulaListBox.SelectedItem is ListBoxItem selectedItem)
             {
-                CurrentFormula = FormulaComboBox.Text;
-                BatchProgress = 0;
-                MessageBox.Show("Batch started successfully!", "Batch Start", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Formula numbers are 1-6, ListBox items are 0-5 indexed
+                int formulaNumber = FormulaListBox.SelectedIndex + 1;
+                Console.WriteLine($"[StorageTank1] Formula selected: {selectedItem.Content} (value: {formulaNumber})");
+                
+                // Write to PLC
+                WriteToPlc("Formula_number", formulaNumber, _formulaNumberWriter);
+                
+                UpdateSummary();
             }
         }
 
-        private void StopBatch_Click(object sender, RoutedEventArgs e)
+        private void BatchVolumeTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to stop the current batch?", "Stop Batch", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
-            if (result == MessageBoxResult.Yes)
-            {
-                BatchProgress = 0;
-                MessageBox.Show("Batch stopped.", "Stop Batch", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            if (_isUpdatingFromPlc)
+                return;
+
+            UpdateSummary();
+            // Note: Batch Volume is not mapped to PLC in the requirements
         }
 
-        private void ResetAlarms_Click(object sender, RoutedEventArgs e)
+        private void BatchStartLevelTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var result = MessageBox.Show("Reset all active alarms?", "Reset Alarms", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
-            if (result == MessageBoxResult.Yes)
+            if (_isUpdatingFromPlc || BatchStartLevelTextBox == null)
+                return;
+
+            if (int.TryParse(BatchStartLevelTextBox.Text, out int level) && level >= 0 && level <= 2500)
             {
-                ActiveAlarms.Clear();
-                OnPropertyChanged(nameof(ActiveAlarms));
-                MessageBox.Show("All alarms have been reset.", "Reset Alarms", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Write to PLC
+                WriteToPlc("Request_level", level, _requestLevelWriter);
             }
+
+            UpdateSummary();
         }
 
-        private void FormulaComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AllTanksNoBatching_Click(object sender, RoutedEventArgs e)
         {
-            if (FormulaComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                CurrentFormula = selectedItem.Content.ToString();
-            }
+            MessageBox.Show("All tanks set to No Batching mode.", "Batch Configuration", 
+                          MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -340,41 +397,147 @@ namespace Ring.Views.BatchStart
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void SaveConfiguration_Click(object sender, RoutedEventArgs e)
+        private void BatchVolumeUp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Configuration saved successfully!", "Save Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (int.TryParse(BatchVolumeTextBox.Text, out int value))
+            {
+                value = Math.Min(value + 1, MAX_BATCH_VOLUME);
+                BatchVolumeTextBox.Text = value.ToString();
+                UpdateSummary();
+            }
         }
 
-        private void LoadConfiguration_Click(object sender, RoutedEventArgs e)
+        private void BatchVolumeDown_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Configuration loaded successfully!", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (int.TryParse(BatchVolumeTextBox.Text, out int value))
+            {
+                value = Math.Max(value - 1, MIN_BATCH_VOLUME);
+                BatchVolumeTextBox.Text = value.ToString();
+                UpdateSummary();
+            }
         }
 
-        private void ExportReport_Click(object sender, RoutedEventArgs e)
+        private void BatchStartLevelUp_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Report exported successfully!", "Export Report", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (int.TryParse(BatchStartLevelTextBox.Text, out int value))
+            {
+                value = Math.Min(value + 1, MAX_BATCH_START_LEVEL);
+                BatchStartLevelTextBox.Text = value.ToString();
+                UpdateSummary();
+            }
         }
 
-        #endregion
-
-        #region INotifyPropertyChanged Implementation
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void BatchStartLevelDown_Click(object sender, RoutedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (int.TryParse(BatchStartLevelTextBox.Text, out int value))
+            {
+                value = Math.Max(value - 1, MIN_BATCH_START_LEVEL);
+                BatchStartLevelTextBox.Text = value.ToString();
+                UpdateSummary();
+            }
         }
 
-        #endregion
-    }
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isUpdatingFromPlc || !this.IsLoaded)
+                return;
 
-    /// <summary>
-    /// Data class for alarm information
-    /// </summary>
-    public class AlarmInfo
-    {
-        public DateTime Timestamp { get; set; }
-        public string Description { get; set; }
-        public string Priority { get; set; }
-        public string Status { get; set; }
+            if (sender is RadioButton radioButton)
+            {
+                // Handle Batch Start Type
+                if (radioButton.GroupName == "BatchType")
+                {
+                    var batchTypeButtons = FindVisualChildren<RadioButton>(this)
+                        .Where(rb => rb.GroupName == "BatchType")
+                        .ToList();
+
+                    int index = batchTypeButtons.IndexOf(radioButton);
+                    if (index >= 0 && index <= 2)
+                    {
+                        // 0=No Batching, 1=Single Batch, 2=Continuous Batching
+                        WriteToPlc("Start_Type", index, _startTypeWriter);
+                        Console.WriteLine($"[StorageTank1] Batch Start Type changed to: {radioButton.Content} (value: {index})");
+                    }
+                }
+                // Handle Splitting Type A
+                else if (radioButton.GroupName == "SplitA")
+                {
+                    var splitAButtons = FindVisualChildren<RadioButton>(this)
+                        .Where(rb => rb.GroupName == "SplitA")
+                        .ToList();
+
+                    int index = splitAButtons.IndexOf(radioButton);
+                    if (index >= 0 && index <= 3)
+                    {
+                        // 0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4
+                        WriteToPlc("Splitting_A", index, _splittingAWriter);
+                        Console.WriteLine($"[StorageTank1] Splitting Type A changed to: {radioButton.Content} (value: {index})");
+                    }
+                }
+                // Handle Splitting Type B
+                else if (radioButton.GroupName == "SplitB")
+                {
+                    var splitBButtons = FindVisualChildren<RadioButton>(this)
+                        .Where(rb => rb.GroupName == "SplitB")
+                        .ToList();
+
+                    int index = splitBButtons.IndexOf(radioButton);
+                    if (index >= 0 && index <= 3)
+                    {
+                        // 0=No Splitting, 1=Tank2, 2=Tank3, 3=Tank4
+                        WriteToPlc("Splitting_B", index, _splittingBWriter);
+                        Console.WriteLine($"[StorageTank1] Splitting Type B changed to: {radioButton.Content} (value: {index})");
+                    }
+                }
+            }
+
+            UpdateSummary();
+        }
+
+        private void StartBatch_Click(object sender, RoutedEventArgs e)
+        {
+            // Validate inputs
+            if (!int.TryParse(BatchVolumeTextBox.Text, out int batchVolume) || 
+                batchVolume < MIN_BATCH_VOLUME || batchVolume > MAX_BATCH_VOLUME)
+            {
+                MessageBox.Show($"Batch Volume must be between {MIN_BATCH_VOLUME} and {MAX_BATCH_VOLUME} gallons.", 
+                              "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(BatchStartLevelTextBox.Text, out int batchStartLevel) || 
+                batchStartLevel < MIN_BATCH_START_LEVEL || batchStartLevel > MAX_BATCH_START_LEVEL)
+            {
+                MessageBox.Show($"Batch Start Level must be between {MIN_BATCH_START_LEVEL} and {MAX_BATCH_START_LEVEL} gallons.", 
+                              "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get selected formula
+            string selectedFormula = "Formula 1";
+            if (FormulaListBox.SelectedItem is ListBoxItem selectedItem)
+            {
+                selectedFormula = selectedItem.Content.ToString();
+            }
+
+            // Show confirmation
+            var result = MessageBox.Show(
+                $"Start batch with the following settings?\n\n" +
+                $"Formula: {selectedFormula}\n" +
+                $"Batch Volume: {batchVolume} gallons\n" +
+                $"Batch Start Level: {batchStartLevel} gallons",
+                "Confirm Batch Start",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            
+            if (result == MessageBoxResult.Yes)
+            {
+                MessageBox.Show("Batch started successfully!", "Batch Start", 
+                              MessageBoxButton.OK, MessageBoxImage.Information);
+                // TODO: Implement actual batch start logic
+            }
+        }
     }
 }
+
+
