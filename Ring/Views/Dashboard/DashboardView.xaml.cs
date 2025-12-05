@@ -208,6 +208,36 @@ namespace Ring.Views.Dashboard
             _dashboardService.NavigateToMakeReadyTankCommand.Execute(null);
         }
 
+        private void StorageUseTanksCard_Click(object sender, MouseButtonEventArgs e)
+        {
+            // Check if the click originated from a toggle button or its content
+            if (e.OriginalSource is FrameworkElement element)
+            {
+                // Walk up the visual tree to check if we clicked on a toggle button
+                var current = element;
+                while (current != null)
+                {
+                    if (current is Button button)
+                    {
+                        // Click was on a button (toggle button), don't navigate
+                        // The button's Click handler will fire separately
+                        return;
+                    }
+                    current = current.Parent as FrameworkElement;
+                }
+            }
+
+            // Determine which view to navigate to based on which panel is visible
+            if (StorageTanksPanel.Visibility == Visibility.Visible)
+            {
+                _dashboardService.NavigateToStorageTanksCommand.Execute(null);
+            }
+            else if (UseTanksPanel.Visibility == Visibility.Visible)
+            {
+                _dashboardService.NavigateToUseTanksCommand.Execute(null);
+            }
+        }
+
         #endregion
 
         #region Toggle Button Handlers

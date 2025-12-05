@@ -220,6 +220,7 @@
     <Compile Include="ViewModels\DashboardGraphViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\MakeReadyTankViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\StorageTankGroupViewModel.cs" />
+    <Compile Include="ViewModels\MainScreen\TVCViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\UseTankGroupViewModel.cs" />
     <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -322,6 +323,9 @@
     </Compile>
     <Compile Include="Views\MainScreen\UseTankGroup.xaml.cs">
       <DependentUpon>UseTankGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainScreen\TVC.xaml.cs">
+      <DependentUpon>TVC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\BatchesPerShiftChart.xaml.cs">
       <DependentUpon>BatchesPerShiftChart.xaml</DependentUpon>
@@ -475,6 +479,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MainScreen\TVC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserControls\BatchesPerShiftChart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -504,20 +512,6 @@
     <Resource Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\act01.png" />
-    <Resource Include="Images\act02.png" />
-    <Resource Include="Images\act05.png" />
-    <Resource Include="Images\actgn01.png" />
-    <Resource Include="Images\actgn02.png" />
-    <Resource Include="Images\actgn02left.png" />
-    <Resource Include="Images\actgn02right.png" />
-    <Resource Include="Images\actgn05.png" />
-    <Resource Include="Images\actrd01.png" />
-    <Resource Include="Images\actrd02.png" />
-    <Resource Include="Images\actrd05.png" />
-    <Resource Include="Images\Baghouse.png" />
-    <Resource Include="Images\Baghousegn.png" />
-    <Resource Include="Images\Baghouserd.png" />
     <Resource Include="Images\BannerRingwood.png" />
     <Resource Include="Images\fill-green.png" />
     <Resource Include="Images\LogoCompany.png" />
@@ -526,21 +520,6 @@
     <Resource Include="Images\LogoRingwood.png" />
     <Resource Include="Images\LogoSSCC.png" />
     <Resource Include="Images\LogoWeyerhaeuser.png" />
-    <Resource Include="Images\Motor01.png" />
-    <Resource Include="Images\Motor03.png" />
-    <Resource Include="Images\Motorgn01.png" />
-    <Resource Include="Images\Motorgn03.png" />
-    <Resource Include="Images\Motorrd01.png" />
-    <Resource Include="Images\Motorrd03.png" />
-    <Resource Include="Images\norcross.png" />
-    <Resource Include="Images\norcrossgn.png" />
-    <Resource Include="Images\norcrossrd.png" />
-    <Resource Include="Images\probe01.png" />
-    <Resource Include="Images\probegn01.png" />
-    <Resource Include="Images\proberd01.png" />
-    <Resource Include="Images\pumpn01.png" />
-    <Resource Include="Images\pumpngn01.png" />
-    <Resource Include="Images\pumpnrd01.png" />
     <Resource Include="Images\Ringwood Splash Center.png" />
     <Resource Include="Images\Ringwood Splash Left.png" />
     <Resource Include="Images\Ringwood Splash Right.png" />
@@ -548,15 +527,6 @@
     <Resource Include="Images\Splash Center.png" />
     <Resource Include="Images\Splash Left.png" />
     <Resource Include="Images\Splash Right.png" />
-    <Resource Include="Images\tank.png" />
-    <Resource Include="Images\tvc.png" />
-    <Resource Include="Images\uselegs.png" />
-    <Resource Include="Images\usesquare.png" />
-    <Resource Include="Images\usesquareleg.png" />
-    <Resource Include="Images\usetank.png" />
-    <Resource Include="Images\Valve01.png" />
-    <Resource Include="Images\Valvegn01.png" />
-    <Resource Include="Images\Valverd01.png" />
     <Resource Include="Images\Make Ready Tank\MRT.png" />
     <Resource Include="Images\Make Ready Tank\MRT_agitator.png" />
     <Resource Include="Images\Make Ready Tank\MRT_additive1.png" />
@@ -581,6 +551,47 @@
     <Resource Include="Images\Make Ready Tank\MRT_mod_starch_agitator.png" />
     <Resource Include="Images\Make Ready Tank\MRT_steam.png" />
     <Resource Include="Images\Make Ready Tank\MRT_steam_agitator.png" />
+    <Resource Include="Images\Storage Tank\storagetank.png" />
+    <Resource Include="Images\Storage Tank\storagetank_agitator.png" />
+    <Resource Include="Images\Storage Tank\storagetank_filling.png" />
+    <Resource Include="Images\Storage Tank\storagetank_agitator_filling.png" />
+    <Resource Include="Images\Storage Tank\storagetank_transferring.png" />
+    <Resource Include="Images\Storage Tank\storagetank_agitator_transferring.png" />
+    <Resource Include="Images\Storage Tank\storagetank_filling_transferring.png" />
+    <Resource Include="Images\Storage Tank\storagetank_agitator_filling_transferring.png" />
+    <Resource Include="Images\TVC Tank\TVC.png" />
+    <Resource Include="Images\TVC Tank\TVC_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_1.png" />
+    <Resource Include="Images\TVC Tank\TVC_2.png" />
+    <Resource Include="Images\TVC Tank\TVC_3.png" />
+    <Resource Include="Images\TVC Tank\TVC_12.png" />
+    <Resource Include="Images\TVC Tank\TVC_13.png" />
+    <Resource Include="Images\TVC Tank\TVC_23.png" />
+    <Resource Include="Images\TVC Tank\TVC_123.png" />
+    <Resource Include="Images\TVC Tank\TVC_1_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_2_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_3_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_12_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_13_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_23_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_123_heat.png" />
+    <Resource Include="Images\Use Tank\usetank.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat.bmp" />
+    <Resource Include="Images\Use Tank\usetank_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivesupply_adhesivetransfer.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />

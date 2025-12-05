@@ -975,10 +975,25 @@ namespace Ring.Views.UserControls
         }
 
         /// Placeholder method for TVC button
+        /// Loads the TVC UserControl into the main content area
         private void OpenTvc()
         {
-            // TODO: Implement TVC functionality
-            MessageBox.Show("TVC button clicked - functionality to be implemented");
+            try
+            {
+                var mainWindow = Window.GetWindow(this) as Ring.MainWindow;
+                if (mainWindow != null)
+                {
+                    var mainContentArea = mainWindow.FindName("MainContentArea") as ContentControl;
+                    if (mainContentArea != null)
+                    {
+                        mainContentArea.Content = new Ring.Views.MainScreen.TVC();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading TVC: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// Shows a message box with the button's content text
