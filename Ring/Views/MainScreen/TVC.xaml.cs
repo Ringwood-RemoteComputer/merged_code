@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Ring.ViewModels.MainScreen;
 using Ring.Views.Dashboard;
 
 namespace Ring.Views.MainScreen
@@ -9,6 +10,7 @@ namespace Ring.Views.MainScreen
         public TVC()
         {
             InitializeComponent();
+            DataContext = new TVCViewModel();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

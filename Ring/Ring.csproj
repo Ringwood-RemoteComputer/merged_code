@@ -218,6 +218,7 @@
     <Compile Include="ViewModels\DashboardGraphViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\MakeReadyTankViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\StorageTankGroupViewModel.cs" />
+    <Compile Include="ViewModels\MainScreen\TVCViewModel.cs" />
     <Compile Include="ViewModels\MainScreen\UseTankGroupViewModel.cs" />
     <Compile Include="Views\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -556,6 +557,22 @@
     <Resource Include="Images\Storage Tank\storagetank_agitator_transferring.png" />
     <Resource Include="Images\Storage Tank\storagetank_filling_transferring.png" />
     <Resource Include="Images\Storage Tank\storagetank_agitator_filling_transferring.png" />
+    <Resource Include="Images\TVC Tank\TVC.png" />
+    <Resource Include="Images\TVC Tank\TVC_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_1.png" />
+    <Resource Include="Images\TVC Tank\TVC_2.png" />
+    <Resource Include="Images\TVC Tank\TVC_3.png" />
+    <Resource Include="Images\TVC Tank\TVC_12.png" />
+    <Resource Include="Images\TVC Tank\TVC_13.png" />
+    <Resource Include="Images\TVC Tank\TVC_23.png" />
+    <Resource Include="Images\TVC Tank\TVC_123.png" />
+    <Resource Include="Images\TVC Tank\TVC_1_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_2_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_3_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_12_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_13_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_23_heat.png" />
+    <Resource Include="Images\TVC Tank\TVC_123_heat.png" />
     <Resource Include="Images\Use Tank\usetank.bmp" />
     <Resource Include="Images\Use Tank\usetank_agitator.bmp" />
     <Resource Include="Images\Use Tank\usetank_heat.bmp" />
