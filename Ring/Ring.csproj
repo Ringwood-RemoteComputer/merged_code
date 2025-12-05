@@ -556,6 +556,23 @@
     <Resource Include="Images\Storage Tank\storagetank_agitator_transferring.png" />
     <Resource Include="Images\Storage Tank\storagetank_filling_transferring.png" />
     <Resource Include="Images\Storage Tank\storagetank_agitator_filling_transferring.png" />
+    <Resource Include="Images\Use Tank\usetank.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat.bmp" />
+    <Resource Include="Images\Use Tank\usetank_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_heat_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_additive.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_adhesivesupply.bmp" />
+    <Resource Include="Images\Use Tank\usetank_agitator_heat_adhesivetransfer.bmp" />
+    <Resource Include="Images\Use Tank\usetank_adhesivesupply_adhesivetransfer.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />

@@ -42,22 +42,11 @@
                             CornerRadius="6"
                             Background="#F8F9FA"
                             Margin="0,0,0,12">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="60" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <!-- Tank Wireframe Control -->
-                            <controls:TankLevelControl 
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                FillPercentage="{Binding Level1}"
-                                Width="150"
-                                Height="250"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Grid>
+                        <Image Source="{Binding UseTankImage1}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Stretch="UniformToFill"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
                     </Border>
                     
                     <!-- Tank 1 Data - Consolidated -->
@@ -69,36 +58,9 @@
                                Foreground="#1E1E1E" 
                                LineHeight="16" />
                     
-                    <!-- Data and Tank Level Grid -->
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- Left Column - Data Items -->
-                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                            <!-- Tank Volume -->
-                            <Border BorderThickness="1" 
-                                    BorderBrush="#E0E0E0" 
-                                    Padding="6,4" 
-                                    Margin="0,0,0,4"
-                                    Background="White"
-                                    CornerRadius="3">
-                                <StackPanel>
-                                    <TextBlock Text="Tank Volume (gal)" 
-                                               FontSize="9" 
-                                               Foreground="#666666" 
-                                               HorizontalAlignment="Center" />
-                                    <TextBlock Text="{Binding VolumeDisplay1}" 
-                                               FontSize="11" 
-                                               FontWeight="SemiBold"
-                                               Foreground="#1E1E1E" 
-                                               HorizontalAlignment="Center" />
-                                </StackPanel>
-                            </Border>
-                            
-                            <!-- Temperature -->
+                    <!-- Data Items -->
+                    <StackPanel Margin="0,0,0,6">
+                        <!-- Temperature -->
                             <Border BorderThickness="1" 
                                     BorderBrush="#E0E0E0" 
                                     Padding="6,4" 
@@ -178,23 +140,6 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        
-                        <!-- Right Column - Tank Level Visualization -->
-                        <Border Grid.Column="1" 
-                                BorderThickness="1" 
-                                BorderBrush="#E0E0E0" 
-                                CornerRadius="6"
-                                Background="#F8F9FA"
-                                Margin="8,0,0,0"
-                                Padding="4">
-                            <controls:TankLevelControl 
-                                FillPercentage="{Binding Level1}"
-                                Width="80"
-                                Height="180"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
                     
                     <!-- Component Details Button -->
                     <Button x:Name="ShowComponentsButtonUseTank1"
@@ -267,22 +212,11 @@
                             CornerRadius="6"
                             Background="#F8F9FA"
                             Margin="0,0,0,12">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="60" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <!-- Tank Wireframe Control -->
-                            <controls:TankLevelControl 
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                FillPercentage="{Binding Level2}"
-                                Width="150"
-                                Height="250"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Grid>
+                        <Image Source="{Binding UseTankImage2}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Stretch="UniformToFill"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
                     </Border>
                     
                     <!-- Tank 2 Data - Consolidated -->
@@ -294,36 +228,9 @@
                                Foreground="#1E1E1E" 
                                LineHeight="16" />
                     
-                    <!-- Data and Tank Level Grid -->
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- Left Column - Data Items -->
-                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                            <!-- Tank Volume -->
-                            <Border BorderThickness="1" 
-                                    BorderBrush="#E0E0E0" 
-                                    Padding="6,4" 
-                                    Margin="0,0,0,4"
-                                    Background="White"
-                                    CornerRadius="3">
-                                <StackPanel>
-                                    <TextBlock Text="Tank Volume (gal)" 
-                                               FontSize="9" 
-                                               Foreground="#666666" 
-                                               HorizontalAlignment="Center" />
-                                    <TextBlock Text="{Binding VolumeDisplay2}" 
-                                               FontSize="11" 
-                                               FontWeight="SemiBold"
-                                               Foreground="#1E1E1E" 
-                                               HorizontalAlignment="Center" />
-                                </StackPanel>
-                            </Border>
-                            
-                            <!-- Temperature -->
+                    <!-- Data Items -->
+                    <StackPanel Margin="0,0,0,6">
+                        <!-- Temperature -->
                             <Border BorderThickness="1" 
                                     BorderBrush="#E0E0E0" 
                                     Padding="6,4" 
@@ -403,23 +310,6 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        
-                        <!-- Right Column - Tank Level Visualization -->
-                        <Border Grid.Column="1" 
-                                BorderThickness="1" 
-                                BorderBrush="#E0E0E0" 
-                                CornerRadius="6"
-                                Background="#F8F9FA"
-                                Margin="8,0,0,0"
-                                Padding="4">
-                            <controls:TankLevelControl 
-                                FillPercentage="{Binding Level2}"
-                                Width="80"
-                                Height="180"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
                     
                     <!-- Component Details Button -->
                     <Button x:Name="ShowComponentsButtonUseTank2"
@@ -492,22 +382,11 @@
                             CornerRadius="6"
                             Background="#F8F9FA"
                             Margin="0,0,0,12">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="60" />
-                            </Grid.ColumnDefinitions>
-                            
-                            <!-- Tank Wireframe Control -->
-                            <controls:TankLevelControl 
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                FillPercentage="{Binding Level3}"
-                                Width="150"
-                                Height="250"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Grid>
+                        <Image Source="{Binding UseTankImage3}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Stretch="UniformToFill"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
                     </Border>
                     
                     <!-- Tank 3 Data - Consolidated -->
@@ -519,36 +398,9 @@
                                Foreground="#1E1E1E" 
                                LineHeight="16" />
                     
-                    <!-- Data and Tank Level Grid -->
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- Left Column - Data Items -->
-                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
-                            <!-- Tank Volume -->
-                            <Border BorderThickness="1" 
-                                    BorderBrush="#E0E0E0" 
-                                    Padding="6,4" 
-                                    Margin="0,0,0,4"
-                                    Background="White"
-                                    CornerRadius="3">
-                                <StackPanel>
-                                    <TextBlock Text="Tank Volume (gal)" 
-                                               FontSize="9" 
-                                               Foreground="#666666" 
-                                               HorizontalAlignment="Center" />
-                                    <TextBlock Text="{Binding VolumeDisplay3}" 
-                                               FontSize="11" 
-                                               FontWeight="SemiBold"
-                                               Foreground="#1E1E1E" 
-                                               HorizontalAlignment="Center" />
-                                </StackPanel>
-                            </Border>
-                            
-                            <!-- Temperature -->
+                    <!-- Data Items -->
+                    <StackPanel Margin="0,0,0,6">
+                        <!-- Temperature -->
                             <Border BorderThickness="1" 
                                     BorderBrush="#E0E0E0" 
                                     Padding="6,4" 
@@ -628,23 +480,6 @@
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        
-                        <!-- Right Column - Tank Level Visualization -->
-                        <Border Grid.Column="1" 
-                                BorderThickness="1" 
-                                BorderBrush="#E0E0E0" 
-                                CornerRadius="6"
-                                Background="#F8F9FA"
-                                Margin="8,0,0,0"
-                                Padding="4">
-                            <controls:TankLevelControl 
-                                FillPercentage="{Binding Level3}"
-                                Width="80"
-                                Height="180"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </Grid>
                     
                     <!-- Component Details Button -->
                     <Button x:Name="ShowComponentsButtonUseTank3"

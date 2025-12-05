@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 
 namespace Ring.ViewModels.MainScreen
 {
@@ -16,6 +17,11 @@ namespace Ring.ViewModels.MainScreen
         private string _status1;
         private decimal _temperature1;
         private decimal _level1;
+        private bool _isAgitating1;
+        private bool _isHeating1;
+        private bool _isAddingAdditive1;
+        private bool _isAdhesiveSupply1;
+        private bool _isAdhesiveTransfer1;
 
         // Use Tank 2 Properties
         private string _resinTypeSelected2;
@@ -24,6 +30,11 @@ namespace Ring.ViewModels.MainScreen
         private string _status2;
         private decimal _temperature2;
         private decimal _level2;
+        private bool _isAgitating2;
+        private bool _isHeating2;
+        private bool _isAddingAdditive2;
+        private bool _isAdhesiveSupply2;
+        private bool _isAdhesiveTransfer2;
 
         // Use Tank 3 Properties
         private string _resinTypeSelected3;
@@ -32,6 +43,11 @@ namespace Ring.ViewModels.MainScreen
         private string _status3;
         private decimal _temperature3;
         private decimal _level3;
+        private bool _isAgitating3;
+        private bool _isHeating3;
+        private bool _isAddingAdditive3;
+        private bool _isAdhesiveSupply3;
+        private bool _isAdhesiveTransfer3;
 
         // PLC Status Properties
         private string _plcStatusText;
@@ -141,6 +157,94 @@ namespace Ring.ViewModels.MainScreen
             }
         }
 
+        // Agitating state for Use Tank 1 (TODO: Connect to PLC data later)
+        public bool IsAgitating1
+        {
+            get => _isAgitating1;
+            set
+            {
+                if (_isAgitating1 != value)
+                {
+                    _isAgitating1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage1));
+                }
+            }
+        }
+
+        // Heating state for Use Tank 1 (TODO: Connect to PLC data later)
+        public bool IsHeating1
+        {
+            get => _isHeating1;
+            set
+            {
+                if (_isHeating1 != value)
+                {
+                    _isHeating1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage1));
+                }
+            }
+        }
+
+        // Adding additive state for Use Tank 1 (TODO: Connect to PLC data later)
+        public bool IsAddingAdditive1
+        {
+            get => _isAddingAdditive1;
+            set
+            {
+                if (_isAddingAdditive1 != value)
+                {
+                    _isAddingAdditive1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage1));
+                }
+            }
+        }
+
+        // Adhesive supply state for Use Tank 1 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveSupply1
+        {
+            get => _isAdhesiveSupply1;
+            set
+            {
+                if (_isAdhesiveSupply1 != value)
+                {
+                    _isAdhesiveSupply1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage1));
+                }
+            }
+        }
+
+        // Adhesive transfer state for Use Tank 1 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveTransfer1
+        {
+            get => _isAdhesiveTransfer1;
+            set
+            {
+                if (_isAdhesiveTransfer1 != value)
+                {
+                    _isAdhesiveTransfer1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage1));
+                }
+            }
+        }
+
+        // Use Tank 1 Image property - determines which image to show based on state
+        public BitmapImage UseTankImage1
+        {
+            get
+            {
+                string imageName = GetUseTankImageName1();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Use Tank/{imageName}");
+            }
+        }
+
+        // Combined temperature display for Use Tank 1
+        public string TemperatureDisplay1 => $"{Temperature1:F1}°F";
+
         #endregion
 
         #region Use Tank 2 Properties
@@ -228,6 +332,94 @@ namespace Ring.ViewModels.MainScreen
                 }
             }
         }
+
+        // Agitating state for Use Tank 2 (TODO: Connect to PLC data later)
+        public bool IsAgitating2
+        {
+            get => _isAgitating2;
+            set
+            {
+                if (_isAgitating2 != value)
+                {
+                    _isAgitating2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage2));
+                }
+            }
+        }
+
+        // Heating state for Use Tank 2 (TODO: Connect to PLC data later)
+        public bool IsHeating2
+        {
+            get => _isHeating2;
+            set
+            {
+                if (_isHeating2 != value)
+                {
+                    _isHeating2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage2));
+                }
+            }
+        }
+
+        // Adding additive state for Use Tank 2 (TODO: Connect to PLC data later)
+        public bool IsAddingAdditive2
+        {
+            get => _isAddingAdditive2;
+            set
+            {
+                if (_isAddingAdditive2 != value)
+                {
+                    _isAddingAdditive2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage2));
+                }
+            }
+        }
+
+        // Adhesive supply state for Use Tank 2 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveSupply2
+        {
+            get => _isAdhesiveSupply2;
+            set
+            {
+                if (_isAdhesiveSupply2 != value)
+                {
+                    _isAdhesiveSupply2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage2));
+                }
+            }
+        }
+
+        // Adhesive transfer state for Use Tank 2 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveTransfer2
+        {
+            get => _isAdhesiveTransfer2;
+            set
+            {
+                if (_isAdhesiveTransfer2 != value)
+                {
+                    _isAdhesiveTransfer2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage2));
+                }
+            }
+        }
+
+        // Use Tank 2 Image property - determines which image to show based on state
+        public BitmapImage UseTankImage2
+        {
+            get
+            {
+                string imageName = GetUseTankImageName2();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Use Tank/{imageName}");
+            }
+        }
+
+        // Combined temperature display for Use Tank 2
+        public string TemperatureDisplay2 => $"{Temperature2:F1}°F";
 
         #endregion
 
@@ -317,6 +509,94 @@ namespace Ring.ViewModels.MainScreen
             }
         }
 
+        // Agitating state for Use Tank 3 (TODO: Connect to PLC data later)
+        public bool IsAgitating3
+        {
+            get => _isAgitating3;
+            set
+            {
+                if (_isAgitating3 != value)
+                {
+                    _isAgitating3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage3));
+                }
+            }
+        }
+
+        // Heating state for Use Tank 3 (TODO: Connect to PLC data later)
+        public bool IsHeating3
+        {
+            get => _isHeating3;
+            set
+            {
+                if (_isHeating3 != value)
+                {
+                    _isHeating3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage3));
+                }
+            }
+        }
+
+        // Adding additive state for Use Tank 3 (TODO: Connect to PLC data later)
+        public bool IsAddingAdditive3
+        {
+            get => _isAddingAdditive3;
+            set
+            {
+                if (_isAddingAdditive3 != value)
+                {
+                    _isAddingAdditive3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage3));
+                }
+            }
+        }
+
+        // Adhesive supply state for Use Tank 3 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveSupply3
+        {
+            get => _isAdhesiveSupply3;
+            set
+            {
+                if (_isAdhesiveSupply3 != value)
+                {
+                    _isAdhesiveSupply3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage3));
+                }
+            }
+        }
+
+        // Adhesive transfer state for Use Tank 3 (TODO: Connect to PLC data later)
+        public bool IsAdhesiveTransfer3
+        {
+            get => _isAdhesiveTransfer3;
+            set
+            {
+                if (_isAdhesiveTransfer3 != value)
+                {
+                    _isAdhesiveTransfer3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(UseTankImage3));
+                }
+            }
+        }
+
+        // Use Tank 3 Image property - determines which image to show based on state
+        public BitmapImage UseTankImage3
+        {
+            get
+            {
+                string imageName = GetUseTankImageName3();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Use Tank/{imageName}");
+            }
+        }
+
+        // Combined temperature display for Use Tank 3
+        public string TemperatureDisplay3 => $"{Temperature3:F1}°F";
+
         #endregion
 
         #region PLC Status Properties
@@ -353,6 +633,276 @@ namespace Ring.ViewModels.MainScreen
 
         #region Helper Methods
 
+        /// <summary>
+        /// Determines which Use Tank 1 image to display based on state (agitator, heat, additive, adhesivesupply, adhesivetransfer)
+        /// Priority: Most specific combinations first, then individual states, then base
+        /// </summary>
+        private string GetUseTankImageName1()
+        {
+            // Three states: agitator + heat + additive
+            if (IsAgitating1 && IsHeating1 && IsAddingAdditive1)
+            {
+                return "usetank_agitator_heat_additive.bmp";
+            }
+            // Three states: agitator + heat + adhesivesupply
+            if (IsAgitating1 && IsHeating1 && IsAdhesiveSupply1)
+            {
+                return "usetank_agitator_heat_adhesivesupply.bmp";
+            }
+            // Three states: agitator + heat + adhesivetransfer
+            if (IsAgitating1 && IsHeating1 && IsAdhesiveTransfer1)
+            {
+                return "usetank_agitator_heat_adhesivetransfer.bmp";
+            }
+            // Two states: agitator + heat (but not additive/adhesivesupply/adhesivetransfer)
+            if (IsAgitating1 && IsHeating1)
+            {
+                return "usetank_agitator_heat.bmp";
+            }
+            // Two states: agitator + additive (but not heat)
+            if (IsAgitating1 && IsAddingAdditive1)
+            {
+                return "usetank_agitator_additive.bmp";
+            }
+            // Two states: agitator + adhesivesupply (but not heat)
+            if (IsAgitating1 && IsAdhesiveSupply1)
+            {
+                return "usetank_agitator_adhesivesupply.bmp";
+            }
+            // Two states: agitator + adhesivetransfer (but not heat)
+            if (IsAgitating1 && IsAdhesiveTransfer1)
+            {
+                return "usetank_agitator_adhesivetransfer.bmp";
+            }
+            // Only agitator
+            if (IsAgitating1)
+            {
+                return "usetank_agitator.bmp";
+            }
+            // Two states: heat + additive (but not agitator)
+            if (IsHeating1 && IsAddingAdditive1)
+            {
+                return "usetank_heat_additive.bmp";
+            }
+            // Two states: heat + adhesivesupply (but not agitator)
+            if (IsHeating1 && IsAdhesiveSupply1)
+            {
+                return "usetank_heat_adhesivesupply.bmp";
+            }
+            // Two states: heat + adhesivetransfer (but not agitator)
+            if (IsHeating1 && IsAdhesiveTransfer1)
+            {
+                return "usetank_heat_adhesivetransfer.bmp";
+            }
+            // Only heat
+            if (IsHeating1)
+            {
+                return "usetank_heat.bmp";
+            }
+            // Only additive
+            if (IsAddingAdditive1)
+            {
+                return "usetank_additive.bmp";
+            }
+            // Two states: adhesivesupply + adhesivetransfer (but not agitator/heat/additive)
+            if (IsAdhesiveSupply1 && IsAdhesiveTransfer1)
+            {
+                return "usetank_adhesivesupply_adhesivetransfer.bmp";
+            }
+            // Only adhesivesupply
+            if (IsAdhesiveSupply1)
+            {
+                return "usetank_adhesivesupply.bmp";
+            }
+            // Only adhesivetransfer
+            if (IsAdhesiveTransfer1)
+            {
+                return "usetank_adhesivetransfer.bmp";
+            }
+            // Base image (no states active)
+            return "usetank.bmp";
+        }
+
+        /// <summary>
+        /// Determines which Use Tank 2 image to display based on state (agitator, heat, additive, adhesivesupply, adhesivetransfer)
+        /// Priority: Most specific combinations first, then individual states, then base
+        /// </summary>
+        private string GetUseTankImageName2()
+        {
+            // Three states: agitator + heat + additive
+            if (IsAgitating2 && IsHeating2 && IsAddingAdditive2)
+            {
+                return "usetank_agitator_heat_additive.bmp";
+            }
+            // Three states: agitator + heat + adhesivesupply
+            if (IsAgitating2 && IsHeating2 && IsAdhesiveSupply2)
+            {
+                return "usetank_agitator_heat_adhesivesupply.bmp";
+            }
+            // Three states: agitator + heat + adhesivetransfer
+            if (IsAgitating2 && IsHeating2 && IsAdhesiveTransfer2)
+            {
+                return "usetank_agitator_heat_adhesivetransfer.bmp";
+            }
+            // Two states: agitator + heat (but not additive/adhesivesupply/adhesivetransfer)
+            if (IsAgitating2 && IsHeating2)
+            {
+                return "usetank_agitator_heat.bmp";
+            }
+            // Two states: agitator + additive (but not heat)
+            if (IsAgitating2 && IsAddingAdditive2)
+            {
+                return "usetank_agitator_additive.bmp";
+            }
+            // Two states: agitator + adhesivesupply (but not heat)
+            if (IsAgitating2 && IsAdhesiveSupply2)
+            {
+                return "usetank_agitator_adhesivesupply.bmp";
+            }
+            // Two states: agitator + adhesivetransfer (but not heat)
+            if (IsAgitating2 && IsAdhesiveTransfer2)
+            {
+                return "usetank_agitator_adhesivetransfer.bmp";
+            }
+            // Only agitator
+            if (IsAgitating2)
+            {
+                return "usetank_agitator.bmp";
+            }
+            // Two states: heat + additive (but not agitator)
+            if (IsHeating2 && IsAddingAdditive2)
+            {
+                return "usetank_heat_additive.bmp";
+            }
+            // Two states: heat + adhesivesupply (but not agitator)
+            if (IsHeating2 && IsAdhesiveSupply2)
+            {
+                return "usetank_heat_adhesivesupply.bmp";
+            }
+            // Two states: heat + adhesivetransfer (but not agitator)
+            if (IsHeating2 && IsAdhesiveTransfer2)
+            {
+                return "usetank_heat_adhesivetransfer.bmp";
+            }
+            // Only heat
+            if (IsHeating2)
+            {
+                return "usetank_heat.bmp";
+            }
+            // Only additive
+            if (IsAddingAdditive2)
+            {
+                return "usetank_additive.bmp";
+            }
+            // Two states: adhesivesupply + adhesivetransfer (but not agitator/heat/additive)
+            if (IsAdhesiveSupply2 && IsAdhesiveTransfer2)
+            {
+                return "usetank_adhesivesupply_adhesivetransfer.bmp";
+            }
+            // Only adhesivesupply
+            if (IsAdhesiveSupply2)
+            {
+                return "usetank_adhesivesupply.bmp";
+            }
+            // Only adhesivetransfer
+            if (IsAdhesiveTransfer2)
+            {
+                return "usetank_adhesivetransfer.bmp";
+            }
+            // Base image (no states active)
+            return "usetank.bmp";
+        }
+
+        /// <summary>
+        /// Determines which Use Tank 3 image to display based on state (agitator, heat, additive, adhesivesupply, adhesivetransfer)
+        /// Priority: Most specific combinations first, then individual states, then base
+        /// </summary>
+        private string GetUseTankImageName3()
+        {
+            // Three states: agitator + heat + additive
+            if (IsAgitating3 && IsHeating3 && IsAddingAdditive3)
+            {
+                return "usetank_agitator_heat_additive.bmp";
+            }
+            // Three states: agitator + heat + adhesivesupply
+            if (IsAgitating3 && IsHeating3 && IsAdhesiveSupply3)
+            {
+                return "usetank_agitator_heat_adhesivesupply.bmp";
+            }
+            // Three states: agitator + heat + adhesivetransfer
+            if (IsAgitating3 && IsHeating3 && IsAdhesiveTransfer3)
+            {
+                return "usetank_agitator_heat_adhesivetransfer.bmp";
+            }
+            // Two states: agitator + heat (but not additive/adhesivesupply/adhesivetransfer)
+            if (IsAgitating3 && IsHeating3)
+            {
+                return "usetank_agitator_heat.bmp";
+            }
+            // Two states: agitator + additive (but not heat)
+            if (IsAgitating3 && IsAddingAdditive3)
+            {
+                return "usetank_agitator_additive.bmp";
+            }
+            // Two states: agitator + adhesivesupply (but not heat)
+            if (IsAgitating3 && IsAdhesiveSupply3)
+            {
+                return "usetank_agitator_adhesivesupply.bmp";
+            }
+            // Two states: agitator + adhesivetransfer (but not heat)
+            if (IsAgitating3 && IsAdhesiveTransfer3)
+            {
+                return "usetank_agitator_adhesivetransfer.bmp";
+            }
+            // Only agitator
+            if (IsAgitating3)
+            {
+                return "usetank_agitator.bmp";
+            }
+            // Two states: heat + additive (but not agitator)
+            if (IsHeating3 && IsAddingAdditive3)
+            {
+                return "usetank_heat_additive.bmp";
+            }
+            // Two states: heat + adhesivesupply (but not agitator)
+            if (IsHeating3 && IsAdhesiveSupply3)
+            {
+                return "usetank_heat_adhesivesupply.bmp";
+            }
+            // Two states: heat + adhesivetransfer (but not agitator)
+            if (IsHeating3 && IsAdhesiveTransfer3)
+            {
+                return "usetank_heat_adhesivetransfer.bmp";
+            }
+            // Only heat
+            if (IsHeating3)
+            {
+                return "usetank_heat.bmp";
+            }
+            // Only additive
+            if (IsAddingAdditive3)
+            {
+                return "usetank_additive.bmp";
+            }
+            // Two states: adhesivesupply + adhesivetransfer (but not agitator/heat/additive)
+            if (IsAdhesiveSupply3 && IsAdhesiveTransfer3)
+            {
+                return "usetank_adhesivesupply_adhesivetransfer.bmp";
+            }
+            // Only adhesivesupply
+            if (IsAdhesiveSupply3)
+            {
+                return "usetank_adhesivesupply.bmp";
+            }
+            // Only adhesivetransfer
+            if (IsAdhesiveTransfer3)
+            {
+                return "usetank_adhesivetransfer.bmp";
+            }
+            // Base image (no states active)
+            return "usetank.bmp";
+        }
+
         // Initialize with default values for all three use tanks
         private void InitializeDefaultValues()
         {
@@ -363,6 +913,11 @@ namespace Ring.ViewModels.MainScreen
             Status1 = "Tank in Use";
             Temperature1 = 98;
             Level1 = 75;
+            IsAgitating1 = false;
+            IsHeating1 = false;
+            IsAddingAdditive1 = false;
+            IsAdhesiveSupply1 = false;
+            IsAdhesiveTransfer1 = false;
 
             // Use Tank 2 - Module Facer 2 defaults
             ResinTypeSelected2 = "None";
@@ -371,6 +926,11 @@ namespace Ring.ViewModels.MainScreen
             Status2 = "Tank in Use";
             Temperature2 = 98;
             Level2 = 60;
+            IsAgitating2 = false;
+            IsHeating2 = false;
+            IsAddingAdditive2 = false;
+            IsAdhesiveSupply2 = false;
+            IsAdhesiveTransfer2 = false;
 
             // Use Tank 3 - Double Backer defaults
             ResinTypeSelected3 = "None";
@@ -379,6 +939,11 @@ namespace Ring.ViewModels.MainScreen
             Status3 = "Tank Not in Use";
             Temperature3 = 98;
             Level3 = 0;
+            IsAgitating3 = false;
+            IsHeating3 = false;
+            IsAddingAdditive3 = false;
+            IsAdhesiveSupply3 = false;
+            IsAdhesiveTransfer3 = false;
 
             // PLC status defaults
             PlcStatusText = "PLC Connected";
