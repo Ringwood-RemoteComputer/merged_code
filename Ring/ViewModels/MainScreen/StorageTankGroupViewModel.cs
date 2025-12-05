@@ -39,6 +39,20 @@ namespace Ring.ViewModels.MainScreen
         private bool _isFilling2;
         private bool _isTransferring2;
 
+        // Tank 3 Properties
+        private decimal _actualTemperature3;
+        private decimal _presetTemperature3;
+        private decimal _actualLevel3;
+        private decimal _requestLevel3;
+        private string _formula3;
+        private decimal _fillPercentage3;
+        private string _levelStatus3;
+        
+        // Tank 3 State Properties (TODO: Connect to PLC data later)
+        private bool _isAgitating3;
+        private bool _isFilling3;
+        private bool _isTransferring3;
+
         // Global System Properties
         private decimal _overallActualTemperature;
         private decimal _overallPresetTemperature;
@@ -77,6 +91,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _actualTemperature1 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay1));
                 }
             }
         }
@@ -91,6 +106,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _presetTemperature1 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay1));
                 }
             }
         }
@@ -105,6 +121,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _actualLevel1 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(VolumeDisplay1));
                     // Recalculate fill percentage when level changes
                     CalculateFillPercentage1();
                 }
@@ -222,6 +239,12 @@ namespace Ring.ViewModels.MainScreen
             }
         }
 
+        // Combined temperature display for Storage Tank 1
+        public string TemperatureDisplay1 => $"{ActualTemperature1:F1}/{PresetTemperature1:F1}";
+
+        // Combined volume display for Storage Tank 1
+        public string VolumeDisplay1 => $"{ActualLevel1:F0}";
+
         #endregion
 
         #region Tank 2 Properties
@@ -236,6 +259,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _actualTemperature2 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay2));
                 }
             }
         }
@@ -250,6 +274,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _presetTemperature2 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay2));
                 }
             }
         }
@@ -264,6 +289,7 @@ namespace Ring.ViewModels.MainScreen
                 {
                     _actualLevel2 = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(VolumeDisplay2));
                     // Recalculate fill percentage when level changes
                     CalculateFillPercentage2();
                 }
@@ -380,6 +406,180 @@ namespace Ring.ViewModels.MainScreen
                 return Ring.Services.Images.ImageLoader.LoadImage($"Storage Tank/{imageName}");
             }
         }
+
+        // Combined temperature display for Storage Tank 2
+        public string TemperatureDisplay2 => $"{ActualTemperature2:F1}/{PresetTemperature2:F1}";
+
+        // Combined volume display for Storage Tank 2
+        public string VolumeDisplay2 => $"{ActualLevel2:F0}";
+
+        #endregion
+
+        #region Tank 3 Properties
+
+        // Actual temperature for Storage Tank 3
+        public decimal ActualTemperature3
+        {
+            get => _actualTemperature3;
+            set
+            {
+                if (_actualTemperature3 != value)
+                {
+                    _actualTemperature3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay3));
+                }
+            }
+        }
+
+        // Preset temperature for Storage Tank 3
+        public decimal PresetTemperature3
+        {
+            get => _presetTemperature3;
+            set
+            {
+                if (_presetTemperature3 != value)
+                {
+                    _presetTemperature3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TemperatureDisplay3));
+                }
+            }
+        }
+
+        // Actual level for Storage Tank 3
+        public decimal ActualLevel3
+        {
+            get => _actualLevel3;
+            set
+            {
+                if (_actualLevel3 != value)
+                {
+                    _actualLevel3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(VolumeDisplay3));
+                    // Recalculate fill percentage when level changes
+                    CalculateFillPercentage3();
+                }
+            }
+        }
+
+        // Request level for Storage Tank 3
+        public decimal RequestLevel3
+        {
+            get => _requestLevel3;
+            set
+            {
+                if (_requestLevel3 != value)
+                {
+                    _requestLevel3 = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Formula name for Storage Tank 3
+        public string Formula3
+        {
+            get => _formula3;
+            set
+            {
+                if (_formula3 != value)
+                {
+                    _formula3 = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Fill percentage for Storage Tank 3 (0-100)
+        public decimal FillPercentage3
+        {
+            get => _fillPercentage3;
+            set
+            {
+                if (_fillPercentage3 != value)
+                {
+                    _fillPercentage3 = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Level status for Storage Tank 3
+        public string LevelStatus3
+        {
+            get => _levelStatus3;
+            set
+            {
+                if (_levelStatus3 != value)
+                {
+                    _levelStatus3 = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Agitating state for Storage Tank 3 (TODO: Connect to PLC data later)
+        public bool IsAgitating3
+        {
+            get => _isAgitating3;
+            set
+            {
+                if (_isAgitating3 != value)
+                {
+                    _isAgitating3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage3));
+                }
+            }
+        }
+
+        // Filling state for Storage Tank 3 (TODO: Connect to PLC data later)
+        public bool IsFilling3
+        {
+            get => _isFilling3;
+            set
+            {
+                if (_isFilling3 != value)
+                {
+                    _isFilling3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage3));
+                }
+            }
+        }
+
+        // Transferring state for Storage Tank 3 (TODO: Connect to PLC data later)
+        public bool IsTransferring3
+        {
+            get => _isTransferring3;
+            set
+            {
+                if (_isTransferring3 != value)
+                {
+                    _isTransferring3 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage3));
+                }
+            }
+        }
+
+        // Storage Tank 3 Image property - determines which image to show based on state
+        public BitmapImage StorageTankImage3
+        {
+            get
+            {
+                string imageName = GetStorageTankImageName3();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Storage Tank/{imageName}");
+            }
+        }
+
+        // Combined temperature display for Storage Tank 3
+        public string TemperatureDisplay3 => $"{ActualTemperature3:F1}/{PresetTemperature3:F1}";
+
+        // Combined volume display for Storage Tank 3
+        public string VolumeDisplay3 => $"{ActualLevel3:F0}";
 
         #endregion
 
@@ -499,6 +699,19 @@ namespace Ring.ViewModels.MainScreen
             }
         }
 
+        // Calculate fill percentage for Tank 3 based on actual level vs request level
+        private void CalculateFillPercentage3()
+        {
+            if (RequestLevel3 > 0)
+            {
+                FillPercentage3 = Math.Min(100, Math.Max(0, (ActualLevel3 / RequestLevel3) * 100));
+            }
+            else
+            {
+                FillPercentage3 = 0;
+            }
+        }
+
         // Initialize with default values for demonstration purposes
         private void InitializeDefaultValues()
         {
@@ -518,6 +731,14 @@ namespace Ring.ViewModels.MainScreen
             Formula2 = "Formula 2";
             LevelStatus2 = "Normal";
 
+            // Tank 3 defaults - realistic industrial values
+            ActualTemperature3 = 98.5m;   // °F
+            PresetTemperature3 = 100.0m;  // °F
+            ActualLevel3 = 350.0m;        // gallons (70% of 500)
+            RequestLevel3 = 500.0m;       // gallons
+            Formula3 = "Formula 3";
+            LevelStatus3 = "Normal";
+
             // TVC system defaults - realistic industrial values
             OverallActualTemperature = 97.1m;   // °F (average of tanks)
             OverallPresetTemperature = 100.0m;  // °F
@@ -535,10 +756,14 @@ namespace Ring.ViewModels.MainScreen
             IsAgitating2 = false;
             IsFilling2 = false;
             IsTransferring2 = false;
+            IsAgitating3 = false;
+            IsFilling3 = false;
+            IsTransferring3 = false;
 
             // Calculate initial fill percentages
             CalculateFillPercentage1();
             CalculateFillPercentage2();
+            CalculateFillPercentage3();
         }
 
         /// <summary>
@@ -624,6 +849,51 @@ namespace Ring.ViewModels.MainScreen
             }
             // Only agitating
             if (IsAgitating2)
+            {
+                return "storagetank_agitator.png";
+            }
+            // Base image (no states active)
+            return "storagetank.png";
+        }
+
+        /// <summary>
+        /// Determines which Storage Tank 3 image to display based on state (agitating, filling, transferring)
+        /// Priority: agitator_filling_transferring > filling_transferring > agitator_filling > agitator_transferring > filling > transferring > agitator > base
+        /// </summary>
+        private string GetStorageTankImageName3()
+        {
+            // All three states active
+            if (IsAgitating3 && IsFilling3 && IsTransferring3)
+            {
+                return "storagetank_agitator_filling_transferring.png";
+            }
+            // Filling and transferring (no agitator)
+            if (IsFilling3 && IsTransferring3)
+            {
+                return "storagetank_filling_transferring.png";
+            }
+            // Agitating and filling (no transferring)
+            if (IsAgitating3 && IsFilling3)
+            {
+                return "storagetank_agitator_filling.png";
+            }
+            // Agitating and transferring (no filling)
+            if (IsAgitating3 && IsTransferring3)
+            {
+                return "storagetank_agitator_transferring.png";
+            }
+            // Only filling
+            if (IsFilling3)
+            {
+                return "storagetank_filling.png";
+            }
+            // Only transferring
+            if (IsTransferring3)
+            {
+                return "storagetank_transferring.png";
+            }
+            // Only agitating
+            if (IsAgitating3)
             {
                 return "storagetank_agitator.png";
             }

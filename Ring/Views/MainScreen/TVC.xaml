@@ -1,0 +1,66 @@
+<UserControl x:Class="Ring.Views.MainScreen.TVC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Main content area -->
+        <Grid Grid.Row="0" Margin="24">
+            <Border BorderThickness="1" 
+                    BorderBrush="#E0E0E0" 
+                    CornerRadius="8" 
+                    Background="White"
+                    Effect="{StaticResource DropShadowEffect}">
+                <StackPanel Margin="24" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="TVC Control" 
+                               FontSize="24" 
+                               FontWeight="SemiBold"
+                               Foreground="#0078D4"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,16" />
+                    <TextBlock Text="TVC functionality will be implemented here." 
+                               FontSize="14" 
+                               Foreground="#666666"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Footer Control Bar -->
+        <Border Grid.Row="1" 
+                BorderThickness="0,1,0,0" 
+                BorderBrush="#E0E0E0" 
+                Background="White"
+                Padding="24,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Left side - Empty -->
+                <StackPanel Grid.Column="0" />
+                
+                <!-- Middle - Empty -->
+                <StackPanel Grid.Column="1" />
+                
+                <!-- Right side - Close button -->
+                <Button Grid.Column="2" 
+                        Content="CLOSE" 
+                        Width="120"
+                        Height="40"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Click="Close_Click" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
+

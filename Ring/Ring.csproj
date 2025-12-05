@@ -321,6 +321,9 @@
     <Compile Include="Views\MainScreen\UseTankGroup.xaml.cs">
       <DependentUpon>UseTankGroup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainScreen\TVC.xaml.cs">
+      <DependentUpon>TVC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\BatchesPerShiftChart.xaml.cs">
       <DependentUpon>BatchesPerShiftChart.xaml</DependentUpon>
     </Compile>
@@ -470,6 +473,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainScreen\UseTankGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainScreen\TVC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

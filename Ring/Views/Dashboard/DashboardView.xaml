@@ -645,7 +645,7 @@
                                 </Grid>
                             
                                 <!-- Storage Tank 2 -->
-                                <Grid Margin="0,0,0,0">
+                                <Grid Margin="0,0,0,10">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -680,6 +680,47 @@
                                             <Run Text="{Binding StorageTankGroupViewModel.ActualTemperature2, StringFormat={}{0:F1}}"/>
                                             <Run Text="°F / "/>
                                             <Run Text="{Binding StorageTankGroupViewModel.PresetTemperature2, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            
+                                <!-- Storage Tank 3 -->
+                                <Grid Margin="0,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <!-- Tank Visual -->
+                                    <controls:TankLevelControl 
+                                        Grid.Column="0"
+                                        FillPercentage="{Binding StorageTankGroupViewModel.FillPercentage3}"
+                                        Width="55"
+                                        Height="75"
+                                        Margin="0,0,10,0"/>
+                                    
+                                    <!-- Tank Info -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock FontSize="13" 
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#0078D4"
+                                                   Margin="0,0,0,3">
+                                            <Run Text="Storage Tank 3 - "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.Formula3}"/>
+                                        </TextBlock>
+                                        
+                                        <TextBlock Foreground="#666666" 
+                                                   FontSize="11"
+                                                   Margin="0,0,0,2"
+                                                   Text="Temperature:"/>
+                                        <TextBlock Foreground="#1E1E1E" 
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,0">
+                                            <Run Text="{Binding StorageTankGroupViewModel.ActualTemperature3, StringFormat={}{0:F1}}"/>
+                                            <Run Text="°F / "/>
+                                            <Run Text="{Binding StorageTankGroupViewModel.PresetTemperature3, StringFormat={}{0:F1}}"/>
                                             <Run Text="°F"/>
                                         </TextBlock>
                                     </StackPanel>
