@@ -556,7 +556,9 @@
 
                     <!-- Storage/Use Tanks Card -->
                     <Border Grid.Column="2" 
-                            Style="{StaticResource DashboardCardStyle}">
+                            Style="{StaticResource DashboardCardStyle}"
+                            Cursor="Hand"
+                            MouseLeftButtonDown="StorageUseTanksCard_Click">
                         <StackPanel Margin="10">
                             <!-- Header with Toggle -->
                             <Grid Margin="0,0,0,8">
@@ -599,7 +601,8 @@
                             </Grid>
 
                             <!-- Storage Tanks Section -->
-                            <StackPanel Name="StorageTanksPanel" Visibility="Visible">
+                            <StackPanel Name="StorageTanksPanel" 
+                                        Visibility="Visible">
                                 <!-- Storage Tank 1 -->
                                 <Grid Margin="0,0,0,10">
                                     <Grid.ColumnDefinitions>
@@ -684,7 +687,8 @@
                             </StackPanel>
                             
                             <!-- Use Tanks Section -->
-                            <StackPanel Name="UseTanksPanel" Visibility="Collapsed">
+                            <StackPanel Name="UseTanksPanel" 
+                                        Visibility="Collapsed">
                                 <!-- Module Facer 1 -->
                                 <Grid Margin="0,0,0,6">
                                     <Grid.ColumnDefinitions>

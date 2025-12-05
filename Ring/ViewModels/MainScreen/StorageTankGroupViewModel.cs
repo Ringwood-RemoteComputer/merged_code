@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 
 namespace Ring.ViewModels.MainScreen
 {
@@ -18,6 +19,11 @@ namespace Ring.ViewModels.MainScreen
         private string _formula1;
         private decimal _fillPercentage1;
         private string _levelStatus1;
+        
+        // Tank 1 State Properties (TODO: Connect to PLC data later)
+        private bool _isAgitating1;
+        private bool _isFilling1;
+        private bool _isTransferring1;
 
         // Tank 2 Properties
         private decimal _actualTemperature2;
@@ -27,6 +33,11 @@ namespace Ring.ViewModels.MainScreen
         private string _formula2;
         private decimal _fillPercentage2;
         private string _levelStatus2;
+        
+        // Tank 2 State Properties (TODO: Connect to PLC data later)
+        private bool _isAgitating2;
+        private bool _isFilling2;
+        private bool _isTransferring2;
 
         // Global System Properties
         private decimal _overallActualTemperature;
@@ -156,6 +167,61 @@ namespace Ring.ViewModels.MainScreen
             }
         }
 
+        // Agitating state for Storage Tank 1 (TODO: Connect to PLC data later)
+        public bool IsAgitating1
+        {
+            get => _isAgitating1;
+            set
+            {
+                if (_isAgitating1 != value)
+                {
+                    _isAgitating1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage1));
+                }
+            }
+        }
+
+        // Filling state for Storage Tank 1 (TODO: Connect to PLC data later)
+        public bool IsFilling1
+        {
+            get => _isFilling1;
+            set
+            {
+                if (_isFilling1 != value)
+                {
+                    _isFilling1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage1));
+                }
+            }
+        }
+
+        // Transferring state for Storage Tank 1 (TODO: Connect to PLC data later)
+        public bool IsTransferring1
+        {
+            get => _isTransferring1;
+            set
+            {
+                if (_isTransferring1 != value)
+                {
+                    _isTransferring1 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage1));
+                }
+            }
+        }
+
+        // Storage Tank 1 Image property - determines which image to show based on state
+        public BitmapImage StorageTankImage1
+        {
+            get
+            {
+                string imageName = GetStorageTankImageName1();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Storage Tank/{imageName}");
+            }
+        }
+
         #endregion
 
         #region Tank 2 Properties
@@ -257,6 +323,61 @@ namespace Ring.ViewModels.MainScreen
                     _levelStatus2 = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        // Agitating state for Storage Tank 2 (TODO: Connect to PLC data later)
+        public bool IsAgitating2
+        {
+            get => _isAgitating2;
+            set
+            {
+                if (_isAgitating2 != value)
+                {
+                    _isAgitating2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage2));
+                }
+            }
+        }
+
+        // Filling state for Storage Tank 2 (TODO: Connect to PLC data later)
+        public bool IsFilling2
+        {
+            get => _isFilling2;
+            set
+            {
+                if (_isFilling2 != value)
+                {
+                    _isFilling2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage2));
+                }
+            }
+        }
+
+        // Transferring state for Storage Tank 2 (TODO: Connect to PLC data later)
+        public bool IsTransferring2
+        {
+            get => _isTransferring2;
+            set
+            {
+                if (_isTransferring2 != value)
+                {
+                    _isTransferring2 = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StorageTankImage2));
+                }
+            }
+        }
+
+        // Storage Tank 2 Image property - determines which image to show based on state
+        public BitmapImage StorageTankImage2
+        {
+            get
+            {
+                string imageName = GetStorageTankImageName2();
+                return Ring.Services.Images.ImageLoader.LoadImage($"Storage Tank/{imageName}");
             }
         }
 
@@ -407,9 +528,107 @@ namespace Ring.ViewModels.MainScreen
             PlcStatusText = "PLC Connected";
             PlcStatusBrush = "#28A745";  // Green color for connected status
 
+            // Tank state defaults (TODO: Connect to PLC data later)
+            IsAgitating1 = false;
+            IsFilling1 = false;
+            IsTransferring1 = false;
+            IsAgitating2 = false;
+            IsFilling2 = false;
+            IsTransferring2 = false;
+
             // Calculate initial fill percentages
             CalculateFillPercentage1();
             CalculateFillPercentage2();
+        }
+
+        /// <summary>
+        /// Determines which Storage Tank 1 image to display based on state (agitating, filling, transferring)
+        /// Priority: agitator_filling_transferring > filling_transferring > agitator_filling > agitator_transferring > filling > transferring > agitator > base
+        /// </summary>
+        private string GetStorageTankImageName1()
+        {
+            // All three states active
+            if (IsAgitating1 && IsFilling1 && IsTransferring1)
+            {
+                return "storagetank_agitator_filling_transferring.png";
+            }
+            // Filling and transferring (no agitator)
+            if (IsFilling1 && IsTransferring1)
+            {
+                return "storagetank_filling_transferring.png";
+            }
+            // Agitating and filling (no transferring)
+            if (IsAgitating1 && IsFilling1)
+            {
+                return "storagetank_agitator_filling.png";
+            }
+            // Agitating and transferring (no filling)
+            if (IsAgitating1 && IsTransferring1)
+            {
+                return "storagetank_agitator_transferring.png";
+            }
+            // Only filling
+            if (IsFilling1)
+            {
+                return "storagetank_filling.png";
+            }
+            // Only transferring
+            if (IsTransferring1)
+            {
+                return "storagetank_transferring.png";
+            }
+            // Only agitating
+            if (IsAgitating1)
+            {
+                return "storagetank_agitator.png";
+            }
+            // Base image (no states active)
+            return "storagetank.png";
+        }
+
+        /// <summary>
+        /// Determines which Storage Tank 2 image to display based on state (agitating, filling, transferring)
+        /// Priority: agitator_filling_transferring > filling_transferring > agitator_filling > agitator_transferring > filling > transferring > agitator > base
+        /// </summary>
+        private string GetStorageTankImageName2()
+        {
+            // All three states active
+            if (IsAgitating2 && IsFilling2 && IsTransferring2)
+            {
+                return "storagetank_agitator_filling_transferring.png";
+            }
+            // Filling and transferring (no agitator)
+            if (IsFilling2 && IsTransferring2)
+            {
+                return "storagetank_filling_transferring.png";
+            }
+            // Agitating and filling (no transferring)
+            if (IsAgitating2 && IsFilling2)
+            {
+                return "storagetank_agitator_filling.png";
+            }
+            // Agitating and transferring (no filling)
+            if (IsAgitating2 && IsTransferring2)
+            {
+                return "storagetank_agitator_transferring.png";
+            }
+            // Only filling
+            if (IsFilling2)
+            {
+                return "storagetank_filling.png";
+            }
+            // Only transferring
+            if (IsTransferring2)
+            {
+                return "storagetank_transferring.png";
+            }
+            // Only agitating
+            if (IsAgitating2)
+            {
+                return "storagetank_agitator.png";
+            }
+            // Base image (no states active)
+            return "storagetank.png";
         }
 
         #endregion
